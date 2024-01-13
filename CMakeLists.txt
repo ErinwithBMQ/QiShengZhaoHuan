@@ -5,7 +5,8 @@ set(CMAKE_C_STANDARD 17)
 include_directories("D:\\QiShengZhaoHuan\\SDL2-2.26.0-allinone\\x86_64-w64-mingw32\\include")
 link_directories("D:\\QiShengZhaoHuan\\SDL2-2.26.0-allinone\\x86_64-w64-mingw32\\lib")
 
-add_executable(main main.c)
+add_executable(main main.c
+        character/character.c)
 
 target_link_libraries(main PRIVATE
         mingw32

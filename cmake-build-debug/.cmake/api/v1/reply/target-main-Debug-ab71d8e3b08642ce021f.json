@@ -42,7 +42,7 @@
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 10,
+				"line" : 11,
 				"parent" : 0
 			},
 			{
@@ -66,7 +66,7 @@
 			[
 				{
 					"backtrace" : 4,
-					"path" : "D:/mingw(CLion+VSC)/SDL2-2.26.0-allinone/x86_64-w64-mingw32/include"
+					"path" : "D:/QiShengZhaoHuan/SDL2-2.26.0-allinone/x86_64-w64-mingw32/include"
 				}
 			],
 			"language" : "C",
@@ -80,7 +80,8 @@
 			},
 			"sourceIndexes" : 
 			[
-				0
+				0,
+				1
 			]
 		}
 	],
@@ -99,7 +100,7 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-LD:\\mingw(CLion+VSC)\\SDL2-2.26.0-allinone\\x86_64-w64-mingw32\\lib",
+				"fragment" : "-LD:\\QiShengZhaoHuan\\SDL2-2.26.0-allinone\\x86_64-w64-mingw32\\lib",
 				"role" : "libraryPath"
 			},
 			{
@@ -152,7 +153,8 @@
 			"name" : "Source Files",
 			"sourceIndexes" : 
 			[
-				0
+				0,
+				1
 			]
 		}
 	],
@@ -162,6 +164,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "main.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "character/character.c",
 			"sourceGroupIndex" : 0
 		}
 	],
