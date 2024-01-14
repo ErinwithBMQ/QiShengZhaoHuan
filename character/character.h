@@ -20,10 +20,12 @@ typedef struct chara {
     char yuansu;       //该角色元素类型
     bool yuansu_fu[5]; //当前角色身上的元素附着状态
     bool zhuang[2];    //该角色其他状态.第一位是死亡，第二位是冰冻
+    bool if_xuan;      //是否为当前选中角色
 } Character;
 
 
-void present_character_game(Character *chara, int num);  //在游戏中展示角色信息
+
+void present_character_game(Character *chara, int num, SDL_Renderer *renderer);  //在游戏中展示角色信息
 bool if_character_alive(Character *chara); //判断角色是否死亡
 void change_character_shanghai(Character *chara, Character *enemy); //计算角色伤害
 bool if_chongman(Character *chara);

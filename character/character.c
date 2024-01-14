@@ -1,6 +1,12 @@
 //
 // Created by Erin on 2024/1/13.
 //
+
+#include <stdio.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 #include "character.h"
 
 Character Antant = {
@@ -19,24 +25,7 @@ Character Antant = {
         .yuansu = 'h',
         .yuansu_fu = {0,0,0,0,0},
         .zhuang = {0,0},
-};
-
-Character Alhaitham = {
-        .index = 1,
-        .xue = 10,
-        .hudun = 0,
-        .name = {
-                "艾尔海森",
-                "溯因反绎法",
-                "显像",
-                "束缚",
-        },
-        .baofa_num = 2,
-        .baofa_now = 0,
-        .shanghai = {2,3,5},
-        .yuansu = 'c',
-        .yuansu_fu = {0,0,0,0,0},
-        .zhuang = {0,0},
+        .if_xuan = false,
 };
 
 Character Qiuqiuren = {
@@ -55,11 +44,107 @@ Character Qiuqiuren = {
         .yuansu = '0',
         .yuansu_fu = {0,0,0,0,0},
         .zhuang = {0,0},
+        .if_xuan = false,
 };
 
-void present_character_game(Character *chara, int num)
-{
+Character CXK = {
+        .index = 11,
+        .xue = 10,
+        .hudun = 0,
+        .name = {
+                "坤坤",
+                "你干嘛~",
+                "唱跳rap篮球",
+                "鸡你太美！",
+        },
+        .baofa_num = 3,
+        .baofa_now = 0,
+        .shanghai = {1,2,4},
+        .yuansu = 'k',
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+};
 
+Character Mars = {
+        .index = 12,
+        .xue = 10,
+        .hudun = 0,
+        .name = {
+                "火星人",
+                "日常破防",
+                "代号一：主播",
+                "代号二：火星人",
+        },
+        .baofa_num = 2,
+        .baofa_now = 0,
+        .shanghai = {2,4,6},
+        .yuansu = 'h',
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+};
+
+void present_character_game(Character *chara, int num, SDL_Renderer *renderer)
+{
+    if (!if_character_alive(chara))
+    {
+        if (chara -> index == 0)
+        {
+            SDL_Texture *character = IMG_LoadTexture(renderer, "./res/image/0.jpg");
+
+            SDL_Rect rect = {.x = 301 + (num - 1) * 217, .y = 57};
+            if (num > 3)
+            {
+                rect.y = 471;
+                rect.x = 301 + (num - 4) * 217;
+            }
+
+            if (chara->if_xuan && num <= 3)
+            {
+                rect.y += 10;
+            }
+
+            if (chara->if_xuan && num > 3)
+            {
+                rect.y -= 10;
+            }
+
+            SDL_QueryTexture(character, NULL, NULL, &rect.w, &rect.h);
+            SDL_RenderCopy(renderer, character, NULL, &rect);
+            SDL_DestroyTexture(character);
+            return;
+        }
+    }
+    else
+    {
+        if (chara -> index == 1)
+        {
+            SDL_Texture *character = IMG_LoadTexture(renderer, "./res/image/alhaitham.jpg");
+
+            SDL_Rect rect = {.x = 301 + (num - 1) * 217, .y = 57};
+            if (num > 3)
+            {
+                rect.y = 471;
+                rect.x = 301 + (num - 4) * 217;
+            }
+
+            if (chara->if_xuan && num <= 3)
+            {
+                rect.y += 10;
+            }
+
+            if (chara->if_xuan  && num > 3)
+            {
+                rect.y -= 10;
+            }
+
+            SDL_QueryTexture(character, NULL, NULL, &rect.w, &rect.h);
+            SDL_RenderCopy(renderer, character, NULL, &rect);
+            SDL_DestroyTexture(character);
+            return;
+        }
+    }
 }
 
 bool if_character_alive(Character *chara)
