@@ -63,6 +63,13 @@ build CMakeFiles/main.dir/character/character.c.obj: C_COMPILER__main_unscanned_
   OBJECT_DIR = CMakeFiles\main.dir
   OBJECT_FILE_DIR = CMakeFiles\main.dir\character
 
+build CMakeFiles/main.dir/action/action.c.obj: C_COMPILER__main_unscanned_Debug D$:/QiShengZhaoHuan/action/action.c || cmake_object_order_depends_target_main
+  DEP_FILE = CMakeFiles\main.dir\action\action.c.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -ID:/QiShengZhaoHuan/SDL2-2.26.0-allinone/x86_64-w64-mingw32/include
+  OBJECT_DIR = CMakeFiles\main.dir
+  OBJECT_FILE_DIR = CMakeFiles\main.dir\action
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target main
@@ -71,7 +78,7 @@ build CMakeFiles/main.dir/character/character.c.obj: C_COMPILER__main_unscanned_
 #############################################
 # Link the executable main.exe
 
-build main.exe: C_EXECUTABLE_LINKER__main_Debug CMakeFiles/main.dir/main.c.obj CMakeFiles/main.dir/character/character.c.obj
+build main.exe: C_EXECUTABLE_LINKER__main_Debug CMakeFiles/main.dir/main.c.obj CMakeFiles/main.dir/character/character.c.obj CMakeFiles/main.dir/action/action.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lmingw32  -lSDL2main  -lSDL2  -lSDL2_image  -lSDL2_mixer  -lSDL2_ttf  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   LINK_PATH = -LD:/QiShengZhaoHuan/SDL2-2.26.0-allinone/x86_64-w64-mingw32/lib

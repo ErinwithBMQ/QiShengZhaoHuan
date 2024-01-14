@@ -60,7 +60,7 @@ Character Qiuqiuren = {
 void present_character_game(Character *chara, int num)
 {
 
-};
+}
 
 bool if_character_alive(Character *chara)
 {
@@ -69,12 +69,12 @@ bool if_character_alive(Character *chara)
         return false;
     }
     return true;
-};
+}
 
 void change_character_shanghai(Character *chara, Character *enemy)
 {
 
-};
+}
 
 bool if_chongman(Character *chara)
 {
@@ -83,4 +83,4 @@ bool if_chongman(Character *chara)
         return false;
     }
     return false;
-};
+}

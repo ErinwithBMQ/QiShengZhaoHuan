@@ -6,7 +6,8 @@ include_directories("D:\\QiShengZhaoHuan\\SDL2-2.26.0-allinone\\x86_64-w64-mingw
 link_directories("D:\\QiShengZhaoHuan\\SDL2-2.26.0-allinone\\x86_64-w64-mingw32\\lib")
 
 add_executable(main main.c
-        character/character.c)
+        character/character.c
+        action/action.c)
 
 target_link_libraries(main PRIVATE
         mingw32

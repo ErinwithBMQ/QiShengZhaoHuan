@@ -11,8 +11,8 @@
 
 typedef struct chara {
     int index;         //角色编号
-    int xue;
-    int hudun;
+    int xue;           //角色血量
+    int hudun;         //角色目前护盾数
     char *name[4];     //依次存放名字，普通攻击，元素战技，元素爆发的名字
     int baofa_num;     //元素爆发所需要的充能
     int baofa_now;     //当前充能
