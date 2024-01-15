@@ -5,6 +5,7 @@
 #include <SDL2/SDL_mixer.h>
 #include "character/character.h"
 #include "action/action.h"
+#include "character/page.h"
 
 #undef main
 
@@ -25,7 +26,7 @@ Character Alhaitham = {
         .baofa_now = 0,
         .shanghai = {2,3,5},
         .yuansu = 'c',
-        .yuansu_fu = {0,0,0,0,0},
+        .yuansu_fu = {0,0,0,1,0},
         .zhuang = {0,0},
         .if_xuan = false,
 };
@@ -44,7 +45,7 @@ Character Lingren = {
         .baofa_now = 0,
         .shanghai = {2,3,5},
         .yuansu = 'c',
-        .yuansu_fu = {0,0,0,0,0},
+        .yuansu_fu = {1,0,0,0,0},
         .zhuang = {0,0},
         .if_xuan = false,
 };
@@ -63,8 +64,10 @@ int main(int argc, char *argv[])
     SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
     SDL_RenderClear(renderer);
 
-    SDL_Event event;
 
+    MainPage(renderer, window);
+
+    SDL_Event event;
     while (1)
     {
         Character now = Alhaitham;
@@ -109,17 +112,7 @@ int main(int argc, char *argv[])
                 case SDL_KEYDOWN:
                     if (event.key.keysym.sym == SDLK_ESCAPE)
                     {
-                        SDL_DestroyTexture(texture_title);
-                        SDL_FreeSurface(surface_title);
-
-                        SDL_DestroyWindow(window);
-                        SDL_DestroyRenderer(renderer);
-                        TTF_CloseFont(font_title);
-
-                        IMG_Quit();
-                        SDL_Quit();
-                        TTF_Quit();
-                        return 0;
+                        WinBattle(renderer, window);
                     }
                     break;
                 default:
