@@ -8,6 +8,9 @@
 
 #undef main
 
+#define HIGH 800
+#define WIDTH 1300
+
 Character Alhaitham = {
         .index = 1,
         .xue = 10,
@@ -27,9 +30,28 @@ Character Alhaitham = {
         .if_xuan = false,
 };
 
+Character Lingren = {
+        .index = 2,
+        .xue = 10,
+        .hudun = 0,
+        .name = {
+                "神里绫人",
+                "溯因反绎法",
+                "显像",
+                "束缚",
+        },
+        .baofa_num = 2,
+        .baofa_now = 0,
+        .shanghai = {2,3,5},
+        .yuansu = 'c',
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+};
+
 int main(int argc, char *argv[])
 {
-    SDL_Window *window = SDL_CreateWindow("Hello world", 100, 100, 1200, 800, SDL_WINDOW_SHOWN);
+        SDL_Window *window = SDL_CreateWindow("Hello world", 100, 100, WIDTH, HIGH, SDL_WINDOW_SHOWN);
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     SDL_Init(SDL_INIT_VIDEO); //初始化
@@ -49,13 +71,18 @@ int main(int argc, char *argv[])
     //将texture内容传到渲染器
 
     Character now = Alhaitham;
+    Character emy = Lingren;
 
-    for (int i = 1; i <= 6; ++i) {
+    for (int i = 1; i <= 3; ++i) {
+        present_character_game(&emy, i, renderer);
+    }
+
+    for (int i = 4; i <= 6; ++i) {
         present_character_game(&now, i, renderer);
     }
 
-    TTF_Font *font_title = TTF_OpenFont("./res/HYWH85W.ttf", 64);
-    SDL_Color color_title = {0x00, 0xff, 0xff, 0xff};
+    TTF_Font *font_title = TTF_OpenFont("./res/HYWH85W.ttf", 32);
+    SDL_Color color_title = {0x00, 0x00, 0x00, 0x00};
     SDL_Surface *surface_title = TTF_RenderText_Blended(font_title, "Genshin Impact", color_title);
     SDL_Texture *texture_title = SDL_CreateTextureFromSurface(renderer, surface_title);
     SDL_Rect rect_title = {.x = 0, .y = 0};
