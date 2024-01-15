@@ -51,7 +51,7 @@ Character Lingren = {
 
 int main(int argc, char *argv[])
 {
-        SDL_Window *window = SDL_CreateWindow("Hello world", 100, 100, WIDTH, HIGH, SDL_WINDOW_SHOWN);
+    SDL_Window *window = SDL_CreateWindow("Hello world", 100, 100, WIDTH, HIGH, SDL_WINDOW_SHOWN);
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     SDL_Init(SDL_INIT_VIDEO); //初始化
@@ -59,53 +59,76 @@ int main(int argc, char *argv[])
     TTF_Init();
 
 
+
     SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
     SDL_RenderClear(renderer);
 
+    SDL_Event event;
 
-    /*SDL_Surface *surface_back = IMG_Load("./res/image/alhaitham.jpg");
-    SDL_Texture *texture_back = SDL_CreateTextureFromSurface(renderer, surface_back);
-    SDL_Rect rect = {.x = 518, .y = 57};
-    SDL_QueryTexture(texture_back, NULL, NULL, &rect.w, &rect.h);
-    SDL_RenderCopy(renderer, texture_back, NULL, &rect);*/
-    //将texture内容传到渲染器
+    while (1)
+    {
+        Character now = Alhaitham;
+        Character emy = Lingren;
 
-    Character now = Alhaitham;
-    Character emy = Lingren;
+        for (int i = 1; i <= 3; ++i) {
+            PresentCharacterGame(&emy, i, renderer);
+        }
 
-    for (int i = 1; i <= 3; ++i) {
-        present_character_game(&emy, i, renderer);
+        for (int i = 4; i <= 6; ++i) {
+            PresentCharacterGame(&now, i, renderer);
+        }
+
+        TTF_Font *font_title = TTF_OpenFont("./res/HYWH85W.ttf", 32);
+        SDL_Color color_title = {0x00, 0x00, 0x00, 0x00};
+        SDL_Surface *surface_title = TTF_RenderUTF8_Solid(font_title, "七圣召唤", color_title);
+        SDL_Texture *texture_title = SDL_CreateTextureFromSurface(renderer, surface_title);
+        SDL_Rect rect_title = {.x = 0, .y = 0};
+        SDL_QueryTexture(texture_title, NULL, NULL, &rect_title.w, &rect_title.h);
+        SDL_RenderCopy(renderer, texture_title, NULL, &rect_title);
+
+
+        SDL_RenderPresent(renderer);
+
+        while (SDL_PollEvent(&event))
+        {
+
+            switch (event.type) {
+                case SDL_QUIT:
+                    SDL_DestroyTexture(texture_title);
+                    SDL_FreeSurface(surface_title);
+
+                    SDL_DestroyWindow(window);
+                    SDL_DestroyRenderer(renderer);
+                    TTF_CloseFont(font_title);
+
+                    IMG_Quit();
+                    SDL_Quit();
+                    TTF_Quit();
+                    return 0;
+
+                case SDL_KEYDOWN:
+                    if (event.key.keysym.sym == SDLK_ESCAPE)
+                    {
+                        SDL_DestroyTexture(texture_title);
+                        SDL_FreeSurface(surface_title);
+
+                        SDL_DestroyWindow(window);
+                        SDL_DestroyRenderer(renderer);
+                        TTF_CloseFont(font_title);
+
+                        IMG_Quit();
+                        SDL_Quit();
+                        TTF_Quit();
+                        return 0;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        SDL_Delay(5);
     }
 
-    for (int i = 4; i <= 6; ++i) {
-        present_character_game(&now, i, renderer);
-    }
-
-    TTF_Font *font_title = TTF_OpenFont("./res/HYWH85W.ttf", 32);
-    SDL_Color color_title = {0x00, 0x00, 0x00, 0x00};
-    SDL_Surface *surface_title = TTF_RenderText_Blended(font_title, "Genshin Impact", color_title);
-    SDL_Texture *texture_title = SDL_CreateTextureFromSurface(renderer, surface_title);
-    SDL_Rect rect_title = {.x = 0, .y = 0};
-    SDL_QueryTexture(texture_title, NULL, NULL, &rect_title.w, &rect_title.h);
-    SDL_RenderCopy(renderer, texture_title, NULL, &rect_title);
-
-
-    SDL_RenderPresent(renderer);
-    SDL_Delay(8000);
-
-
-    //SDL_DestroyTexture(texture_back);
-    //SDL_FreeSurface(surface_back);
-    SDL_DestroyTexture(texture_title);
-    SDL_FreeSurface(surface_title);
-
-    SDL_DestroyWindow(window);
-    SDL_DestroyRenderer(renderer);
-    TTF_CloseFont(font_title);
-
-    IMG_Quit();
-    SDL_Quit();
-    TTF_Quit();
 
     return 0;
 }

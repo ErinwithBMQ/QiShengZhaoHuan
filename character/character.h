@@ -25,9 +25,9 @@ typedef struct chara {
 
 
 
-void present_character_game(Character *chara, int num, SDL_Renderer *renderer);  //在游戏中展示角色信息
-bool if_character_alive(Character *chara); //判断角色是否死亡
-void change_character_shanghai(Character *chara, Character *enemy); //计算角色伤害
-bool if_chongman(Character *chara);
+void PresentCharacterGame(Character *chara, int num, SDL_Renderer *renderer);  //在游戏中展示角色信息
+bool IfCharacterAlive(Character *chara); //判断角色是否死亡
+void ChangeCharacterShanghai(Character *chara, Character *enemy); //计算角色伤害
+bool IfChongMan(Character *chara);
 
 #endif //SDL_SAMPLE_CHARACTER_H

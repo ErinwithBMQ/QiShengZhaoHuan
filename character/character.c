@@ -85,9 +85,9 @@ Character Mars = {
         .if_xuan = false,
 };
 
-void present_character_game(Character *chara, int num, SDL_Renderer *renderer)
+void PresentCharacterGame(Character *chara, int num, SDL_Renderer *renderer)
 {
-    if (!if_character_alive(chara))
+    if (!IfCharacterAlive(chara))
     {
         SDL_Surface *surface_character;
 
@@ -101,12 +101,12 @@ void present_character_game(Character *chara, int num, SDL_Renderer *renderer)
         }
 
         SDL_Texture *texture_character = SDL_CreateTextureFromSurface(renderer, surface_character);
-        SDL_Rect rect = {.x = 350 + (num - 1) * 170, .y = 100};
+        SDL_Rect rect = {.x = 400 + (num - 1) * 170, .y = 100};
 
         if (num > 3)
         {
             rect.y = 450;
-            rect.x = 350 + (num - 4) * 170;
+            rect.x = 400 + (num - 4) * 170;
         }
 
         SDL_QueryTexture(texture_character, NULL, NULL, &rect.w, &rect.h);
@@ -133,12 +133,12 @@ void present_character_game(Character *chara, int num, SDL_Renderer *renderer)
 
         SDL_Texture *texture_character = SDL_CreateTextureFromSurface(renderer, surface_character);
 
-        SDL_Rect rect = {.x = 350 + (num - 1) * 170, .y = 100};
-        SDL_Rect rect_xueliang = {.x = 350 + (num - 1) * 170, .y = 100};
+        SDL_Rect rect = {.x = 400 + (num - 1) * 170, .y = 100};
+        SDL_Rect rect_xueliang = {.x = rect.x, .y = rect.y};
         if (num > 3)
         {
             rect.y = 450;
-            rect.x = 350 + (num - 4) * 170;
+            rect.x = 400 + (num - 4) * 170;
             rect_xueliang.x = rect.x;
             rect_xueliang.y = rect.y;
         }
@@ -246,7 +246,7 @@ void present_character_game(Character *chara, int num, SDL_Renderer *renderer)
     }
 }
 
-bool if_character_alive(Character *chara)
+bool IfCharacterAlive(Character *chara)
 {
     if (!chara->xue)
     {
@@ -256,7 +256,7 @@ bool if_character_alive(Character *chara)
     return true;
 }
 
-void change_character_shanghai(Character *chara, Character *enemy) //底层基础伤害的元素反应加成
+void ChangeCharacterShanghai(Character *chara, Character *enemy) //底层基础伤害的元素反应加成
 {
     if (enemy->yuansu_fu[0]) //如果对方是火元素附着
     {
@@ -332,7 +332,7 @@ void change_character_shanghai(Character *chara, Character *enemy) //底层基�
     }
 }
 
-bool if_chongman(Character *chara)
+bool IfChongMan(Character *chara)
 {
     if (chara->baofa_now == chara->baofa_num)
     {

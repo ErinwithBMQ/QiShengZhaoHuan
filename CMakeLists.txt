@@ -7,7 +7,8 @@ link_directories("D:\\QiShengZhaoHuan\\SDL2-2.26.0-allinone\\x86_64-w64-mingw32\
 
 add_executable(main main.c
         character/character.c
-        action/action.c)
+        action/action.c
+        character/page.c)
 
 target_link_libraries(main PRIVATE
         mingw32
