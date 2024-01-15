@@ -9,98 +9,32 @@
 #include <SDL2/SDL_mixer.h>
 #include "character.h"
 
-Character Antant = {
-        .index = 0,
-        .xue = 10,
-        .hudun = 0,
-        .name = {
-                "蚂蚁老师",
-                "开始上课",
-                "OJ作业",
-                "机试来喽",
-        },
-        .baofa_num = 3,
-        .baofa_now = 0,
-        .shanghai = {1,3,7},
-        .yuansu = 'h',
-        .yuansu_fu = {0,0,0,0,0},
-        .zhuang = {0,0},
-        .if_xuan = false,
-};
+void CharacterImageLoad(SDL_Renderer *renderer)
+{
+    Alhaitham.image = IMG_LoadTexture(renderer, "./res/image/1.png");
+    Alhaitham.image_choose = IMG_LoadTexture(renderer, "./res/image/1_xuan.png");
+    Alhaitham.image_dead = IMG_LoadTexture(renderer, "./res/image/1_dead.png");
 
-Character Qiuqiuren = {
-        .index = 10,
-        .xue = 8,
-        .hudun = 0,
-        .name = {
-                "丘丘人",
-                "普通的一击",
-                "用力的一击",
-                "全力一击！",
-        },
-        .baofa_num = 2,
-        .baofa_now = 0,
-        .shanghai = {1,2,4},
-        .yuansu = '0',
-        .yuansu_fu = {0,0,0,0,0},
-        .zhuang = {0,0},
-        .if_xuan = false,
-};
+    Lingren.image = IMG_LoadTexture(renderer, "./res/image/2.png");
+    Lingren.image_choose = IMG_LoadTexture(renderer, "./res/image/2_xuan.png");
+    Lingren.image_dead = IMG_LoadTexture(renderer, "./res/image/2_dead.png");
+}
 
-Character CXK = {
-        .index = 11,
-        .xue = 10,
-        .hudun = 0,
-        .name = {
-                "坤坤",
-                "你干嘛~",
-                "唱跳rap篮球",
-                "鸡你太美！",
-        },
-        .baofa_num = 3,
-        .baofa_now = 0,
-        .shanghai = {1,2,4},
-        .yuansu = 'k',
-        .yuansu_fu = {0,0,0,0,0},
-        .zhuang = {0,0},
-        .if_xuan = false,
-};
+void CharacterImageDestroy()
+{
+    SDL_DestroyTexture(Alhaitham.image);
+    SDL_DestroyTexture(Alhaitham.image_choose);
+    SDL_DestroyTexture(Alhaitham.image_dead);
 
-Character Mars = {
-        .index = 12,
-        .xue = 10,
-        .hudun = 0,
-        .name = {
-                "火星人",
-                "日常破防",
-                "代号一：主播",
-                "代号二：火星人",
-        },
-        .baofa_num = 2,
-        .baofa_now = 0,
-        .shanghai = {2,4,6},
-        .yuansu = 'h',
-        .yuansu_fu = {0,0,0,0,0},
-        .zhuang = {0,0},
-        .if_xuan = false,
-};
+    SDL_DestroyTexture(Lingren.image);
+    SDL_DestroyTexture(Lingren.image_dead);
+    SDL_DestroyTexture(Lingren.image_choose);
+}
 
 void PresentCharacterGame(Character *chara, int num, SDL_Renderer *renderer)
 {
     if (!IfCharacterAlive(chara))
     {
-        SDL_Surface *surface_character;
-
-        if (chara -> index == 1)
-        {
-            surface_character = IMG_Load("./res/image/1_dead.png");
-        }
-        else if (chara -> index == 2)
-        {
-            surface_character = IMG_Load("./res/image/2_dead.png");
-        }
-
-        SDL_Texture *texture_character = SDL_CreateTextureFromSurface(renderer, surface_character);
         SDL_Rect rect = {.x = 400 + (num - 1) * 170, .y = 100};
 
         if (num > 3)
@@ -109,30 +43,13 @@ void PresentCharacterGame(Character *chara, int num, SDL_Renderer *renderer)
             rect.x = 400 + (num - 4) * 170;
         }
 
-        SDL_QueryTexture(texture_character, NULL, NULL, &rect.w, &rect.h);
-        SDL_RenderCopy(renderer, texture_character, NULL, &rect);
+        SDL_QueryTexture(chara->image, NULL, NULL, &rect.w, &rect.h);
+        SDL_RenderCopy(renderer, chara->image_dead, NULL, &rect);
 
-        SDL_FreeSurface(surface_character);
-        SDL_DestroyTexture(texture_character);
         return;
     }
     else
     {
-        //人物图像展示
-        SDL_Surface *surface_character;
-
-        if (chara -> index == 1)
-        {
-            surface_character = IMG_Load("./res/image/1.png");
-        }
-        else if (chara -> index == 2)
-        {
-            surface_character = IMG_Load("./res/image/2.png");
-        }
-
-
-        SDL_Texture *texture_character = SDL_CreateTextureFromSurface(renderer, surface_character);
-
         SDL_Rect rect = {.x = 400 + (num - 1) * 170, .y = 100};
         SDL_Rect rect_xueliang = {.x = rect.x, .y = rect.y};
         if (num > 3)
@@ -156,8 +73,8 @@ void PresentCharacterGame(Character *chara, int num, SDL_Renderer *renderer)
         rect_xueliang.x += 4;
         rect_xueliang.y += 3;
 
-        SDL_QueryTexture(texture_character, NULL, NULL, &rect.w, &rect.h);
-        SDL_RenderCopy(renderer, texture_character, NULL, &rect);
+        SDL_QueryTexture(chara->image, NULL, NULL, &rect.w, &rect.h);
+        SDL_RenderCopy(renderer, chara->image, NULL, &rect);
 
         //血量展示
         int xueliang = chara->xue;
@@ -230,14 +147,24 @@ void PresentCharacterGame(Character *chara, int num, SDL_Renderer *renderer)
         SDL_QueryTexture(texture_hudun, NULL, NULL, &rect_hudun.w, &rect_hudun.h);
         SDL_RenderCopy(renderer, texture_hudun, NULL, &rect_hudun);
 
+        //充能数展示
+        int chongneng = chara->baofa_now;
+        SDL_Rect rect_star = {.x = rect.x + 120, .y = rect.y - 27};
+        SDL_Texture *texture_star = IMG_LoadTexture(renderer, "./res/image/star.png");
+        SDL_QueryTexture(texture_star, NULL, NULL, &rect_star.w, &rect_star.h);
+        for (int i = 1; i <= chongneng; ++i)
+        {
+            rect_star.y += 27;
+            SDL_RenderCopy(renderer, texture_star, NULL, &rect_star);
+        }
+
         //有开就有关
-        SDL_FreeSurface(surface_character);
-        SDL_DestroyTexture(texture_character);
         SDL_FreeSurface(surface_yuansu);
         SDL_DestroyTexture(texture_xue);
         SDL_FreeSurface(surface_xue);
         SDL_DestroyTexture(texture_hudun);
         SDL_FreeSurface(surface_hudun);
+        SDL_DestroyTexture(texture_star);
 
         TTF_CloseFont(font_xue);
         TTF_CloseFont(font_hudun);

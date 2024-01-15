@@ -57,6 +57,10 @@ int main(int argc, char *argv[])
     SDL_Window *window = SDL_CreateWindow("Hello world", 100, 100, WIDTH, HIGH, SDL_WINDOW_SHOWN);
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
+    CharacterImageLoad(renderer);
+
+
+
     SDL_Init(SDL_INIT_VIDEO); //初始化
     IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
     TTF_Init();
@@ -69,61 +73,7 @@ int main(int argc, char *argv[])
 
     MainPage(renderer, window);
 
-    SDL_Event event;
-    while (1)
-    {
-        Character now = Alhaitham;
-        Character emy = Lingren;
-
-        for (int i = 1; i <= 3; ++i) {
-            PresentCharacterGame(&emy, i, renderer);
-        }
-
-        for (int i = 4; i <= 6; ++i) {
-            PresentCharacterGame(&now, i, renderer);
-        }
-
-        TTF_Font *font_title = TTF_OpenFont("./res/HYWH85W.ttf", 32);
-        SDL_Color color_title = {0x00, 0x00, 0x00, 0x00};
-        SDL_Surface *surface_title = TTF_RenderUTF8_Solid(font_title, "七圣召唤", color_title);
-        SDL_Texture *texture_title = SDL_CreateTextureFromSurface(renderer, surface_title);
-        SDL_Rect rect_title = {.x = 0, .y = 0};
-        SDL_QueryTexture(texture_title, NULL, NULL, &rect_title.w, &rect_title.h);
-        SDL_RenderCopy(renderer, texture_title, NULL, &rect_title);
-
-
-        SDL_RenderPresent(renderer);
-
-        while (SDL_PollEvent(&event))
-        {
-
-            switch (event.type) {
-                case SDL_QUIT:
-                    SDL_DestroyTexture(texture_title);
-                    SDL_FreeSurface(surface_title);
-
-                    SDL_DestroyWindow(window);
-                    SDL_DestroyRenderer(renderer);
-                    TTF_CloseFont(font_title);
-
-                    IMG_Quit();
-                    SDL_Quit();
-                    TTF_Quit();
-                    return 0;
-
-                case SDL_KEYDOWN:
-                    if (event.key.keysym.sym == SDLK_ESCAPE)
-                    {
-                        WinBattle(renderer, window);
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-        SDL_Delay(5);
-    }
-
+    InBattle(renderer, window, 0);
 
     return 0;
 }
