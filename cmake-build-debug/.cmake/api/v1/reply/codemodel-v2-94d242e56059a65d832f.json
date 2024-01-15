@@ -27,7 +27,7 @@
 					[
 						0
 					],
-					"name" : "sdl_sample",
+					"name" : "qszh",
 					"targetIndexes" : 
 					[
 						0
@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "main::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-main-Debug-5c41af32bb3fbfc4e035.json",
+					"jsonFile" : "target-main-Debug-ccebdeac1bb2fbe5311e.json",
 					"name" : "main",
 					"projectIndex" : 0
 				}

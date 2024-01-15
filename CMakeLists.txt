@@ -1,14 +1,17 @@
 cmake_minimum_required(VERSION 3.26)
-project(sdl_sample C)
+project(qszh C)
 set(CMAKE_C_STANDARD 17)
 
 include_directories("D:\\QiShengZhaoHuan\\SDL2-2.26.0-allinone\\x86_64-w64-mingw32\\include")
 link_directories("D:\\QiShengZhaoHuan\\SDL2-2.26.0-allinone\\x86_64-w64-mingw32\\lib")
 
+include_directories(include)
+
 add_executable(main main.c
-        character/character.c
-        action/action.c
-        character/page.c)
+        src/action.c
+        src/character.c
+        src/page.c)
+
 
 target_link_libraries(main PRIVATE
         mingw32

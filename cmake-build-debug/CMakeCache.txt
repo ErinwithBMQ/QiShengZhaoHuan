@@ -157,7 +157,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=sdl_sample
+CMAKE_PROJECT_NAME:STATIC=qszh
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=D:/MinGW/mingw64/bin/ranlib.exe
@@ -250,6 +250,15 @@ Project_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
 Project_SOURCE_DIR:STATIC=D:/QiShengZhaoHuan
+
+//Value Computed by CMake
+qszh_BINARY_DIR:STATIC=D:/QiShengZhaoHuan/cmake-build-debug
+
+//Value Computed by CMake
+qszh_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+qszh_SOURCE_DIR:STATIC=D:/QiShengZhaoHuan
 
 //Value Computed by CMake
 sdl_sample_BINARY_DIR:STATIC=D:/QiShengZhaoHuan/cmake-build-debug

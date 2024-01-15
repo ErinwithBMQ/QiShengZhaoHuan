@@ -1,11 +1,13 @@
 #include <stdio.h>
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
-#include "character/character.h"
-#include "action/action.h"
-#include "character/page.h"
+
+#include "include/character.h"
+#include "include/action.h"
+#include "include/page.h"
 
 #undef main
 
