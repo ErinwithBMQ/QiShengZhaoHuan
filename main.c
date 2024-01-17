@@ -21,8 +21,8 @@ Character Alhaitham = {
         .name = {
                 "艾尔海森",
                 "溯因反绎法",
-                "显像",
-                "束缚",
+                "共相·理式摹写",
+                "殊镜·显像缚结",
         },
         .baofa_num = 2,
         .baofa_now = 2,

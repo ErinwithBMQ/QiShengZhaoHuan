@@ -98,3 +98,7 @@
 193	260	7272060241384646	main.exe	6c2ec2e898c23c33
 1	195	7272060387936453	CMakeFiles/main.dir/src/character.c.obj	2fecce4d08c75528
 195	261	7272060388572121	main.exe	6c2ec2e898c23c33
+5	376	7272071884236938	CMakeFiles/main.dir/src/page.c.obj	b90379b872de8f58
+1	377	7272071884246977	CMakeFiles/main.dir/main.c.obj	7974be8acefc9afd
+3	382	7272071884297480	CMakeFiles/main.dir/src/character.c.obj	2fecce4d08c75528
+382	453	7272071884988549	main.exe	6c2ec2e898c23c33
