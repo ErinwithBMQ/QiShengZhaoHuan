@@ -25,12 +25,13 @@ Character Alhaitham = {
                 "束缚",
         },
         .baofa_num = 2,
-        .baofa_now = 0,
+        .baofa_now = 2,
         .shanghai = {2,3,5},
         .yuansu = 'c',
-        .yuansu_fu = {0,0,0,1,0},
+        .yuansu_fu = {0,0,0,0,1},
         .zhuang = {0,0},
         .if_xuan = false,
+        .if_chu = false,
 };
 
 Character Lingren = {
@@ -47,9 +48,10 @@ Character Lingren = {
         .baofa_now = 0,
         .shanghai = {2,3,5},
         .yuansu = 'c',
-        .yuansu_fu = {1,0,0,0,0},
+        .yuansu_fu = {0,0,0,1,0},
         .zhuang = {0,0},
         .if_xuan = false,
+        .if_chu = false,
 };
 
 int main(int argc, char *argv[])
@@ -71,9 +73,37 @@ int main(int argc, char *argv[])
     SDL_RenderClear(renderer);
 
 
-    MainPage(renderer, window);
+    while (1)
+    {
+        MainPage(renderer, window);
 
-    InBattle(renderer, window, 0);
+        Character chara1 = Lingren;
+        Character chara2 = Lingren;
+        Character chara3 = Lingren;
+        Character chara4 = Alhaitham;
+        Character chara5 = Alhaitham;
+        Character chara6 = Alhaitham;
+        Character *chara_now = NULL;
+
+        int count = 0;
+
+        BeginBattle(renderer, window, &count,
+                    &chara1, &chara2, &chara3,
+                    &chara4, &chara5, &chara6, &chara_now);
+
+        int winorlose = InBattle(renderer, window, &count,
+                 &chara1, &chara2, &chara3,
+                 &chara4, &chara5, &chara6, &chara_now);
+
+        if (winorlose)
+        {
+            WinBattle(renderer, window);
+        }
+        else
+        {
+            LoseBattle(renderer, window);
+        }
+    }
 
     return 0;
 }

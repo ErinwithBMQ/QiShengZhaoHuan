@@ -21,9 +21,11 @@ typedef struct chara {
     bool yuansu_fu[5]; //当前角色身上的元素附着状态
     bool zhuang[2];    //该角色其他状态.第一位是死亡，第二位是冰冻
     bool if_xuan;      //是否为当前选中角色
+    bool if_chu;
     SDL_Texture *image;
     SDL_Texture *image_dead;
     SDL_Texture *image_choose;
+    SDL_Texture *image_message;
 } Character;
 
 extern Character Alhaitham;
@@ -37,5 +39,10 @@ void PresentCharacterGame(Character *chara, int num, SDL_Renderer *renderer);  /
 bool IfCharacterAlive(Character *chara); //判断角色是否死亡
 void ChangeCharacterShanghai(Character *chara, Character *enemy); //计算角色伤害
 bool IfChongMan(Character *chara);
+
+bool IfCharacterChoose(SDL_Renderer *renderer, SDL_Window *window, Character *chara);
+
+void ShowCharacterMessage(SDL_Renderer *renderer, Character *chara);
+
 
 #endif //SDL_SAMPLE_CHARACTER_H
