@@ -9,6 +9,8 @@
 
 #include <stdbool.h>
 
+//元素对应：0火系，1雷系，2水系，3冰系，4草系
+
 typedef struct chara {
     int index;         //角色编号
     int xue;           //角色血量
@@ -17,32 +19,37 @@ typedef struct chara {
     int baofa_num;     //元素爆发所需要的充能
     int baofa_now;     //当前充能
     int shanghai[3];   //依次存放普通攻击，元素战技，元素爆发的基本伤害
-    char yuansu;       //该角色元素类型
+    int yuansu;       //该角色元素类型
     bool yuansu_fu[5]; //当前角色身上的元素附着状态
     bool zhuang[2];    //该角色其他状态.第一位是死亡，第二位是冰冻
-    bool if_xuan;      //是否为当前选中角色
-    bool if_chu;
-    SDL_Texture *image;
-    SDL_Texture *image_dead;
-    SDL_Texture *image_choose;
-    SDL_Texture *image_message;
+    bool if_xuan;      //是否为选中状态
+    bool if_chu;       //是否为当前出战角色
+    SDL_Texture *image;          //角色正常图片
+    SDL_Texture *image_dead;     //角色死亡图片
+    SDL_Texture *image_choose;   //角色被选中图片
+    SDL_Texture *image_message;  //角色信息图片
 } Character;
 
 extern Character Alhaitham;
 extern Character Lingren;
 
+extern SDL_Renderer *renderer;
+extern SDL_Window *window;
 
-void CharacterImageLoad(SDL_Renderer *renderer);
-void CharacterImageDestroy();
+void CharacterImageLoad();  //初始化加载角色图片
 
-void PresentCharacterGame(Character *chara, int num, SDL_Renderer *renderer);  //在游戏中展示角色信息
+void CharacterImageDestroy();  //销毁图片
+
+
+void PresentCharacterGame(Character *chara, int num);  //在游戏中展示角色信息
+
 bool IfCharacterAlive(Character *chara); //判断角色是否死亡
-void ChangeCharacterShanghai(Character *chara, Character *enemy); //计算角色伤害
-bool IfChongMan(Character *chara);
 
-bool IfCharacterChoose(SDL_Renderer *renderer, SDL_Window *window, Character *chara);
+bool IfChongMan(Character *chara);  //判断角色充能是否充满
 
-void ShowCharacterMessage(SDL_Renderer *renderer, Character *chara);
+bool IfCharacterChoose(Character *chara);  //是否选中该角色
+
+void ShowCharacterMessage(Character *chara);  //展示角色具体信息
 
 
 #endif //SDL_SAMPLE_CHARACTER_H

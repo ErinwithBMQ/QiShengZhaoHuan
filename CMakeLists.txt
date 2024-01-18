@@ -10,7 +10,8 @@ include_directories(include)
 add_executable(main main.c
         src/action.c
         src/character.c
-        src/page.c)
+        src/page.c
+        src/battle.c)
 
 
 target_link_libraries(main PRIVATE

@@ -8,10 +8,11 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
 #include "character.h"
+#include <battle.h>
 
 #include "page.h"
 
-void MainPage(SDL_Renderer *renderer, SDL_Window *window)
+void MainPage()
 {
     SDL_Event event_main;
     while (1)
@@ -52,7 +53,7 @@ void MainPage(SDL_Renderer *renderer, SDL_Window *window)
     }
 }
 
-void WinBattle(SDL_Renderer *renderer, SDL_Window *window)
+void WinBattle()
 {
     SDL_Event event_main;
     while (1)
@@ -93,8 +94,7 @@ void WinBattle(SDL_Renderer *renderer, SDL_Window *window)
     }
 }
 
-void BeginBattle(SDL_Renderer *renderer, SDL_Window *window, int *count,
-                 Character *chara1, Character *chara2, Character *chara3,
+void BeginBattle(Character *chara1, Character *chara2, Character *chara3,
                  Character *chara4, Character *chara5, Character *chara6, Character **chara_now)
 {
     SDL_RenderClear(renderer);
@@ -106,29 +106,20 @@ void BeginBattle(SDL_Renderer *renderer, SDL_Window *window, int *count,
         SDL_Texture *texture_back = IMG_LoadTexture(renderer, "./res/image/back.jpg");
         SDL_RenderCopy(renderer, texture_back, NULL, NULL);
 
-        PresentCharacterGame(chara1, 1, renderer);
-        PresentCharacterGame(chara2, 2, renderer);
-        PresentCharacterGame(chara3, 3, renderer);
-        PresentCharacterGame(chara4, 4, renderer);
-        PresentCharacterGame(chara5, 5, renderer);
-        PresentCharacterGame(chara6, 6, renderer);
+        PresentCharacterGame(chara1, 1);
+        PresentCharacterGame(chara2, 2);
+        PresentCharacterGame(chara3, 3);
+        PresentCharacterGame(chara4, 4);
+        PresentCharacterGame(chara5, 5);
+        PresentCharacterGame(chara6, 6);
 
         SDL_RenderPresent(renderer);
-
 
         while (SDL_PollEvent(&event))
         {
 
             switch (event.type) {
                 case SDL_QUIT:
-                    CharacterImageDestroy();
-
-                    SDL_DestroyWindow(window);
-                    SDL_DestroyRenderer(renderer);
-
-                    IMG_Quit();
-                    SDL_Quit();
-                    TTF_Quit();
                     exit(0);
 
                 case SDL_MOUSEBUTTONDOWN:
@@ -139,8 +130,8 @@ void BeginBattle(SDL_Renderer *renderer, SDL_Window *window, int *count,
                         if (x >= 400 && x <= 520 && y >= 400 && y <= 655)
                         {
                             chara4->if_xuan = true;
-                            PresentCharacterGame(chara4, 4, renderer);
-                            if (IfCharacterChoose(renderer, window, chara4))
+                            PresentCharacterGame(chara4, 4);
+                            if (IfCharacterChoose(chara4))
                             {
                                 *chara_now = chara4;
                                 return;
@@ -149,8 +140,8 @@ void BeginBattle(SDL_Renderer *renderer, SDL_Window *window, int *count,
                         else if (x >= 570 && x <= 690 && y >= 400 && y <= 655)
                         {
                             chara5->if_xuan = true;
-                            PresentCharacterGame(chara5, 5, renderer);
-                            if (IfCharacterChoose(renderer, window, chara5))
+                            PresentCharacterGame(chara5, 5);
+                            if (IfCharacterChoose(chara5))
                             {
                                 *chara_now = chara5;
                                 return;
@@ -159,8 +150,8 @@ void BeginBattle(SDL_Renderer *renderer, SDL_Window *window, int *count,
                         else if (x >= 740 && x <= 860 && y >= 400 && y <= 655)
                         {
                             chara6->if_xuan = true;
-                            PresentCharacterGame(chara6, 6, renderer);
-                            if (IfCharacterChoose(renderer, window, chara6))
+                            PresentCharacterGame(chara6, 6);
+                            if (IfCharacterChoose(chara6))
                             {
                                 *chara_now = chara6;
                                 return;
@@ -176,9 +167,9 @@ void BeginBattle(SDL_Renderer *renderer, SDL_Window *window, int *count,
     }
 }
 
-int InBattle(SDL_Renderer *renderer, SDL_Window *window, int *count,
-              Character *chara1, Character *chara2, Character *chara3,
-              Character *chara4, Character *chara5, Character *chara6, Character **charanow)
+int InBattle(int *count, bool *who_first, int tou[],
+             Character *chara1, Character *chara2, Character *chara3,
+             Character *chara4, Character *chara5, Character *chara6, Character **charanow)
 {
     SDL_RenderClear(renderer);
 
@@ -188,12 +179,12 @@ int InBattle(SDL_Renderer *renderer, SDL_Window *window, int *count,
         SDL_Texture *texture_back = IMG_LoadTexture(renderer, "./res/image/back.jpg");
         SDL_RenderCopy(renderer, texture_back, NULL, NULL);
 
-        PresentCharacterGame(chara1, 1, renderer);
-        PresentCharacterGame(chara2, 2, renderer);
-        PresentCharacterGame(chara3, 3, renderer);
-        PresentCharacterGame(chara4, 4, renderer);
-        PresentCharacterGame(chara5, 5, renderer);
-        PresentCharacterGame(chara6, 6, renderer);
+        PresentCharacterGame(chara1, 1);
+        PresentCharacterGame(chara2, 2);
+        PresentCharacterGame(chara3, 3);
+        PresentCharacterGame(chara4, 4);
+        PresentCharacterGame(chara5, 5);
+        PresentCharacterGame(chara6, 6);
 
 
         TTF_Font *font_title = TTF_OpenFont("./res/HYWH85W.ttf", 32);
@@ -204,43 +195,68 @@ int InBattle(SDL_Renderer *renderer, SDL_Window *window, int *count,
         SDL_QueryTexture(texture_title, NULL, NULL, &rect_title.w, &rect_title.h);
         SDL_RenderCopy(renderer, texture_title, NULL, &rect_title);
 
+        ShowTouzi(tou);
+        ShowButtom();
 
         SDL_RenderPresent(renderer);
 
-        while (SDL_PollEvent(&event))
+//        if (who_first)
+//        {
+//            while (SDL_PollEvent(&event))
+//            {
+//                switch (event.type) {
+//                    case SDL_QUIT:
+//                        SDL_DestroyTexture(texture_title);
+//                        SDL_FreeSurface(surface_title);
+//
+//                        SDL_DestroyWindow(window);
+//                        SDL_DestroyRenderer(renderer);
+//                        TTF_CloseFont(font_title);
+//
+//                        exit(0);
+//
+//                    case SDL_KEYDOWN:
+//                        if (event.key.keysym.sym == SDLK_ESCAPE)
+//                        {
+//                            return 1;
+//                        }
+//                        break;
+//                    case SDL_MOUSEBUTTONDOWN:
+//                        if (event.button.button == SDL_BUTTON_LEFT)
+//                        {
+//                            int x = event.button.x;
+//                            int y = event.button.y;
+//                            if (x <= 1025 && x >= 955 && y <= 775 && y >= 705)
+//                            {
+//
+//                            }
+//                        }
+//                    default:
+//                        break;
+//                }
+//            }
+//        }
+        int whichone = ChooseWhichSkill(*charanow);
+        if (whichone == -1)
         {
-
-            switch (event.type) {
-                case SDL_QUIT:
-                    CharacterImageDestroy();
-
-                    SDL_DestroyTexture(texture_title);
-                    SDL_FreeSurface(surface_title);
-
-                    SDL_DestroyWindow(window);
-                    SDL_DestroyRenderer(renderer);
-                    TTF_CloseFont(font_title);
-
-                    IMG_Quit();
-                    SDL_Quit();
-                    TTF_Quit();
-                    exit(0);
-
-                case SDL_KEYDOWN:
-                    if (event.key.keysym.sym == SDLK_ESCAPE)
-                    {
-                        return 1;
-                    }
-                    break;
-                default:
-                    break;
-            }
+            return 1;
+        }
+        if (whichone == 0)
+        {
+            continue;
         }
         SDL_Delay(5);
     }
 }
 
-void LoseBattle(SDL_Renderer *renderer, SDL_Window *window)
+void AfterBattle(int *count,
+                 Character *chara1, Character *chara2, Character *chara3,
+                 Character *chara4, Character *chara5, Character *chara6)
+{
+
+}
+
+void LoseBattle()
 {
 
 }

@@ -10,7 +10,7 @@
 #include <SDL2/SDL_mixer.h>
 #include "character.h"
 
-void CharacterImageLoad(SDL_Renderer *renderer)
+void CharacterImageLoad()
 {
     Alhaitham.image = IMG_LoadTexture(renderer, "./res/image/1.png");
     Alhaitham.image_choose = IMG_LoadTexture(renderer, "./res/image/1_xuan.png");
@@ -32,7 +32,7 @@ void CharacterImageDestroy()
     SDL_DestroyTexture(Lingren.image_choose);
 }
 
-void PresentCharacterGame(Character *chara, int num, SDL_Renderer *renderer)
+void PresentCharacterGame(Character *chara, int num)
 {
     if (!IfCharacterAlive(chara))
     {
@@ -61,12 +61,12 @@ void PresentCharacterGame(Character *chara, int num, SDL_Renderer *renderer)
 
         if (chara->if_chu && num <= 3)
         {
-            rect.y += 20;
+            rect.y += 30;
         }
 
         if (chara->if_chu && num > 3)
         {
-            rect.y -= 20;
+            rect.y -= 30;
         }
 
         rect_xueliang.x = rect.x + 4;
@@ -191,82 +191,6 @@ bool IfCharacterAlive(Character *chara)
     return true;
 }
 
-void ChangeCharacterShanghai(Character *chara, Character *enemy) //底层基础伤害的元素反应加成
-{
-    if (enemy->yuansu_fu[0]) //如果对方是火元素附着
-    {
-        if (chara->yuansu == 's') //水系角色
-        {
-            chara->shanghai[1] += 2;
-            chara->shanghai[2] += 2;
-        }
-        else if (chara->yuansu == 'l')  //雷系角色
-        {
-            chara->shanghai[1] += 2;
-            chara->shanghai[2] += 2;
-        }
-        else if (chara->yuansu == 'c') //草系角色
-        {
-            chara->shanghai[1] += 1;
-            chara->shanghai[2] += 1;
-        }
-    }
-    else if (enemy->yuansu_fu[1]) //雷元素附着
-    {
-        if (chara->yuansu == 's') //水系角色
-        {
-            chara->shanghai[1] += 1;
-            chara->shanghai[2] += 1;
-        }
-        else if (chara->yuansu == 'h')  //火系角色
-        {
-            chara->shanghai[1] += 2;
-            chara->shanghai[2] += 2;
-        }
-        else if (chara->yuansu == 'c') //草系角色
-        {
-            chara->shanghai[1] += 1;
-            chara->shanghai[2] += 1;
-        }
-    }
-    else if (enemy->yuansu_fu[2]) //水元素附着
-    {
-        if (chara->yuansu == 'l') //雷系角色
-        {
-            chara->shanghai[1] += 1;
-            chara->shanghai[2] += 1;
-        }
-        else if (chara->yuansu == 'h')  //火系角色
-        {
-            chara->shanghai[1] += 2;
-            chara->shanghai[2] += 2;
-        }
-        else if (chara->yuansu == 'c') //草系角色
-        {
-            chara->shanghai[1] += 1;
-            chara->shanghai[2] += 1;
-        }
-    }
-    else if (enemy->yuansu_fu[4]) //草元素附着
-    {
-        if (chara->yuansu == 's') //水系角色
-        {
-            chara->shanghai[1] += 1;
-            chara->shanghai[2] += 1;
-        }
-        else if (chara->yuansu == 'h')  //火系角色
-        {
-            chara->shanghai[1] += 1;
-            chara->shanghai[2] += 1;
-        }
-        else if (chara->yuansu == 'c') //雷系角色
-        {
-            chara->shanghai[1] += 1;
-            chara->shanghai[2] += 1;
-        }
-    }
-}
-
 bool IfChongMan(Character *chara)
 {
     if (chara->baofa_now == chara->baofa_num)
@@ -276,7 +200,7 @@ bool IfChongMan(Character *chara)
     return false;
 }
 
-bool IfCharacterChoose(SDL_Renderer *renderer, SDL_Window *window, Character *chara)
+bool IfCharacterChoose(Character *chara)
 {
     SDL_Event event;
     while (1)
@@ -296,7 +220,7 @@ bool IfCharacterChoose(SDL_Renderer *renderer, SDL_Window *window, Character *ch
         SDL_QueryTexture(texture_yesno, NULL, NULL, &rect_yesno.w, &rect_yesno.h);
         SDL_RenderCopy(renderer, texture_yesno, NULL, &rect_yesno);
 
-        ShowCharacterMessage(renderer, chara);
+        ShowCharacterMessage(chara);
 
         SDL_RenderPresent(renderer);
 
@@ -305,8 +229,6 @@ bool IfCharacterChoose(SDL_Renderer *renderer, SDL_Window *window, Character *ch
 
             switch (event.type) {
                 case SDL_QUIT:
-                    CharacterImageDestroy();
-
                     SDL_DestroyTexture(texture_message);
                     SDL_FreeSurface(surface_message);
 
@@ -314,9 +236,6 @@ bool IfCharacterChoose(SDL_Renderer *renderer, SDL_Window *window, Character *ch
                     SDL_DestroyRenderer(renderer);
                     TTF_CloseFont(font_message);
 
-                    IMG_Quit();
-                    SDL_Quit();
-                    TTF_Quit();
                     exit(0);
 
                 case SDL_KEYDOWN:
@@ -341,7 +260,7 @@ bool IfCharacterChoose(SDL_Renderer *renderer, SDL_Window *window, Character *ch
     }
 }
 
-void ShowCharacterMessage(SDL_Renderer *renderer, Character *chara)
+void ShowCharacterMessage(Character *chara)
 {
     TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 24);
     SDL_Color color_message = {0x00, 0x00, 0x00, 0x00};
