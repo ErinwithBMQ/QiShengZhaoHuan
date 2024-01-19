@@ -14,9 +14,10 @@ void ChooseCharacter();
 void BeginBattle(Character *chara1, Character *chara2, Character *chara3,
                  Character *chara4, Character *chara5, Character *chara6, Character **charanow);
 
-int InBattle(int *count, bool *who_first, int tou[],
+int InBattle(int *count, int *who_first, int tou[],
               Character *chara1, Character *chara2, Character *chara3,
-              Character *chara4, Character *chara5, Character *chara6, Character **charanow);
+              Character *chara4, Character *chara5, Character *chara6,
+              Character **charanow, Character **chara_enemy_now);
 
 void AfterBattle(int *count,
                  Character *chara1, Character *chara2, Character *chara3,

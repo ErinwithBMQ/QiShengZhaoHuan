@@ -7,10 +7,9 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
-#include "character.h"
+#include <character.h>
 #include <battle.h>
-
-#include "page.h"
+#include <page.h>
 
 void MainPage()
 {
@@ -64,7 +63,6 @@ void WinBattle()
 
         while (SDL_PollEvent(&event_main))
         {
-
             switch (event_main.type) {
                 case SDL_QUIT:
                     CharacterImageDestroy();
@@ -103,7 +101,7 @@ void BeginBattle(Character *chara1, Character *chara2, Character *chara3,
     SDL_Event event;
     while (1)
     {
-        SDL_Texture *texture_back = IMG_LoadTexture(renderer, "./res/image/back.jpg");
+        SDL_Texture *texture_back = IMG_LoadTexture(renderer, "./res/image/back1.jpg");
         SDL_RenderCopy(renderer, texture_back, NULL, NULL);
 
         PresentCharacterGame(chara1, 1);
@@ -167,93 +165,162 @@ void BeginBattle(Character *chara1, Character *chara2, Character *chara3,
     }
 }
 
-int InBattle(int *count, bool *who_first, int tou[],
+int InBattle(int *count, int *who_first, int tou[],
              Character *chara1, Character *chara2, Character *chara3,
-             Character *chara4, Character *chara5, Character *chara6, Character **charanow)
+             Character *chara4, Character *chara5, Character *chara6,
+             Character **charanow, Character **chara_enemy_now)
 {
     SDL_RenderClear(renderer);
 
+    bool if_final_a = false;
+    bool if_final_b = false;
+    int who_fight = *who_first;
+
     SDL_Event event;
-    while (1)
+
+    while (if_final_a == false || if_final_b == false)
     {
-        SDL_Texture *texture_back = IMG_LoadTexture(renderer, "./res/image/back.jpg");
-        SDL_RenderCopy(renderer, texture_back, NULL, NULL);
+        SDL_RenderClear(renderer);
 
-        PresentCharacterGame(chara1, 1);
-        PresentCharacterGame(chara2, 2);
-        PresentCharacterGame(chara3, 3);
-        PresentCharacterGame(chara4, 4);
-        PresentCharacterGame(chara5, 5);
-        PresentCharacterGame(chara6, 6);
-
-
-        TTF_Font *font_title = TTF_OpenFont("./res/HYWH85W.ttf", 32);
-        SDL_Color color_title = {0x00, 0x00, 0x00, 0x00};
-        SDL_Surface *surface_title = TTF_RenderUTF8_Solid(font_title, "七圣召唤", color_title);
-        SDL_Texture *texture_title = SDL_CreateTextureFromSurface(renderer, surface_title);
-        SDL_Rect rect_title = {.x = 0, .y = 0};
-        SDL_QueryTexture(texture_title, NULL, NULL, &rect_title.w, &rect_title.h);
-        SDL_RenderCopy(renderer, texture_title, NULL, &rect_title);
-
+        ShowTheWhole(chara1, chara2, chara3, chara4, chara5, chara6);
         ShowTouzi(tou);
         ShowButtom();
+        ShowEndHH();
 
         SDL_RenderPresent(renderer);
 
-//        if (who_first)
-//        {
-//            while (SDL_PollEvent(&event))
-//            {
-//                switch (event.type) {
-//                    case SDL_QUIT:
-//                        SDL_DestroyTexture(texture_title);
-//                        SDL_FreeSurface(surface_title);
-//
-//                        SDL_DestroyWindow(window);
-//                        SDL_DestroyRenderer(renderer);
-//                        TTF_CloseFont(font_title);
-//
-//                        exit(0);
-//
-//                    case SDL_KEYDOWN:
-//                        if (event.key.keysym.sym == SDLK_ESCAPE)
-//                        {
-//                            return 1;
-//                        }
-//                        break;
-//                    case SDL_MOUSEBUTTONDOWN:
-//                        if (event.button.button == SDL_BUTTON_LEFT)
-//                        {
-//                            int x = event.button.x;
-//                            int y = event.button.y;
-//                            if (x <= 1025 && x >= 955 && y <= 775 && y >= 705)
-//                            {
-//
-//                            }
-//                        }
-//                    default:
-//                        break;
-//                }
-//            }
-//        }
-        int whichone = ChooseWhichSkill(*charanow);
-        if (whichone == -1)
+        if (who_fight == 1 && if_final_a == false)
         {
-            return 1;
+            int whichone = ChooseWhichSkill(*charanow);
+
+            ChangeCharacterShanghai(*charanow, *chara_enemy_now);
+
+            if (whichone == -1) //退出战斗
+            {
+                return 1;
+            }
+            else if (whichone == 0)  //未选择技能
+            {
+                continue;
+            }
+            else if (whichone == -2) //结束本局战斗
+            {
+                if_final_a = true;
+                who_fight = 0;
+                if (if_final_b == true)
+                {
+                    *who_first = 0;
+                }
+                else
+                {
+                    *who_first = 1;
+                }
+                continue;
+            }
+            else if (whichone == 1) //使用普通攻击
+            {
+                //TODO: 造成伤害动画,元素反应，骰子消耗，特殊效果，召唤物
+                kill_blood(*charanow, *chara_enemy_now, 1);
+
+                if ((*charanow)->baofa_now < (*charanow)->baofa_num)
+                {
+                    (*charanow)->baofa_now++;
+                }
+
+                int n = if_end(chara1, chara2, chara3, chara4, chara5, chara6);
+                if (n == 0)
+                {
+                    if (!if_final_b)
+                    {
+                        who_fight = 0;
+                    }
+
+                    continue;
+                }
+                else if (n == 1)
+                {
+                    return 1;
+                }
+                else if (n == -1)
+                {
+                    return 0;
+                }
+            }
+            else if (whichone == 2) //使用元素战技
+            {
+                //TODO: 造成伤害动画
+                kill_blood(*charanow, *chara_enemy_now, 2);
+
+                if ((*charanow)->baofa_now < (*charanow)->baofa_num)
+                {
+                    (*charanow)->baofa_now++;
+                }
+
+                int n = if_end(chara1, chara2, chara3, chara4, chara5, chara6);
+                if (n == 0)
+                {
+                    if (!if_final_b)
+                    {
+                        who_fight = 0;
+                    }
+
+                    continue;
+                }
+                else if (n == 1)
+                {
+                    return 1;
+                }
+                else if (n == -1)
+                {
+                    return 0;
+                }
+            }
+            else if (whichone == 3) //使用元素爆发
+            {
+                //TODO: 造成伤害动画
+                kill_blood(*charanow, *chara_enemy_now, 3);
+
+                (*charanow)->baofa_now = 0;
+                int n = if_end(chara1, chara2, chara3, chara4, chara5, chara6);
+                if (n == 0)
+                {
+                    if (!if_final_b)
+                    {
+                        who_fight = 0;
+                    }
+
+                    continue;
+                }
+                else if (n == 1)
+                {
+                    return 1;
+                }
+                else if (n == -1)
+                {
+                    return 0;
+                }
+            }
         }
-        if (whichone == 0)
+
+        if (who_fight == 0 && if_final_b == false)
         {
-            continue;
+            //TODO:对手逻辑的编写
+            who_fight = 1;
+            if_final_b = true;
         }
+
+
         SDL_Delay(5);
     }
+
+    return -1;
 }
 
 void AfterBattle(int *count,
                  Character *chara1, Character *chara2, Character *chara3,
                  Character *chara4, Character *chara5, Character *chara6)
 {
-
+    (*count)++;
 }
 
 void LoseBattle()

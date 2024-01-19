@@ -195,7 +195,7 @@ bool IfChongMan(Character *chara)
 {
     if (chara->baofa_now == chara->baofa_num)
     {
-        return false;
+        return true;
     }
     return false;
 }
@@ -263,7 +263,7 @@ bool IfCharacterChoose(Character *chara)
 void ShowCharacterMessage(Character *chara)
 {
     TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 24);
-    SDL_Color color_message = {0x00, 0x00, 0x00, 0x00};
+    SDL_Color color_message = {0xff, 0xff, 0xff, 0xff};
 
     SDL_Surface *surface_name = TTF_RenderUTF8_Solid(font_message, chara->name[0], color_message);
     SDL_Texture *texture_name = SDL_CreateTextureFromSurface(renderer, surface_name);

@@ -19,6 +19,7 @@ typedef struct chara {
     int baofa_num;     //元素爆发所需要的充能
     int baofa_now;     //当前充能
     int shanghai[3];   //依次存放普通攻击，元素战技，元素爆发的基本伤害
+    int shanghai_more[3]; //依次存放三种攻击因为元素反应或技能效果的加成伤害
     int yuansu;       //该角色元素类型
     bool yuansu_fu[5]; //当前角色身上的元素附着状态
     bool zhuang[2];    //该角色其他状态.第一位是死亡，第二位是冰冻

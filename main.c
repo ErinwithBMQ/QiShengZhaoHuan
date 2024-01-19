@@ -28,8 +28,9 @@ Character Alhaitham = {
         .baofa_num = 2,
         .baofa_now = 0,
         .shanghai = {2,3,5},
+        .shanghai_more = {0, 0, 0},
         .yuansu = 4,
-        .yuansu_fu = {0,0,0,0,0},
+        .yuansu_fu = {0,1,0,0,0},
         .zhuang = {0,0},
         .if_xuan = false,
         .if_chu = false,
@@ -48,8 +49,9 @@ Character Lingren = {
         .baofa_num = 2,
         .baofa_now = 0,
         .shanghai = {2,3,5},
+        .shanghai_more = {0, 0, 0},
         .yuansu = 2,
-        .yuansu_fu = {0,0,0,0,0},
+        .yuansu_fu = {0,1,0,0,0},
         .zhuang = {0,0},
         .if_xuan = false,
         .if_chu = false,
@@ -88,6 +90,10 @@ int main(int argc, char *argv[])
         Character chara5 = Alhaitham;
         Character chara6 = Alhaitham;
         Character *chara_now = NULL;
+        Character *chara_enemy_now = &chara2;
+        chara2.if_chu = 1;
+        chara1.xue = 0;
+        chara3.xue = 0;
 
         int count = 1;
 
@@ -95,7 +101,7 @@ int main(int argc, char *argv[])
                     &chara4, &chara5, &chara6, &chara_now);
 
         int tou[6] = {0};
-        bool who_first = 1;
+        int who_first = 1;
 
         while (1)
         {
@@ -107,7 +113,8 @@ int main(int argc, char *argv[])
             Touzi(tou, count, chara_now);
             int winorlose = InBattle(&count, &who_first, tou,
                                      &chara1, &chara2, &chara3,
-                                     &chara4, &chara5, &chara6, &chara_now);
+                                     &chara4, &chara5, &chara6,
+                                     &chara_now, &chara_enemy_now);
             if (winorlose == -1)
             {
                 AfterBattle(&count,

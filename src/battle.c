@@ -10,42 +10,45 @@
 #include <battle.h>
 #include <time.h>
 #include <stdlib.h>
+#include <character.h>
 
 void ChangeCharacterShanghai(Character *chara, Character *enemy) //底层基础伤害的元素反应加成
 {
+    CleanShanghai(chara);
+
     if (enemy->yuansu_fu[0]) //如果对方是火元素附着
     {
         if (chara->yuansu == 2) //水系角色
         {
-            chara->shanghai[1] += 2;
-            chara->shanghai[2] += 2;
+            chara->shanghai_more[1] += 2;
+            chara->shanghai_more[2] += 2;
         }
         else if (chara->yuansu == 1)  //雷系角色
         {
-            chara->shanghai[1] += 2;
-            chara->shanghai[2] += 2;
+            chara->shanghai_more[1] += 2;
+            chara->shanghai_more[2] += 2;
         }
         else if (chara->yuansu == 4) //草系角色
         {
-            chara->shanghai[1] += 1;
-            chara->shanghai[2] += 1;
+            chara->shanghai_more[1] += 1;
+            chara->shanghai_more[2] += 1;
         }
     }
     else if (enemy->yuansu_fu[1]) //雷元素附着
     {
         if (chara->yuansu == 2) //水系角色
         {
-            chara->shanghai[1] += 1;
-            chara->shanghai[2] += 1;
+            chara->shanghai_more[1] += 1;
+            chara->shanghai_more[2] += 1;
         }
         else if (chara->yuansu == 0)  //火系角色
         {
-            chara->shanghai[1] += 2;
-            chara->shanghai[2] += 2;
+            chara->shanghai_more[1] += 2;
+            chara->shanghai_more[2] += 2;
         }
         else if (chara->yuansu == 4) //草系角色
         {
-            chara->shanghai[1] += 1;
+            chara->shanghai_more[1] += 1;
             chara->shanghai[2] += 1;
         }
     }
@@ -53,43 +56,43 @@ void ChangeCharacterShanghai(Character *chara, Character *enemy) //底层基础�
     {
         if (chara->yuansu == 1) //雷系角色
         {
-            chara->shanghai[1] += 1;
-            chara->shanghai[2] += 1;
+            chara->shanghai_more[1] += 1;
+            chara->shanghai_more[2] += 1;
         }
         else if (chara->yuansu == 0)  //火系角色
         {
-            chara->shanghai[1] += 2;
-            chara->shanghai[2] += 2;
+            chara->shanghai_more[1] += 2;
+            chara->shanghai_more[2] += 2;
         }
         else if (chara->yuansu == 4) //草系角色
         {
-            chara->shanghai[1] += 1;
-            chara->shanghai[2] += 1;
+            chara->shanghai_more[1] += 1;
+            chara->shanghai_more[2] += 1;
         }
     }
     else if (enemy->yuansu_fu[4]) //草元素附着
     {
         if (chara->yuansu == 2) //水系角色
         {
-            chara->shanghai[1] += 1;
+            chara->shanghai_more[1] += 1;
             chara->shanghai[2] += 1;
         }
         else if (chara->yuansu == 0)  //火系角色
         {
-            chara->shanghai[1] += 1;
-            chara->shanghai[2] += 1;
+            chara->shanghai_more[1] += 1;
+            chara->shanghai_more[2] += 1;
         }
         else if (chara->yuansu == 1) //雷系角色
         {
-            chara->shanghai[1] += 1;
-            chara->shanghai[2] += 1;
+            chara->shanghai_more[1] += 1;
+            chara->shanghai_more[2] += 1;
         }
     }
 }
 
 void Touzi(int tou[], int count, Character *chara)
 {
-    SDL_Texture *texture_back = IMG_LoadTexture(renderer, "./res/image/back.jpg");
+    SDL_Texture *texture_back = IMG_LoadTexture(renderer, "./res/image/water.jpg");
     SDL_RenderCopy(renderer, texture_back, NULL, NULL);
 
     TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 50);
@@ -129,7 +132,7 @@ void Touzi(int tou[], int count, Character *chara)
 void ShowTouzi(int tou[])
 {
     TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 24);
-    SDL_Color color_message = {0x00, 0x00, 0x00, 0x00};
+    SDL_Color color_message = {0xff, 0xff, 0xff, 0xff};
 
     SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "火元素骰个数：", color_message);
     SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
@@ -254,113 +257,77 @@ int ChooseWhichSkill(Character *chara)
         {
             switch (event.type)
             {
-                case SDL_QUIT:
+                case SDL_QUIT: //直接退出
                     SDL_DestroyWindow(window);
                     SDL_DestroyRenderer(renderer);
                     exit(0);
-                case SDL_KEYDOWN:
+                case SDL_KEYDOWN: //esc结束本局游戏
                     if (event.key.keysym.sym == SDLK_ESCAPE)
                     {
                         return -1;
                     }
                     break;
-                case SDL_MOUSEBUTTONDOWN:
+                case SDL_MOUSEBUTTONDOWN: //鼠标左键
                     if (event.button.button == SDL_BUTTON_LEFT)
                     {
                         int x = event.button.x;
                         int y = event.button.y;
-                        if (x <= 1025 && x >= 955 && y <= 775 && y >= 705)
+                        if (x <= 1025 && x >= 955 && y <= 775 && y >= 705) //普通攻击
                         {
                             ShowCharacterMessage(chara);
                             SDL_RenderPresent(renderer);
-                            SDL_Event event_skill;
-                            while (1)
+
+                            int num = IfChooseSkill();
+
+                            if (num == 1)
                             {
-                                while (SDL_PollEvent(&event_skill))
-                                {
-                                    switch (event_skill.type)
-                                    {
-                                        case SDL_QUIT:
-                                            SDL_DestroyWindow(window);
-                                            SDL_DestroyRenderer(renderer);
-                                            exit(0);
-                                        case SDL_KEYDOWN:
-                                            if (event_skill.key.keysym.sym == SDLK_SPACE)
-                                            {
-                                                return 1;
-                                            }
-                                            else if (event_skill.key.keysym.sym == SDLK_ESCAPE)
-                                            {
-                                                return 0;
-                                            }
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                }
+                                return 1;
+                            }
+                            else
+                            {
+                                return 0;
+                            }
+
+                        }
+                        else if (x <= 1140 && x >= 1065 && y <= 775 && y >= 705) //元素战技
+                        {
+                            ShowCharacterMessage(chara);
+                            SDL_RenderPresent(renderer);
+                            int num = IfChooseSkill();
+
+                            if (num == 1)
+                            {
+                                return 2;
+                            }
+                            else
+                            {
+                                return 0;
                             }
                         }
-                        else if (x <= 1140 && x >= 1065 && y <= 775 && y >= 705)
+                        else if (x <= 1250 && x >= 1175 && y <= 775 && y >= 705) //元素爆发
                         {
+                            if (!IfChongMan(chara)) //如果还没充满
+                            {
+                                return 0;
+                            }
+
                             ShowCharacterMessage(chara);
                             SDL_RenderPresent(renderer);
                             SDL_Event event_skill;
-                            while (1)
+                            int num = IfChooseSkill();
+
+                            if (num == 1)
                             {
-                                while (SDL_PollEvent(&event_skill))
-                                {
-                                    switch (event_skill.type)
-                                    {
-                                        case SDL_QUIT:
-                                            SDL_DestroyWindow(window);
-                                            SDL_DestroyRenderer(renderer);
-                                            exit(0);
-                                        case SDL_KEYDOWN:
-                                            if (event_skill.key.keysym.sym == SDLK_SPACE)
-                                            {
-                                                return 2;
-                                            }
-                                            else if (event_skill.key.keysym.sym == SDLK_ESCAPE)
-                                            {
-                                                return 0;
-                                            }
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                }
+                                return 3;
+                            }
+                            else
+                            {
+                                return 0;
                             }
                         }
-                        else if (x <= 1250 && x >= 1175 && y <= 775 && y >= 705)
+                        else if (x <= 108 && x >= 12 && y <= 448 && y >= 352) //结束回合
                         {
-                            ShowCharacterMessage(chara);
-                            SDL_RenderPresent(renderer);
-                            SDL_Event event_skill;
-                            while (1)
-                            {
-                                while (SDL_PollEvent(&event_skill))
-                                {
-                                    switch (event_skill.type)
-                                    {
-                                        case SDL_QUIT:
-                                            SDL_DestroyWindow(window);
-                                            SDL_DestroyRenderer(renderer);
-                                            exit(0);
-                                        case SDL_KEYDOWN:
-                                            if (event_skill.key.keysym.sym == SDLK_SPACE)
-                                            {
-                                                return 3;
-                                            }
-                                            else if (event_skill.key.keysym.sym == SDLK_ESCAPE)
-                                            {
-                                                return 0;
-                                            }
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                }
-                            }
+                            return -2;
                         }
                     }
                 default:
@@ -368,4 +335,112 @@ int ChooseWhichSkill(Character *chara)
             }
         }
     }
+}
+
+int if_end(Character *chara1, Character *chara2, Character *chara3,
+           Character *chara4, Character *chara5, Character *chara6)
+{
+    if (chara1->xue == 0 && chara2->xue == 0 && chara3->xue == 0)
+    {
+        return 1;
+    }
+    if (chara4->xue == 0 && chara5->xue == 0 && chara6->xue == 0)
+    {
+        return -1;
+    }
+    return 0;
+}
+
+void CleanShanghai(Character *chara)
+{
+    for (int i = 0; i < 3; ++i)
+    {
+        chara->shanghai_more[i] = 0;
+    }
+}
+
+void ShowTheWhole(Character *chara1, Character *chara2, Character *chara3,
+                  Character *chara4, Character *chara5, Character *chara6)
+{
+    SDL_Texture *texture_back = IMG_LoadTexture(renderer, "./res/image/back1.jpg");
+    SDL_RenderCopy(renderer, texture_back, NULL, NULL);
+
+    PresentCharacterGame(chara1, 1);
+    PresentCharacterGame(chara2, 2);
+    PresentCharacterGame(chara3, 3);
+    PresentCharacterGame(chara4, 4);
+    PresentCharacterGame(chara5, 5);
+    PresentCharacterGame(chara6, 6);
+
+
+    TTF_Font *font_title = TTF_OpenFont("./res/HYWH85W.ttf", 32);
+    SDL_Color color_title = {0xff, 0xff, 0xff, 0xff};
+    SDL_Surface *surface_title = TTF_RenderUTF8_Solid(font_title, "七圣召唤", color_title);
+    SDL_Texture *texture_title = SDL_CreateTextureFromSurface(renderer, surface_title);
+    SDL_Rect rect_title = {.x = 0, .y = 0};
+    SDL_QueryTexture(texture_title, NULL, NULL, &rect_title.w, &rect_title.h);
+    SDL_RenderCopy(renderer, texture_title, NULL, &rect_title);
+
+
+    SDL_DestroyTexture(texture_back);
+    SDL_DestroyTexture(texture_title);
+    SDL_FreeSurface(surface_title);
+    TTF_CloseFont(font_title);
+}
+
+void kill_blood(Character *chara, Character *enemy, int n)
+{
+    int shanghai;
+    shanghai = chara->shanghai[n - 1] + chara->shanghai_more[n - 1];
+    if (enemy->hudun >= shanghai)
+    {
+        enemy->hudun -= shanghai;
+        return;
+    }
+    if (enemy->hudun < shanghai)
+    {
+        shanghai -= enemy->hudun;
+        enemy->hudun = 0;
+        enemy->xue -= shanghai;
+        if (enemy->xue < 0)
+        {
+            enemy->xue = 0;
+        }
+        return;
+    }
+}
+
+int IfChooseSkill()
+{
+    SDL_Event event_skill;
+
+    while (SDL_WaitEvent(&event_skill))
+    {
+        switch (event_skill.type)
+        {
+            case SDL_QUIT:
+                SDL_DestroyWindow(window);
+                SDL_DestroyRenderer(renderer);
+                exit(0);
+            case SDL_KEYDOWN:
+                if (event_skill.key.keysym.sym == SDLK_SPACE)
+                {
+                    return 1;
+                } else if (event_skill.key.keysym.sym == SDLK_ESCAPE)
+                {
+                    return 0;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+void ShowEndHH()
+{
+    SDL_Texture *texture_HH = IMG_LoadTexture(renderer, "./res/image/jshh.png");
+    SDL_Rect rect_HH = {.x = 10, .y = 350};
+    SDL_QueryTexture(texture_HH, NULL, NULL, &rect_HH.w, &rect_HH.h);
+    SDL_RenderCopy(renderer, texture_HH, NULL, &rect_HH);
 }
