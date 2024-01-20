@@ -176,8 +176,6 @@ int InBattle(int *count, int *who_first, int tou[],
     bool if_final_b = false;
     int who_fight = *who_first;
 
-    SDL_Event event;
-
     while (if_final_a == false || if_final_b == false)
     {
         SDL_RenderClear(renderer);
@@ -191,9 +189,9 @@ int InBattle(int *count, int *who_first, int tou[],
 
         if (who_fight == 1 && if_final_a == false)
         {
-            int whichone = ChooseWhichSkill(*charanow);
-
             ChangeCharacterShanghai(*charanow, *chara_enemy_now);
+
+            int whichone = ChooseWhichSkill(*charanow, tou);
 
             if (whichone == -1) //退出战斗
             {
@@ -219,7 +217,8 @@ int InBattle(int *count, int *who_first, int tou[],
             }
             else if (whichone == 1) //使用普通攻击
             {
-                //TODO: 造成伤害动画,元素反应，骰子消耗，特殊效果，召唤物
+                //TODO: 造成伤害动画,元素反应，特殊效果，召唤物
+                ReduceTou(*charanow, tou, 1);
                 kill_blood(*charanow, *chara_enemy_now, 1);
 
                 if ((*charanow)->baofa_now < (*charanow)->baofa_num)
@@ -249,7 +248,9 @@ int InBattle(int *count, int *who_first, int tou[],
             else if (whichone == 2) //使用元素战技
             {
                 //TODO: 造成伤害动画
+                ReduceTou(*charanow, tou, 2);
                 kill_blood(*charanow, *chara_enemy_now, 2);
+                YuanSuFuZhuo(*charanow, *chara_enemy_now);
 
                 if ((*charanow)->baofa_now < (*charanow)->baofa_num)
                 {
@@ -278,7 +279,9 @@ int InBattle(int *count, int *who_first, int tou[],
             else if (whichone == 3) //使用元素爆发
             {
                 //TODO: 造成伤害动画
+                ReduceTou(*charanow, tou, 3);
                 kill_blood(*charanow, *chara_enemy_now, 3);
+                YuanSuFuZhuo(*charanow, *chara_enemy_now);
 
                 (*charanow)->baofa_now = 0;
                 int n = if_end(chara1, chara2, chara3, chara4, chara5, chara6);

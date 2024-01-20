@@ -1,6 +1,7 @@
 //
 // Created by Erin on 2024/1/18.
 //
+
 #include <stdio.h>
 #include <string.h>
 #include <SDL2/SDL.h>
@@ -49,7 +50,7 @@ void ChangeCharacterShanghai(Character *chara, Character *enemy) //底层基础�
         else if (chara->yuansu == 4) //草系角色
         {
             chara->shanghai_more[1] += 1;
-            chara->shanghai[2] += 1;
+            chara->shanghai_more[2] += 1;
         }
     }
     else if (enemy->yuansu_fu[2]) //水元素附着
@@ -75,7 +76,7 @@ void ChangeCharacterShanghai(Character *chara, Character *enemy) //底层基础�
         if (chara->yuansu == 2) //水系角色
         {
             chara->shanghai_more[1] += 1;
-            chara->shanghai[2] += 1;
+            chara->shanghai_more[2] += 1;
         }
         else if (chara->yuansu == 0)  //火系角色
         {
@@ -248,7 +249,7 @@ void ShowButtom()
     SDL_DestroyTexture(texture_buttom);
 }
 
-int ChooseWhichSkill(Character *chara)
+int ChooseWhichSkill(Character *chara, int tou[])
 {
     SDL_Event event;
     while (1)
@@ -274,7 +275,15 @@ int ChooseWhichSkill(Character *chara)
                         int y = event.button.y;
                         if (x <= 1025 && x >= 955 && y <= 775 && y >= 705) //普通攻击
                         {
+                            if (!IfTouEnough(chara, tou, 1))
+                            {
+                                PrintTouNotEnough();
+
+                                return 0;
+                            }
+
                             ShowCharacterMessage(chara);
+                            ShowShanghai(chara, 1);
                             SDL_RenderPresent(renderer);
 
                             int num = IfChooseSkill();
@@ -291,7 +300,15 @@ int ChooseWhichSkill(Character *chara)
                         }
                         else if (x <= 1140 && x >= 1065 && y <= 775 && y >= 705) //元素战技
                         {
+                            if (!IfTouEnough(chara, tou, 2))
+                            {
+                                PrintTouNotEnough();
+
+                                return 0;
+                            }
+
                             ShowCharacterMessage(chara);
+                            ShowShanghai(chara, 2);
                             SDL_RenderPresent(renderer);
                             int num = IfChooseSkill();
 
@@ -308,12 +325,22 @@ int ChooseWhichSkill(Character *chara)
                         {
                             if (!IfChongMan(chara)) //如果还没充满
                             {
+                                PrintChongnengNotEnough();
+
+                                return 0;
+                            }
+
+                            if (!IfTouEnough(chara, tou, 3))
+                            {
+                                PrintTouNotEnough();
+
                                 return 0;
                             }
 
                             ShowCharacterMessage(chara);
+                            ShowShanghai(chara, 3);
                             SDL_RenderPresent(renderer);
-                            SDL_Event event_skill;
+
                             int num = IfChooseSkill();
 
                             if (num == 1)
@@ -443,4 +470,262 @@ void ShowEndHH()
     SDL_Rect rect_HH = {.x = 10, .y = 350};
     SDL_QueryTexture(texture_HH, NULL, NULL, &rect_HH.w, &rect_HH.h);
     SDL_RenderCopy(renderer, texture_HH, NULL, &rect_HH);
+}
+
+bool IfTouEnough(Character *chara, int tou[], int n)
+{
+    int yuansu = chara->yuansu;
+    if (n == 1)
+    {
+        int total = 0;
+        for (int i = 0; i < 6; ++i)
+        {
+            total += tou[i];
+        }
+        if ((tou[yuansu] + tou[5]) >= 1 && total >= 3)
+        {
+            return true;
+        }
+        return false;
+    }
+    else
+    {
+        if ((tou[yuansu] + tou[5]) >= 3)
+        {
+            return true;
+        }
+        return false;
+    }
+}
+
+void ReduceTou(Character *chara, int tou[], int n)
+{
+    int yuansu = chara->yuansu;
+    if (n == 1)
+    {
+        if (tou[yuansu] == 0)
+        {
+            tou[5]--;
+            int count = 0;
+            int i = 0;
+            while (count < 2)
+            {
+                if (tou[i] != 0)
+                {
+                    tou[i]--;
+                    count++;
+                }
+                else
+                {
+                    i++;
+                    if (i > 5)
+                    {
+                        i = 0;
+                    }
+                }
+            }
+            return;
+        }
+        else
+        {
+            tou[yuansu]--;
+            int total = 0;
+
+            for (int i = 0; i < 5; ++i) {
+                if (i != yuansu)
+                {
+                    total++;
+                }
+            }
+
+            if (total == 0)
+            {
+                if (tou[yuansu] >= 2)
+                {
+                    tou[yuansu] -= 2;
+                    return;
+                }
+                else
+                {
+                    int le = 2 - tou[yuansu];
+                    tou[yuansu] = 0;
+                    tou[5] -= le;
+                    return;
+                }
+            }
+
+            if (total == 1)
+            {
+                for (int i = 0; i < 5; ++i)
+                {
+                    if (i != yuansu && tou[i] > 0)
+                    {
+                        tou[i]--;
+                        break;
+                    }
+                }
+                if (tou[yuansu] > 0)
+                {
+                    tou[yuansu]--;
+                }
+                else
+                {
+                    tou[5]--;
+                }
+                return;
+            }
+
+            if (total >= 2)
+            {
+                int count = 0;
+                int i = 0;
+                while (count < 2)
+                {
+                    if (tou[i] != 0 && i != yuansu && i != 5)
+                    {
+                        tou[i]--;
+                        count++;
+                    }
+                    else
+                    {
+                        i++;
+                        if (i > 5)
+                        {
+                            i = 0;
+                        }
+                    }
+                }
+                return;
+            }
+        }
+    }
+    else
+    {
+        if (tou[yuansu] >= 3)
+        {
+            tou[yuansu] -= 3;
+            return;
+        }
+        else
+        {
+            int le = 3 - tou[yuansu];
+            tou[yuansu] = 0;
+            tou[5] -= le;
+            return;
+        }
+    }
+}
+
+void PrintTouNotEnough()
+{
+    TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 32);
+    SDL_Color color_message = {0xff, 0xff, 0xff, 0xff};
+    SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "元素骰子不足", color_message);
+    SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    SDL_Rect rect_message = {.x = 540, .y = 350};
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    SDL_RenderPresent(renderer);
+
+    SDL_Delay(1000);
+
+    TTF_CloseFont(font_message);
+    SDL_FreeSurface(surface_message);
+    SDL_DestroyTexture(texture_message);
+}
+
+void PrintChongnengNotEnough()
+{
+    TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 32);
+    SDL_Color color_message = {0xff, 0xff, 0xff, 0xff};
+    SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "角色充能不足", color_message);
+    SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    SDL_Rect rect_message = {.x = 540, .y = 350};
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    SDL_RenderPresent(renderer);
+
+    SDL_Delay(1000);
+
+    TTF_CloseFont(font_message);
+    SDL_FreeSurface(surface_message);
+    SDL_DestroyTexture(texture_message);
+}
+
+void YuanSuFuZhuo(Character *chara, Character *enemy)
+{
+    int yuansu = chara->yuansu;
+    for (int i = 0; i < 5; ++i)
+    {
+        if (enemy->yuansu_fu[i] == true && i != yuansu)
+        {
+            enemy->yuansu_fu[i] = false;
+            return;
+        }
+    }
+    enemy->yuansu_fu[yuansu] = true;
+}
+
+void ShowShanghai(Character *chara, int n)
+{
+    TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 24);
+    SDL_Color color_message = {0xff, 0xff, 0xff, 0xff};
+    SDL_Surface *surface_message;
+    SDL_Texture *texture_message;
+    SDL_Rect rect_message = {.x = 430, .y = 335};
+
+    if (n == 1)
+    {
+        surface_message = TTF_RenderUTF8_Solid(font_message, "对敌人使用普通攻击：", color_message);
+    }
+    else if (n == 2)
+    {
+        surface_message = TTF_RenderUTF8_Solid(font_message, "对敌人使用元素战技：", color_message);
+    }
+    else
+    {
+        surface_message = TTF_RenderUTF8_Solid(font_message, "对敌人使用元素爆发：", color_message);
+    }
+
+    texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    rect_message.x = 670;
+    surface_message = TTF_RenderUTF8_Solid(font_message, chara->name[n], color_message);
+    texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    char shanghai[10];
+    itoa((chara->shanghai[n - 1] + chara->shanghai_more[n - 1]), shanghai, 10);
+    rect_message.x = 430;
+    rect_message.y = 360;
+    surface_message = TTF_RenderUTF8_Solid(font_message, "对敌人造成    点伤害", color_message);
+    texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    rect_message.x = 550;
+    rect_message.y = 360;
+    surface_message = TTF_RenderUTF8_Solid(font_message, shanghai, color_message);
+    texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    if (n != 1)
+    {
+        rect_message.x = 430;
+        rect_message.y = 385;
+        surface_message = TTF_RenderUTF8_Solid(font_message, "对敌人造成元素附着", color_message);
+        texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+        SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+    }
+
+    TTF_CloseFont(font_message);
+    SDL_FreeSurface(surface_message);
+    SDL_DestroyTexture(texture_message);
 }

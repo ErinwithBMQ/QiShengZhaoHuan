@@ -15,10 +15,12 @@ void CharacterImageLoad()
     Alhaitham.image = IMG_LoadTexture(renderer, "./res/image/1.png");
     Alhaitham.image_choose = IMG_LoadTexture(renderer, "./res/image/1_xuan.png");
     Alhaitham.image_dead = IMG_LoadTexture(renderer, "./res/image/1_dead.png");
+    Alhaitham.image_message = IMG_LoadTexture(renderer, "./res/image/1_message.png");
 
     Lingren.image = IMG_LoadTexture(renderer, "./res/image/2.png");
     Lingren.image_choose = IMG_LoadTexture(renderer, "./res/image/2_xuan.png");
     Lingren.image_dead = IMG_LoadTexture(renderer, "./res/image/2_dead.png");
+    Lingren.image_message = IMG_LoadTexture(renderer, "./res/image/2_message.png");
 }
 
 void CharacterImageDestroy()
@@ -26,10 +28,12 @@ void CharacterImageDestroy()
     SDL_DestroyTexture(Alhaitham.image);
     SDL_DestroyTexture(Alhaitham.image_choose);
     SDL_DestroyTexture(Alhaitham.image_dead);
+    SDL_DestroyTexture(Alhaitham.image_message);
 
     SDL_DestroyTexture(Lingren.image);
     SDL_DestroyTexture(Lingren.image_dead);
     SDL_DestroyTexture(Lingren.image_choose);
+    SDL_DestroyTexture(Lingren.image_message);
 }
 
 void PresentCharacterGame(Character *chara, int num)
@@ -224,17 +228,19 @@ bool IfCharacterChoose(Character *chara)
 
         SDL_RenderPresent(renderer);
 
+        TTF_CloseFont(font_message);
+        SDL_FreeSurface(surface_message);
+        SDL_DestroyTexture(texture_message);
+        SDL_FreeSurface(surface_yesno);
+        SDL_DestroyTexture(texture_yesno);
+
         while (SDL_PollEvent(&event))
         {
 
             switch (event.type) {
                 case SDL_QUIT:
-                    SDL_DestroyTexture(texture_message);
-                    SDL_FreeSurface(surface_message);
-
                     SDL_DestroyWindow(window);
                     SDL_DestroyRenderer(renderer);
-                    TTF_CloseFont(font_message);
 
                     exit(0);
 
@@ -262,69 +268,7 @@ bool IfCharacterChoose(Character *chara)
 
 void ShowCharacterMessage(Character *chara)
 {
-    TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 24);
-    SDL_Color color_message = {0xff, 0xff, 0xff, 0xff};
-
-    SDL_Surface *surface_name = TTF_RenderUTF8_Solid(font_message, chara->name[0], color_message);
-    SDL_Texture *texture_name = SDL_CreateTextureFromSurface(renderer, surface_name);
-    SDL_Rect rect_name = {.x = 10, .y = 200};
-    SDL_QueryTexture(texture_name, NULL, NULL, &rect_name.w, &rect_name.h);
-    SDL_RenderCopy(renderer, texture_name, NULL, &rect_name);
-
-    surface_name = TTF_RenderUTF8_Solid(font_message, "普通攻击：", color_message);
-    texture_name = SDL_CreateTextureFromSurface(renderer, surface_name);
-    rect_name.y =  230;
-    SDL_QueryTexture(texture_name, NULL, NULL, &rect_name.w, &rect_name.h);
-    SDL_RenderCopy(renderer, texture_name, NULL, &rect_name);
-
-    surface_name = TTF_RenderUTF8_Solid(font_message, chara->name[1], color_message);
-    texture_name = SDL_CreateTextureFromSurface(renderer, surface_name);
-    rect_name.x =  120;
-    SDL_QueryTexture(texture_name, NULL, NULL, &rect_name.w, &rect_name.h);
-    SDL_RenderCopy(renderer, texture_name, NULL, &rect_name);
-
-    surface_name = TTF_RenderUTF8_Solid(font_message, "伤害：", color_message);
-    texture_name = SDL_CreateTextureFromSurface(renderer, surface_name);
-    rect_name.x =  10;
-    rect_name.y =  260;
-    SDL_QueryTexture(texture_name, NULL, NULL, &rect_name.w, &rect_name.h);
-    SDL_RenderCopy(renderer, texture_name, NULL, &rect_name);
-
-    char arr[10];
-    itoa(chara->shanghai[0], arr, 10);
-    surface_name = TTF_RenderUTF8_Solid(font_message, arr, color_message);
-    texture_name = SDL_CreateTextureFromSurface(renderer, surface_name);
-    rect_name.x =  75;
-    rect_name.y =  260;
-    SDL_QueryTexture(texture_name, NULL, NULL, &rect_name.w, &rect_name.h);
-    SDL_RenderCopy(renderer, texture_name, NULL, &rect_name);
-
-    surface_name = TTF_RenderUTF8_Solid(font_message, "元素战技：", color_message);
-    texture_name = SDL_CreateTextureFromSurface(renderer, surface_name);
-    rect_name.x =  10;
-    rect_name.y =  290;
-    SDL_QueryTexture(texture_name, NULL, NULL, &rect_name.w, &rect_name.h);
-    SDL_RenderCopy(renderer, texture_name, NULL, &rect_name);
-
-    surface_name = TTF_RenderUTF8_Solid(font_message, chara->name[2], color_message);
-    texture_name = SDL_CreateTextureFromSurface(renderer, surface_name);
-    rect_name.x =  120;
-    rect_name.y =  290;
-    SDL_QueryTexture(texture_name, NULL, NULL, &rect_name.w, &rect_name.h);
-    SDL_RenderCopy(renderer, texture_name, NULL, &rect_name);
-
-    surface_name = TTF_RenderUTF8_Solid(font_message, "伤害：", color_message);
-    texture_name = SDL_CreateTextureFromSurface(renderer, surface_name);
-    rect_name.x =  10;
-    rect_name.y =  320;
-    SDL_QueryTexture(texture_name, NULL, NULL, &rect_name.w, &rect_name.h);
-    SDL_RenderCopy(renderer, texture_name, NULL, &rect_name);
-
-    itoa(chara->shanghai[1], arr, 10);
-    surface_name = TTF_RenderUTF8_Solid(font_message, arr, color_message);
-    texture_name = SDL_CreateTextureFromSurface(renderer, surface_name);
-    rect_name.x =  75;
-    rect_name.y =  320;
-    SDL_QueryTexture(texture_name, NULL, NULL, &rect_name.w, &rect_name.h);
-    SDL_RenderCopy(renderer, texture_name, NULL, &rect_name);
+    SDL_Rect rect_message = {.x = 0, .y = 230};
+    SDL_QueryTexture(chara->image_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, chara->image_message, NULL, &rect_message);
 }

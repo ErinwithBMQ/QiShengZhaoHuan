@@ -27,10 +27,10 @@ Character Alhaitham = {
         },
         .baofa_num = 2,
         .baofa_now = 0,
-        .shanghai = {2,3,5},
+        .shanghai = {2,3,4},
         .shanghai_more = {0, 0, 0},
         .yuansu = 4,
-        .yuansu_fu = {0,1,0,0,0},
+        .yuansu_fu = {1,0,0,0,0},
         .zhuang = {0,0},
         .if_xuan = false,
         .if_chu = false,
@@ -42,13 +42,13 @@ Character Lingren = {
         .hudun = 0,
         .name = {
                 "神里绫人",
-                "溯因反绎法",
-                "显像",
-                "束缚",
+                "神里流·转",
+                "神里流·镜花",
+                "神里流·水囿",
         },
         .baofa_num = 2,
         .baofa_now = 0,
-        .shanghai = {2,3,5},
+        .shanghai = {2,2,1},
         .shanghai_more = {0, 0, 0},
         .yuansu = 2,
         .yuansu_fu = {0,1,0,0,0},
@@ -83,10 +83,10 @@ int main(int argc, char *argv[])
     {
         MainPage();
 
-        Character chara1 = Lingren;
+        Character chara1 = Alhaitham;
         Character chara2 = Lingren;
         Character chara3 = Lingren;
-        Character chara4 = Alhaitham;
+        Character chara4 = Lingren;
         Character chara5 = Alhaitham;
         Character chara6 = Alhaitham;
         Character *chara_now = NULL;
