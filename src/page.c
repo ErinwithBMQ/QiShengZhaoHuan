@@ -116,7 +116,8 @@ void BeginBattle(Character *chara1, Character *chara2, Character *chara3,
         while (SDL_PollEvent(&event))
         {
 
-            switch (event.type) {
+            switch (event.type)
+            {
                 case SDL_QUIT:
                     exit(0);
 
@@ -191,7 +192,7 @@ int InBattle(int *count, int *who_first, int tou[],
         {
             ChangeCharacterShanghai(*charanow, *chara_enemy_now);
 
-            int whichone = ChooseWhichSkill(*charanow, tou);
+            int whichone = ChooseWhichSkill(charanow, tou, chara4, chara5, chara6);
 
             if (whichone == -1) //退出战斗
             {
@@ -302,6 +303,17 @@ int InBattle(int *count, int *who_first, int tou[],
                 {
                     return 0;
                 }
+            }
+            else if (whichone == 4)
+            {
+                if (!if_final_b)
+                {
+                    who_fight = 0;
+                }
+
+                ReduceTouChange(chara4, chara5, chara6, tou);
+
+                continue;
             }
         }
 
