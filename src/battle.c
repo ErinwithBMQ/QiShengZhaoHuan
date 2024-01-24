@@ -250,7 +250,7 @@ void ShowButtom()
 }
 
 int ChooseWhichSkill(Character **chara, int tou[],
-                     Character *chara4, Character *chara5, Character *chara6)
+                     Character *chara4, Character *chara5, Character *chara6, bool if_finnal_a)
 {
     SDL_Event event;
     while (1)
@@ -355,7 +355,11 @@ int ChooseWhichSkill(Character **chara, int tou[],
                         }
                         else if (x <= 108 && x >= 12 && y <= 448 && y >= 352) //结束回合
                         {
-                            return -2;
+                            if (IfEndTurn(if_finnal_a))
+                            {
+                                return -2;
+                            }
+                            return 0;
                         }
 
                         else if (x >= 400 && x <= 520 && y >= 400 && y <= 655)
@@ -785,6 +789,12 @@ bool IfChangeCharacter(Character *charanow, Character *chara, int num, int tou[]
                             chara->if_xuan = false;
                             return false;
                         }
+                    case SDL_MOUSEBUTTONDOWN: //鼠标左键
+                        if (event_choose.button.button == SDL_BUTTON_LEFT)
+                        {
+                            chara->if_xuan = false;
+                            return false;
+                        }
                 }
             }
         }
@@ -943,4 +953,127 @@ bool IfTouNotZero(int tou[])
         return true;
     }
     return false;
+}
+
+void ChangeCharacterEnemy(Character **chara_enemy_now, Character *chara1, Character *chara2, Character *chara3)
+{
+    if (!IfCharacterAlive(*chara_enemy_now))
+    {
+        if (IfCharacterAlive(chara1))
+        {
+            (*chara_enemy_now)->if_chu = false;
+            chara1->if_chu = true;
+            *chara_enemy_now = chara1;
+            return;
+        }
+        else if (IfCharacterAlive(chara2))
+        {
+            (*chara_enemy_now)->if_chu = false;
+            chara2->if_chu = true;
+            *chara_enemy_now = chara2;
+            return;
+        }
+        else if (IfCharacterAlive(chara3))
+        {
+            (*chara_enemy_now)->if_chu = false;
+            chara3->if_chu = true;
+            *chara_enemy_now = chara3;
+            return;
+        }
+    }
+}
+
+bool IfEndTurn(bool if_final_a)
+{
+    SDL_Event event;
+    if (if_final_a)
+    {
+        return false;
+    }
+
+    while (1)
+    {
+        SDL_Texture *texture_trun = IMG_LoadTexture(renderer, "./res/image/endturn.png");
+        SDL_Rect rect_turn = {.x = 120, .y = 350};
+        SDL_QueryTexture(texture_trun, NULL, NULL, &rect_turn.w, &rect_turn.h);
+        SDL_RenderCopy(renderer, texture_trun, NULL, &rect_turn);
+        SDL_RenderPresent(renderer);
+
+        SDL_DestroyTexture(texture_trun);
+
+        while (SDL_PollEvent(&event))
+        {
+            switch (event.type)
+            {
+                case SDL_MOUSEBUTTONDOWN: //鼠标左键
+                    if (event.button.button == SDL_BUTTON_LEFT)
+                    {
+                        int x = event.button.x;
+                        int y = event.button.y;
+
+                        if (x >= 120 && x <= 389 && y >= 350 && y <= 450)
+                        {
+                            return true;
+                        }
+
+                        return false;
+                    }
+
+                case SDL_KEYDOWN:
+                    if (event.key.keysym.sym == SDLK_ESCAPE)
+                    {
+                        return false;
+                    }
+            }
+        }
+    }
+}
+
+void ShowIfEndTurn(bool if_final_a, bool if_final_b)
+{
+    if (if_final_a)
+    {
+        SDL_Texture *texture_trun = IMG_LoadTexture(renderer, "./res/image/endturn_a.png");
+        SDL_Rect rect_turn = {.x = 10, .y = 530};
+        SDL_QueryTexture(texture_trun, NULL, NULL, &rect_turn.w, &rect_turn.h);
+        SDL_RenderCopy(renderer, texture_trun, NULL, &rect_turn);
+
+        SDL_DestroyTexture(texture_trun);
+    }
+
+    if (if_final_b)
+    {
+        SDL_Texture *texture_turn = IMG_LoadTexture(renderer, "./res/image/endturn_b.png");
+        SDL_Rect rect_turn = {.x = 10, .y = 10};
+        SDL_QueryTexture(texture_turn, NULL, NULL, &rect_turn.w, &rect_turn.h);
+        SDL_RenderCopy(renderer, texture_turn, NULL, &rect_turn);
+
+        SDL_DestroyTexture(texture_turn);
+    }
+}
+
+void ShowEnemyAction()
+{
+    SDL_Texture *texture_action = IMG_LoadTexture(renderer, "./res/image/action_b.png");
+    SDL_Rect rect_turn = {.x = 10, .y = 100};
+    SDL_QueryTexture(texture_action, NULL, NULL, &rect_turn.w, &rect_turn.h);
+    SDL_RenderCopy(renderer, texture_action, NULL, &rect_turn);
+
+    SDL_RenderPresent(renderer);
+
+    SDL_Delay(2000);
+
+    SDL_DestroyTexture(texture_action);
+}
+
+void ShowWeAction()
+{
+    SDL_Texture *texture_action = IMG_LoadTexture(renderer, "./res/image/action_a.png");
+    SDL_Rect rect_turn = {.x = 10, .y = 600};
+    SDL_QueryTexture(texture_action, NULL, NULL, &rect_turn.w, &rect_turn.h);
+    SDL_RenderCopy(renderer, texture_action, NULL, &rect_turn);
+
+    SDL_RenderPresent(renderer);
+
+    SDL_DestroyTexture(texture_action);
 }

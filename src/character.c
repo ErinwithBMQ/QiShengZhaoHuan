@@ -16,11 +16,31 @@ void CharacterImageLoad()
     Alhaitham.image_choose = IMG_LoadTexture(renderer, "./res/image/1_xuan.png");
     Alhaitham.image_dead = IMG_LoadTexture(renderer, "./res/image/1_dead.png");
     Alhaitham.image_message = IMG_LoadTexture(renderer, "./res/image/1_message.png");
+    Alhaitham.image_message_big = IMG_LoadTexture(renderer, "./res/image/1_message_big.png");
 
     Lingren.image = IMG_LoadTexture(renderer, "./res/image/2.png");
     Lingren.image_choose = IMG_LoadTexture(renderer, "./res/image/2_xuan.png");
     Lingren.image_dead = IMG_LoadTexture(renderer, "./res/image/2_dead.png");
     Lingren.image_message = IMG_LoadTexture(renderer, "./res/image/2_message.png");
+    Lingren.image_message_big = IMG_LoadTexture(renderer, "./res/image/2_message_big.png");
+
+    Huoxing.image = IMG_LoadTexture(renderer, "./res/image/3.png");
+    Huoxing.image_choose = IMG_LoadTexture(renderer, "./res/image/3_xuan.png");
+    Huoxing.image_dead = IMG_LoadTexture(renderer, "./res/image/3_dead.png");
+    Huoxing.image_message = IMG_LoadTexture(renderer, "./res/image/3_message.png");
+    Huoxing.image_message_big = IMG_LoadTexture(renderer, "./res/image/3_message_big.png");
+
+    Zihuang.image = IMG_LoadTexture(renderer, "./res/image/4.png");
+    Zihuang.image_choose = IMG_LoadTexture(renderer, "./res/image/4_xuan.png");
+    Zihuang.image_dead = IMG_LoadTexture(renderer, "./res/image/4_dead.png");
+    Zihuang.image_message = IMG_LoadTexture(renderer, "./res/image/4_message.png");
+    Zihuang.image_message_big = IMG_LoadTexture(renderer, "./res/image/4_message_big.png");
+
+    Antant.image = IMG_LoadTexture(renderer, "./res/image/5.png");
+    Antant.image_choose = IMG_LoadTexture(renderer, "./res/image/5_xuan.png");
+    Antant.image_dead = IMG_LoadTexture(renderer, "./res/image/5_dead.png");
+    Antant.image_message = IMG_LoadTexture(renderer, "./res/image/5_message.png");
+    Antant.image_message_big = IMG_LoadTexture(renderer, "./res/image/5_message_big.png");
 }
 
 void CharacterImageDestroy()
@@ -29,11 +49,31 @@ void CharacterImageDestroy()
     SDL_DestroyTexture(Alhaitham.image_choose);
     SDL_DestroyTexture(Alhaitham.image_dead);
     SDL_DestroyTexture(Alhaitham.image_message);
+    SDL_DestroyTexture(Alhaitham.image_message_big);
 
     SDL_DestroyTexture(Lingren.image);
     SDL_DestroyTexture(Lingren.image_dead);
     SDL_DestroyTexture(Lingren.image_choose);
     SDL_DestroyTexture(Lingren.image_message);
+    SDL_DestroyTexture(Lingren.image_message_big);
+
+    SDL_DestroyTexture(Huoxing.image);
+    SDL_DestroyTexture(Huoxing.image_dead);
+    SDL_DestroyTexture(Huoxing.image_choose);
+    SDL_DestroyTexture(Huoxing.image_message);
+    SDL_DestroyTexture(Huoxing.image_message_big);
+
+    SDL_DestroyTexture(Zihuang.image);
+    SDL_DestroyTexture(Zihuang.image_dead);
+    SDL_DestroyTexture(Zihuang.image_choose);
+    SDL_DestroyTexture(Zihuang.image_message);
+    SDL_DestroyTexture(Zihuang.image_message_big);
+
+    SDL_DestroyTexture(Antant.image);
+    SDL_DestroyTexture(Antant.image_dead);
+    SDL_DestroyTexture(Antant.image_choose);
+    SDL_DestroyTexture(Antant.image_message);
+    SDL_DestroyTexture(Antant.image_message_big);
 }
 
 void PresentCharacterGame(Character *chara, int num)
@@ -271,4 +311,30 @@ void ShowCharacterMessage(Character *chara)
     SDL_Rect rect_message = {.x = 0, .y = 230};
     SDL_QueryTexture(chara->image_message, NULL, NULL, &rect_message.w, &rect_message.h);
     SDL_RenderCopy(renderer, chara->image_message, NULL, &rect_message);
+}
+
+bool IfFirstChooseCharacter(Character *chara)
+{
+    SDL_Rect rect_chara = {.x = 475, .y = 20};
+    SDL_QueryTexture(chara->image_message_big, NULL, NULL, &rect_chara.w, &rect_chara.h);
+    SDL_RenderCopy(renderer, chara->image_message_big, NULL, &rect_chara);
+
+    SDL_RenderPresent(renderer);
+
+    SDL_Event event_choose;
+    while (SDL_WaitEvent(&event_choose))
+    {
+        switch (event_choose.type)
+        {
+            case SDL_KEYDOWN:
+                if (event_choose.key.keysym.sym == SDLK_ESCAPE)
+                {
+                    return false;
+                }
+                else if (event_choose.key.keysym.sym == SDLK_SPACE)
+                {
+                    return true;
+                }
+        }
+    }
 }

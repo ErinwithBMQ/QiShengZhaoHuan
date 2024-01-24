@@ -29,10 +29,14 @@ typedef struct chara {
     SDL_Texture *image_dead;     //角色死亡图片
     SDL_Texture *image_choose;   //角色被选中图片
     SDL_Texture *image_message;  //角色信息图片
+    SDL_Texture *image_message_big;  //角色信息图片（大）
 } Character;
 
 extern Character Alhaitham;
 extern Character Lingren;
+extern Character Huoxing;
+extern Character Zihuang;
+extern Character Antant;
 
 extern SDL_Renderer *renderer;
 extern SDL_Window *window;
@@ -51,6 +55,8 @@ bool IfChongMan(Character *chara);  //判断角色充能是否充满
 bool IfCharacterChoose(Character *chara);  //是否选中该角色
 
 void ShowCharacterMessage(Character *chara);  //展示角色具体信息
+
+bool IfFirstChooseCharacter(Character *chara);
 
 
 #endif //SDL_SAMPLE_CHARACTER_H

@@ -57,6 +57,69 @@ Character Lingren = {
         .if_chu = false,
 };
 
+Character Huoxing = {
+        .index = 3,
+        .xue = 10,
+        .hudun = 0,
+        .name = {
+                "火星人",
+                "破防",
+                "我是主播",
+                "火星人来也",
+        },
+        .baofa_num = 2,
+        .baofa_now = 0,
+        .shanghai = {2,3,3},
+        .shanghai_more = {0, 0, 0},
+        .yuansu = 0,
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+        .if_chu = false,
+};
+
+Character Zihuang = {
+        .index = 4,
+        .xue = 10,
+        .hudun = 0,
+        .name = {
+                "紫皇",
+                "抽象",
+                "96皇之力",
+                "唯我至尊",
+        },
+        .baofa_num = 2,
+        .baofa_now = 0,
+        .shanghai = {2,3,5},
+        .shanghai_more = {0, 0, 0},
+        .yuansu = 1,
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+        .if_chu = false,
+};
+
+Character Antant = {
+        .index = 5,
+        .xue = 10,
+        .hudun = 0,
+        .name = {
+                "蚂蚁蚂蚁",
+                "开始上课",
+                "OJ作业",
+                "机试来了",
+        },
+        .baofa_num = 3,
+        .baofa_now = 0,
+        .shanghai = {2,3,3},
+        .shanghai_more = {0, 0, 0},
+        .yuansu = 4,
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+        .if_chu = false,
+};
+
 void quit_delete();
 
 SDL_Window *window;
@@ -83,17 +146,26 @@ int main(int argc, char *argv[])
     {
         MainPage();
 
-        Character chara1 = Alhaitham;
-        Character chara2 = Lingren;
-        Character chara3 = Lingren;
-        Character chara4 = Lingren;
-        Character chara5 = Alhaitham;
-        Character chara6 = Alhaitham;
+        Character chara1 = Huoxing;
+        Character chara2 = Zihuang;
+        Character chara3 = Alhaitham;
+        Character chara4;
+        Character chara5;
+        Character chara6;
+
+        memset(&chara4, 0, sizeof(chara4));
+        memset(&chara5, 0, sizeof(chara5));
+        memset(&chara6, 0, sizeof(chara6));
+
+
+        if (!(ChooseCharacter(&chara4, &chara5, &chara6)))
+        {
+            continue;
+        }
+
         Character *chara_now = NULL;
         Character *chara_enemy_now = &chara2;
         chara2.if_chu = 1;
-        chara1.xue = 0;
-        chara3.xue = 0;
 
         int count = 1;
 

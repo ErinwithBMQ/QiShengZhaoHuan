@@ -185,14 +185,16 @@ int InBattle(int *count, int *who_first, int tou[],
         ShowTouzi(tou);
         ShowButtom();
         ShowEndHH();
+        ShowIfEndTurn(if_final_a, if_final_b);
 
         SDL_RenderPresent(renderer);
 
         if (who_fight == 1 && if_final_a == false)
         {
             ChangeCharacterShanghai(*charanow, *chara_enemy_now);
+            ShowWeAction();
 
-            int whichone = ChooseWhichSkill(charanow, tou, chara4, chara5, chara6);
+            int whichone = ChooseWhichSkill(charanow, tou, chara4, chara5, chara6, if_final_a);
 
             if (whichone == -1) //退出战斗
             {
@@ -227,6 +229,7 @@ int InBattle(int *count, int *who_first, int tou[],
                     (*charanow)->baofa_now++;
                 }
 
+                ChangeCharacterEnemy(chara_enemy_now, chara1, chara2, chara3);
                 int n = if_end(chara1, chara2, chara3, chara4, chara5, chara6);
                 if (n == 0)
                 {
@@ -258,6 +261,7 @@ int InBattle(int *count, int *who_first, int tou[],
                     (*charanow)->baofa_now++;
                 }
 
+                ChangeCharacterEnemy(chara_enemy_now, chara1, chara2, chara3);
                 int n = if_end(chara1, chara2, chara3, chara4, chara5, chara6);
                 if (n == 0)
                 {
@@ -285,6 +289,7 @@ int InBattle(int *count, int *who_first, int tou[],
                 YuanSuFuZhuo(*charanow, *chara_enemy_now);
 
                 (*charanow)->baofa_now = 0;
+                ChangeCharacterEnemy(chara_enemy_now, chara1, chara2, chara3);
                 int n = if_end(chara1, chara2, chara3, chara4, chara5, chara6);
                 if (n == 0)
                 {
@@ -317,13 +322,17 @@ int InBattle(int *count, int *who_first, int tou[],
             }
         }
 
+
         if (who_fight == 0 && if_final_b == false)
         {
-            //TODO:对手逻辑的编写
+            //TODO:对手逻辑的编写.我方角色死后切换角色，显示目前哪一方行动
+            ShowEnemyAction();
+            ChangeCharacterShanghai(*chara_enemy_now, *charanow);
+            kill_blood(*chara_enemy_now, *charanow, 2);
+            YuanSuFuZhuo(*chara_enemy_now, *charanow);
             who_fight = 1;
             if_final_b = true;
         }
-
 
         SDL_Delay(5);
     }
@@ -341,4 +350,168 @@ void AfterBattle(int *count,
 void LoseBattle()
 {
 
+}
+
+bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
+{
+    SDL_Event event;
+
+    Character *chara[3] = {chara4, chara5, chara6};
+
+    int count = 0;
+
+    while (1)
+    {
+        SDL_RenderClear(renderer);
+
+        SDL_Texture *texture_back = IMG_LoadTexture(renderer, "./res/image/choosechara.jpg");
+        SDL_RenderCopy(renderer, texture_back, NULL, NULL);
+        SDL_RenderPresent(renderer);
+
+        if (chara4 != NULL)
+        {
+            SDL_Rect rect_chara = {.x = 85, .y = 98};
+            SDL_QueryTexture(chara4->image, NULL, NULL, &rect_chara.w, &rect_chara.h);
+            SDL_RenderCopy(renderer, chara4->image, NULL, &rect_chara);
+        }
+
+        if (chara5 != NULL)
+        {
+            SDL_Rect rect_chara = {.x = 85, .y = 335};
+            SDL_QueryTexture(chara5->image, NULL, NULL, &rect_chara.w, &rect_chara.h);
+            SDL_RenderCopy(renderer, chara5->image, NULL, &rect_chara);
+        }
+
+        if (chara6 != NULL)
+        {
+            SDL_Rect rect_chara = {.x = 85, .y = 581};
+            SDL_QueryTexture(chara6->image, NULL, NULL, &rect_chara.w, &rect_chara.h);
+            SDL_RenderCopy(renderer, chara6->image, NULL, &rect_chara);
+        }
+
+        SDL_RenderPresent(renderer);
+
+        while (SDL_PollEvent(&event))
+        {
+            switch (event.type)
+            {
+                case SDL_QUIT: //直接退出
+                    SDL_DestroyWindow(window);
+                    SDL_DestroyRenderer(renderer);
+                    exit(0);
+                case SDL_KEYDOWN:
+                    if (event.key.keysym.sym == SDLK_LCTRL || event.key.keysym.sym == SDLK_RCTRL)
+                    {
+                        if (count == 3)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            TTF_Font *font_title = TTF_OpenFont("./res/HYWH85W.ttf", 32);
+                            SDL_Color color_title = {0xff, 0xff, 0xff, 0xff};
+                            SDL_Surface *surface_title = TTF_RenderUTF8_Solid(font_title, "角色选择数还未达到三个！", color_title);
+                            SDL_Texture *texture_title = SDL_CreateTextureFromSurface(renderer, surface_title);
+                            SDL_Rect rect_title = {.x = 600, .y = 220};
+                            SDL_QueryTexture(texture_title, NULL, NULL, &rect_title.w, &rect_title.h);
+                            SDL_RenderCopy(renderer, texture_title, NULL, &rect_title);
+
+                            SDL_RenderPresent(renderer);
+                            SDL_Delay(1500);
+
+                            SDL_DestroyTexture(texture_title);
+                            SDL_FreeSurface(surface_title);
+                            TTF_CloseFont(font_title);
+                            break;
+                        }
+                    }
+                    break;
+                case SDL_MOUSEBUTTONDOWN: //鼠标左键
+                    if (event.button.button == SDL_BUTTON_LEFT)
+                    {
+                        int x = event.button.x;
+                        int y = event.button.y;
+
+                        if (x >= 1180 && x <= 1275 && y>= 20 && y <= 104)
+                        {
+                            return false;
+                        }
+
+                        if (x >= 363 && x <= 673 && y>= 446 && y <= 518)
+                        {
+                            if (IfFirstChooseCharacter(&Alhaitham))
+                            {
+                                *(chara[count]) = Alhaitham;
+                                count++;
+                                break;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        if (x >= 363 && x <= 673 && y>= 518 && y <= 591)
+                        {
+                            if (IfFirstChooseCharacter(&Zihuang))
+                            {
+                                *(chara[count]) = Zihuang;
+                                count++;
+                                break;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        if (x >= 363 && x <= 673 && y>= 591 && y <= 671)
+                        {
+                            if (IfFirstChooseCharacter(&Huoxing))
+                            {
+                                *(chara[count]) = Huoxing;
+                                count++;
+                                break;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        if (x >= 363 && x <= 673 && y>= 671 && y <= 734)
+                        {
+                            if (IfFirstChooseCharacter(&Antant))
+                            {
+                                *(chara[count]) = Antant;
+                                count++;
+                                break;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        if (x >= 673 && x <= 967 && y>= 446 && y <= 518)
+                        {
+                            if (IfFirstChooseCharacter(&Lingren))
+                            {
+                                *(chara[count]) = Lingren;
+                                count++;
+                                break;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    }
 }

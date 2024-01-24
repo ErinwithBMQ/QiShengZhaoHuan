@@ -9,7 +9,7 @@
 
 void MainPage();
 int ChooseLevel();
-void ChooseCharacter();
+bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6);
 
 void BeginBattle(Character *chara1, Character *chara2, Character *chara3,
                  Character *chara4, Character *chara5, Character *chara6, Character **charanow);
