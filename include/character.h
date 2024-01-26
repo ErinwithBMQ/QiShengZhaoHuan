@@ -25,11 +25,16 @@ typedef struct chara {
     bool zhuang[2];    //该角色其他状态.第一位是死亡，第二位是冰冻
     bool if_xuan;      //是否为选中状态
     bool if_chu;       //是否为当前出战角色
+
     SDL_Texture *image;          //角色正常图片
     SDL_Texture *image_dead;     //角色死亡图片
     SDL_Texture *image_choose;   //角色被选中图片
     SDL_Texture *image_message;  //角色信息图片
     SDL_Texture *image_message_big;  //角色信息图片（大）
+
+    void (*yszj)(struct chara *chara1, struct chara *chara2, struct chara *chara3, struct chara *chara);
+    void (*ysbf)(struct chara *chara1, struct chara *chara2, struct chara *chara3, struct chara *chara);
+    void (*SpecialAddition)(struct chara *chara);
 } Character;
 
 extern Character Alhaitham;
@@ -41,10 +46,11 @@ extern Character Antant;
 extern SDL_Renderer *renderer;
 extern SDL_Window *window;
 
+void quit_delete();
+
 void CharacterImageLoad();  //初始化加载角色图片
 
 void CharacterImageDestroy();  //销毁图片
-
 
 void PresentCharacterGame(Character *chara, int num);  //在游戏中展示角色信息
 
@@ -56,7 +62,7 @@ bool IfCharacterChoose(Character *chara);  //是否选中该角色
 
 void ShowCharacterMessage(Character *chara);  //展示角色具体信息
 
-bool IfFirstChooseCharacter(Character *chara);
+bool IfFirstChooseCharacter(Character *chara); //选角色页面选择角色
 
 
 #endif //SDL_SAMPLE_CHARACTER_H

@@ -12,6 +12,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <character.h>
+#include <summon.h>
 
 void ChangeCharacterShanghai(Character *chara, Character *enemy) //底层基础伤害的元素反应加成
 {
@@ -25,6 +26,11 @@ void ChangeCharacterShanghai(Character *chara, Character *enemy) //底层基础�
             chara->shanghai_more[2] += 2;
         }
         else if (chara->yuansu == 1)  //雷系角色
+        {
+            chara->shanghai_more[1] += 2;
+            chara->shanghai_more[2] += 2;
+        }
+        else if (chara->yuansu == 3)  //冰系角色
         {
             chara->shanghai_more[1] += 2;
             chara->shanghai_more[2] += 2;
@@ -47,6 +53,11 @@ void ChangeCharacterShanghai(Character *chara, Character *enemy) //底层基础�
             chara->shanghai_more[1] += 2;
             chara->shanghai_more[2] += 2;
         }
+        else if (chara->yuansu == 3) //冰系角色
+        {
+            chara->shanghai_more[1] += 1;
+            chara->shanghai_more[2] += 1;
+        }
         else if (chara->yuansu == 4) //草系角色
         {
             chara->shanghai_more[1] += 1;
@@ -54,6 +65,24 @@ void ChangeCharacterShanghai(Character *chara, Character *enemy) //底层基础�
         }
     }
     else if (enemy->yuansu_fu[2]) //水元素附着
+    {
+        if (chara->yuansu == 1) //雷系角色
+        {
+            chara->shanghai_more[1] += 1;
+            chara->shanghai_more[2] += 1;
+        }
+        else if (chara->yuansu == 0)  //火系角色
+        {
+            chara->shanghai_more[1] += 2;
+            chara->shanghai_more[2] += 2;
+        }
+        else if (chara->yuansu == 4) //草系角色
+        {
+            chara->shanghai_more[1] += 1;
+            chara->shanghai_more[2] += 1;
+        }
+    }
+    else if (enemy->yuansu_fu[3]) //冰元素附着
     {
         if (chara->yuansu == 1) //雷系角色
         {
@@ -84,6 +113,11 @@ void ChangeCharacterShanghai(Character *chara, Character *enemy) //底层基础�
             chara->shanghai_more[2] += 1;
         }
         else if (chara->yuansu == 1) //雷系角色
+        {
+            chara->shanghai_more[1] += 1;
+            chara->shanghai_more[2] += 1;
+        }
+        else if (chara->yuansu == 3) //冰系角色
         {
             chara->shanghai_more[1] += 1;
             chara->shanghai_more[2] += 1;
@@ -128,6 +162,11 @@ void Touzi(int tou[], int count, Character *chara)
     SDL_RenderPresent(renderer);
 
     SDL_Delay(1500);
+
+    SDL_DestroyTexture(texture_message);
+    SDL_DestroyTexture(texture_back);
+    TTF_CloseFont(font_message);
+    SDL_FreeSurface(surface_message);
 }
 
 void ShowTouzi(int tou[])
@@ -260,8 +299,9 @@ int ChooseWhichSkill(Character **chara, int tou[],
             switch (event.type)
             {
                 case SDL_QUIT: //直接退出
-                    SDL_DestroyWindow(window);
-                    SDL_DestroyRenderer(renderer);
+                    CharacterImageDestroy();
+                    SummonImageDestroy();
+                    quit_delete();
                     exit(0);
                 case SDL_KEYDOWN: //esc结束本局游戏
                     if (event.key.keysym.sym == SDLK_ESCAPE)
@@ -362,7 +402,7 @@ int ChooseWhichSkill(Character **chara, int tou[],
                             return 0;
                         }
 
-                        else if (x >= 400 && x <= 520 && y >= 400 && y <= 655)
+                        else if (x >= 400 && x <= 520 && y >= 400 && y <= 655)  //切换一号位角色
                         {
                             if (IfChangeCharacter(*chara, chara4, 4, tou))
                             {
@@ -371,7 +411,7 @@ int ChooseWhichSkill(Character **chara, int tou[],
                             }
                             return 0;
                         }
-                        else if (x >= 570 && x <= 690 && y >= 400 && y <= 655)
+                        else if (x >= 570 && x <= 690 && y >= 400 && y <= 655)  //切换二号位角色
                         {
                             if (IfChangeCharacter(*chara, chara5, 5, tou))
                             {
@@ -380,7 +420,7 @@ int ChooseWhichSkill(Character **chara, int tou[],
                             }
                             return 0;
                         }
-                        else if (x >= 740 && x <= 860 && y >= 400 && y <= 655)
+                        else if (x >= 740 && x <= 860 && y >= 400 && y <= 655)  //切换三号位角色
                         {
                             if (IfChangeCharacter(*chara, chara6, 6, tou))
                             {
@@ -479,14 +519,16 @@ int IfChooseSkill()
         switch (event_skill.type)
         {
             case SDL_QUIT:
-                SDL_DestroyWindow(window);
-                SDL_DestroyRenderer(renderer);
+                CharacterImageDestroy();
+                SummonImageDestroy();
+                quit_delete();
                 exit(0);
             case SDL_KEYDOWN:
                 if (event_skill.key.keysym.sym == SDLK_SPACE)
                 {
                     return 1;
-                } else if (event_skill.key.keysym.sym == SDLK_ESCAPE)
+                }
+                else if (event_skill.key.keysym.sym == SDLK_ESCAPE)
                 {
                     return 0;
                 }
@@ -503,6 +545,8 @@ void ShowEndHH()
     SDL_Rect rect_HH = {.x = 10, .y = 350};
     SDL_QueryTexture(texture_HH, NULL, NULL, &rect_HH.w, &rect_HH.h);
     SDL_RenderCopy(renderer, texture_HH, NULL, &rect_HH);
+
+    SDL_DestroyTexture(texture_HH);
 }
 
 bool IfTouEnough(Character *chara, int tou[], int n)
@@ -780,8 +824,9 @@ bool IfChangeCharacter(Character *charanow, Character *chara, int num, int tou[]
                 switch (event_choose.type)
                 {
                     case SDL_QUIT:
-                        SDL_DestroyWindow(window);
-                        SDL_DestroyRenderer(renderer);
+                        CharacterImageDestroy();
+                        SummonImageDestroy();
+                        quit_delete();
                         exit(0);
                     case SDL_KEYDOWN:
                         if (event_choose.key.keysym.sym == SDLK_ESCAPE)
@@ -840,6 +885,12 @@ bool IfChangeCharacter(Character *charanow, Character *chara, int num, int tou[]
 
                 SDL_RenderPresent(renderer);
 
+                TTF_CloseFont(font_message);
+                SDL_FreeSurface(surface_message);
+                SDL_DestroyTexture(texture_message);
+                SDL_FreeSurface(surface_yesno);
+                SDL_DestroyTexture(texture_yesno);
+
 
                 SDL_Event event_choose;
                 while (SDL_WaitEvent(&event_choose))
@@ -847,34 +898,18 @@ bool IfChangeCharacter(Character *charanow, Character *chara, int num, int tou[]
                     switch (event_choose.type)
                     {
                         case SDL_QUIT:
-                            SDL_DestroyWindow(window);
-                            SDL_DestroyRenderer(renderer);
-                            TTF_CloseFont(font_message);
-                            SDL_FreeSurface(surface_message);
-                            SDL_DestroyTexture(texture_message);
-                            SDL_FreeSurface(surface_yesno);
-                            SDL_DestroyTexture(texture_yesno);
+                            CharacterImageDestroy();
+                            SummonImageDestroy();
+                            quit_delete();
                             exit(0);
                         case SDL_KEYDOWN:
                             if (event_choose.key.keysym.sym == SDLK_ESCAPE)
                             {
-                                TTF_CloseFont(font_message);
-                                SDL_FreeSurface(surface_message);
-                                SDL_DestroyTexture(texture_message);
-                                SDL_FreeSurface(surface_yesno);
-                                SDL_DestroyTexture(texture_yesno);
-
                                 chara->if_xuan = false;
                                 return false;
                             }
                             else if (event_choose.key.keysym.sym == SDLK_SPACE)
                             {
-                                TTF_CloseFont(font_message);
-                                SDL_FreeSurface(surface_message);
-                                SDL_DestroyTexture(texture_message);
-                                SDL_FreeSurface(surface_yesno);
-                                SDL_DestroyTexture(texture_yesno);
-
                                 chara->if_xuan = false;
                                 chara->if_chu = true;
                                 charanow->if_chu = false;
@@ -884,9 +919,6 @@ bool IfChangeCharacter(Character *charanow, Character *chara, int num, int tou[]
                             break;
                     }
                 }
-
-
-
             }
         }
         else
@@ -904,7 +936,7 @@ bool IfChangeCharacter(Character *charanow, Character *chara, int num, int tou[]
     }
 }
 
-bool ReduceTouChange(Character *chara4, Character *chara5, Character *chara6, int tou[])
+void ReduceTouChange(Character *chara4, Character *chara5, Character *chara6, int tou[])
 {
     int yuansu4 = chara4->yuansu;
     int yuansu5 = chara5->yuansu;
@@ -926,7 +958,7 @@ bool ReduceTouChange(Character *chara4, Character *chara5, Character *chara6, in
             if (tou[i] > 0)
             {
                 tou[i]--;
-                return true;
+                return;
             }
         }
     }
@@ -936,7 +968,7 @@ bool ReduceTouChange(Character *chara4, Character *chara5, Character *chara6, in
         if (i != yuansu4 && i != yuansu5 && i != yuansu6 && tou[i] > 0)
         {
             tou[i]--;
-            return true;
+            return;
         }
     }
 }
@@ -1076,4 +1108,144 @@ void ShowWeAction()
     SDL_RenderPresent(renderer);
 
     SDL_DestroyTexture(texture_action);
+}
+
+void ChangeCharacterWhenDead(Character **chara, Character *chara4, Character *chara5, Character *chara6)
+{
+    TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 24);
+    SDL_Color color_message = {0xff, 0xff, 0xff, 0xff};
+
+    SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "请切换角色", color_message);
+    SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    SDL_Rect rect_message = {.x = 540, .y = 330};
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    SDL_RenderPresent(renderer);
+
+    TTF_CloseFont(font_message);
+    SDL_FreeSurface(surface_message);
+    SDL_DestroyTexture(texture_message);
+
+    SDL_Event event;
+    while (1)
+    {
+        while (SDL_PollEvent(&event))
+        {
+            switch (event.type)
+            {
+                case SDL_QUIT:
+                    CharacterImageDestroy();
+                    SummonImageDestroy();
+                    quit_delete();
+
+                    exit(0);
+                case SDL_MOUSEBUTTONDOWN: //鼠标左键
+                    if (event.button.button == SDL_BUTTON_LEFT)
+                    {
+                        int x = event.button.x;
+                        int y = event.button.y;
+
+                        if (x >= 400 && x <= 520 && y >= 400 && y <= 655)
+                        {
+                            if (IfChangeCharacterDead(*chara, chara4, 4))
+                            {
+                                *chara = chara4;
+                                return;
+                            }
+                            return;
+                        }
+                        else if (x >= 570 && x <= 690 && y >= 400 && y <= 655)
+                        {
+                            if (IfChangeCharacterDead(*chara, chara5, 5))
+                            {
+                                *chara = chara5;
+                                return;
+                            }
+                            return;
+                        }
+                        else if (x >= 740 && x <= 860 && y >= 400 && y <= 655)
+                        {
+                            if (IfChangeCharacterDead(*chara, chara6, 6))
+                            {
+                                *chara = chara6;
+                                return;
+                            }
+                            return;
+                        }
+                    }
+            }
+        }
+    }
+}
+
+bool IfChangeCharacterDead(Character *charanow, Character *chara, int num)
+{
+    if (chara->xue == 0) {
+        return false;
+    }
+
+    chara->if_xuan = true;
+
+    while (1)
+    {
+        PresentCharacterGame(chara, num);
+        ShowCharacterMessage(chara);
+        SDL_RenderPresent(renderer);
+        TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 24);
+        SDL_Color color_message = {0xff, 0xff, 0xff, 0xff};
+
+        SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "是否切换至 ", color_message);
+        SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+        SDL_Rect rect_message = {.x = 490, .y = 360};
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+        SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+        surface_message = TTF_RenderUTF8_Solid(font_message, chara->name[0], color_message);
+        texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+        rect_message.x = 620;
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+        SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+        SDL_Surface *surface_yesno = TTF_RenderUTF8_Solid(font_message, "按space选中，按esc取消选择", color_message);
+        SDL_Texture *texture_yesno = SDL_CreateTextureFromSurface(renderer, surface_yesno);
+        SDL_Rect rect_yesno = {.x = 460, .y = 390};
+        SDL_QueryTexture(texture_yesno, NULL, NULL, &rect_yesno.w, &rect_yesno.h);
+        SDL_RenderCopy(renderer, texture_yesno, NULL, &rect_yesno);
+
+        SDL_RenderPresent(renderer);
+
+        TTF_CloseFont(font_message);
+        SDL_FreeSurface(surface_message);
+        SDL_DestroyTexture(texture_message);
+        SDL_FreeSurface(surface_yesno);
+        SDL_DestroyTexture(texture_yesno);
+
+
+        SDL_Event event_choose;
+        while (SDL_WaitEvent(&event_choose)) {
+            switch (event_choose.type) {
+                case SDL_QUIT:
+                    CharacterImageDestroy();
+                    SummonImageDestroy();
+                    quit_delete();
+                    exit(0);
+                case SDL_KEYDOWN:
+                    if (event_choose.key.keysym.sym == SDLK_ESCAPE)
+                    {
+                        chara->if_xuan = false;
+                        return false;
+                    }
+                    else if (event_choose.key.keysym.sym == SDLK_SPACE)
+                    {
+                        chara->if_xuan = false;
+                        chara->if_chu = true;
+                        charanow->if_chu = false;
+                        return true;
+                    }
+                default:
+                    break;
+            }
+        }
+    }
 }

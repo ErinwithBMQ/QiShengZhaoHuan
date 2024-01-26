@@ -19,7 +19,7 @@ int InBattle(int *count, int *who_first, int tou[],
               Character *chara4, Character *chara5, Character *chara6,
               Character **charanow, Character **chara_enemy_now);
 
-void AfterBattle(int *count,
+int AfterBattle(int *count, Character **chara_now, Character **chara_enemy_now,
                  Character *chara1, Character *chara2, Character *chara3,
                  Character *chara4, Character *chara5, Character *chara6);
 void WinBattle();

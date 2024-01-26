@@ -11,7 +11,10 @@ add_executable(main main.c
         src/action.c
         src/character.c
         src/page.c
-        src/battle.c)
+        src/battle.c
+        src/record.c
+        src/summon.c
+        src/character_skill.c)
 
 
 target_link_libraries(main PRIVATE

@@ -10,6 +10,7 @@
 #include <character.h>
 #include <battle.h>
 #include <page.h>
+#include <summon.h>
 
 void MainPage()
 {
@@ -20,21 +21,16 @@ void MainPage()
         SDL_RenderCopy(renderer, texture_main, NULL, NULL);
         SDL_RenderPresent(renderer);
 
+        SDL_DestroyTexture(texture_main);
+
         while (SDL_PollEvent(&event_main))
         {
 
             switch (event_main.type) {
                 case SDL_QUIT:
                     CharacterImageDestroy();
-
-                    SDL_DestroyTexture(texture_main);
-
-                    SDL_DestroyWindow(window);
-                    SDL_DestroyRenderer(renderer);
-
-                    IMG_Quit();
-                    SDL_Quit();
-                    TTF_Quit();
+                    SummonImageDestroy();
+                    quit_delete();
                     exit(0);
                 case SDL_KEYDOWN:
                     if (event_main.key.keysym.sym == SDLK_SPACE)
@@ -61,20 +57,15 @@ void WinBattle()
         SDL_RenderCopy(renderer, texture_win, NULL, NULL);
         SDL_RenderPresent(renderer);
 
+        SDL_DestroyTexture(texture_win);
+
         while (SDL_PollEvent(&event_main))
         {
             switch (event_main.type) {
                 case SDL_QUIT:
                     CharacterImageDestroy();
-
-                    SDL_DestroyTexture(texture_win);
-
-                    SDL_DestroyWindow(window);
-                    SDL_DestroyRenderer(renderer);
-
-                    IMG_Quit();
-                    SDL_Quit();
-                    TTF_Quit();
+                    SummonImageDestroy();
+                    quit_delete();
                     exit(0);
                 case SDL_KEYDOWN:
                     if (event_main.key.keysym.sym == SDLK_SPACE)
@@ -97,7 +88,6 @@ void BeginBattle(Character *chara1, Character *chara2, Character *chara3,
 {
     SDL_RenderClear(renderer);
 
-
     SDL_Event event;
     while (1)
     {
@@ -119,6 +109,9 @@ void BeginBattle(Character *chara1, Character *chara2, Character *chara3,
             switch (event.type)
             {
                 case SDL_QUIT:
+                    CharacterImageDestroy();
+                    SummonImageDestroy();
+                    quit_delete();
                     exit(0);
 
                 case SDL_MOUSEBUTTONDOWN:
@@ -187,7 +180,23 @@ int InBattle(int *count, int *who_first, int tou[],
         ShowEndHH();
         ShowIfEndTurn(if_final_a, if_final_b);
 
+        for (int i = 0; i < 5; ++i)
+        {
+            if (summon_all[i]->index != 0)
+            {
+                PresentSummonGame(summon_all[i]);
+            }
+        }
+
         SDL_RenderPresent(renderer);
+
+        if ((*charanow)->xue == 0)
+        {
+            ChangeCharacterWhenDead(charanow, chara4, chara5, chara6);
+
+            continue;
+
+        }
 
         if (who_fight == 1 && if_final_a == false)
         {
@@ -288,6 +297,11 @@ int InBattle(int *count, int *who_first, int tou[],
                 kill_blood(*charanow, *chara_enemy_now, 3);
                 YuanSuFuZhuo(*charanow, *chara_enemy_now);
 
+                if ((*charanow)->ysbf != NULL)
+                {
+                    (*charanow)->ysbf(chara1, chara2, chara3, *charanow);
+                }
+
                 (*charanow)->baofa_now = 0;
                 ChangeCharacterEnemy(chara_enemy_now, chara1, chara2, chara3);
                 int n = if_end(chara1, chara2, chara3, chara4, chara5, chara6);
@@ -309,7 +323,7 @@ int InBattle(int *count, int *who_first, int tou[],
                     return 0;
                 }
             }
-            else if (whichone == 4)
+            else if (whichone == 4)  //切换角色
             {
                 if (!if_final_b)
                 {
@@ -323,16 +337,23 @@ int InBattle(int *count, int *who_first, int tou[],
         }
 
 
-        if (who_fight == 0 && if_final_b == false)
+        if (who_fight == 0 && if_final_b == false)  //对方行动
         {
-            //TODO:对手逻辑的编写.我方角色死后切换角色，显示目前哪一方行动
+            //TODO:对手逻辑的编写.我方角色死后切换角色
             ShowEnemyAction();
             ChangeCharacterShanghai(*chara_enemy_now, *charanow);
             kill_blood(*chara_enemy_now, *charanow, 2);
             YuanSuFuZhuo(*chara_enemy_now, *charanow);
             who_fight = 1;
             if_final_b = true;
+
+            int n = if_end(chara1, chara2, chara3, chara4, chara5, chara6);
+            if (n == -1)
+            {
+                return 0;
+            }
         }
+
 
         SDL_Delay(5);
     }
@@ -340,11 +361,111 @@ int InBattle(int *count, int *who_first, int tou[],
     return -1;
 }
 
-void AfterBattle(int *count,
+int AfterBattle(int *count, Character **chara_now, Character **chara_enemy_now,
                  Character *chara1, Character *chara2, Character *chara3,
                  Character *chara4, Character *chara5, Character *chara6)
 {
+    for (int i = 0; i < 3; ++i)
+    {
+        if (summon_all[i]->index != 0)
+        {
+            SDL_RenderClear(renderer);
+
+            SDL_Texture *texture_back = IMG_LoadTexture(renderer, "./res/image/back1.jpg");
+            SDL_RenderCopy(renderer, texture_back, NULL, NULL);
+
+            PresentCharacterGame(chara1, 1);
+            PresentCharacterGame(chara2, 2);
+            PresentCharacterGame(chara3, 3);
+            PresentCharacterGame(chara4, 4);
+            PresentCharacterGame(chara5, 5);
+            PresentCharacterGame(chara6, 6);
+
+            for (int j = 0; j < 5; ++j)
+            {
+                if (summon_all[j]->index != 0)
+                {
+                    PresentSummonGame(summon_all[j]);
+                }
+            }
+
+            TTF_Font *font_summon = TTF_OpenFont("./res/HYWH85W.ttf", 32);
+            SDL_Color color_summon = {0xff, 0xff, 0xff, 0xff};
+            SDL_Rect rect_end = {.x = 550, .y = 360};
+            SDL_Surface *surface_turn = TTF_RenderUTF8_Solid(font_summon, "结算阶段", color_summon);
+            SDL_Texture *texture_turn = SDL_CreateTextureFromSurface(renderer, surface_turn);
+
+            SDL_QueryTexture(texture_turn, NULL, NULL, &rect_end.w, &rect_end.h);
+            SDL_RenderCopy(renderer, texture_turn, NULL, &rect_end);
+
+            SDL_RenderPresent(renderer);
+
+            SDL_Delay(1500);
+
+            TTF_CloseFont(font_summon);
+            SDL_FreeSurface(surface_turn);
+            SDL_DestroyTexture(texture_turn);
+            SDL_DestroyTexture(texture_back);
+
+            ChangeSummonShanghai(summon_all[i], *chara_enemy_now);
+            SummonKillBlood(summon_all[i], *chara_enemy_now);
+            SummonDestroy(summon_all[i]);
+
+            ChangeCharacterEnemy(chara_enemy_now, chara1, chara2, chara3);
+            int n = if_end(chara1, chara2, chara3, chara4, chara5, chara6);
+
+            if (n == 1)
+            {
+                return 1;
+            }
+            else if (n == -1)
+            {
+                return 0;
+            }
+        }
+    }
+
+    SDL_RenderClear(renderer);
+
+    SDL_Texture *texture_back = IMG_LoadTexture(renderer, "./res/image/back1.jpg");
+    SDL_RenderCopy(renderer, texture_back, NULL, NULL);
+
+    PresentCharacterGame(chara1, 1);
+    PresentCharacterGame(chara2, 2);
+    PresentCharacterGame(chara3, 3);
+    PresentCharacterGame(chara4, 4);
+    PresentCharacterGame(chara5, 5);
+    PresentCharacterGame(chara6, 6);
+
+    for (int j = 0; j < 5; ++j)
+    {
+        if (summon_all[j]->index != 0)
+        {
+            PresentSummonGame(summon_all[j]);
+        }
+    }
+
+    TTF_Font *font_summon = TTF_OpenFont("./res/HYWH85W.ttf", 32);
+    SDL_Color color_summon = {0xff, 0xff, 0xff, 0xff};
+    SDL_Rect rect_end = {.x = 550, .y = 360};
+    SDL_Surface *surface_turn = TTF_RenderUTF8_Solid(font_summon, "回合结束", color_summon);
+    SDL_Texture *texture_turn = SDL_CreateTextureFromSurface(renderer, surface_turn);
+
+    SDL_QueryTexture(texture_turn, NULL, NULL, &rect_end.w, &rect_end.h);
+    SDL_RenderCopy(renderer, texture_turn, NULL, &rect_end);
+
+    SDL_RenderPresent(renderer);
+
+    SDL_Delay(1500);
+
+    TTF_CloseFont(font_summon);
+    SDL_FreeSurface(surface_turn);
+    SDL_DestroyTexture(texture_turn);
+    SDL_DestroyTexture(texture_back);
+
     (*count)++;
+
+    return -1;
 }
 
 void LoseBattle()
@@ -366,23 +487,24 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
 
         SDL_Texture *texture_back = IMG_LoadTexture(renderer, "./res/image/choosechara.jpg");
         SDL_RenderCopy(renderer, texture_back, NULL, NULL);
-        SDL_RenderPresent(renderer);
 
-        if (chara4 != NULL)
+        SDL_DestroyTexture(texture_back);
+
+        if (chara4->index != 0)
         {
             SDL_Rect rect_chara = {.x = 85, .y = 98};
             SDL_QueryTexture(chara4->image, NULL, NULL, &rect_chara.w, &rect_chara.h);
             SDL_RenderCopy(renderer, chara4->image, NULL, &rect_chara);
         }
 
-        if (chara5 != NULL)
+        if (chara5->index != 0)
         {
             SDL_Rect rect_chara = {.x = 85, .y = 335};
             SDL_QueryTexture(chara5->image, NULL, NULL, &rect_chara.w, &rect_chara.h);
             SDL_RenderCopy(renderer, chara5->image, NULL, &rect_chara);
         }
 
-        if (chara6 != NULL)
+        if (chara6->index != 0)
         {
             SDL_Rect rect_chara = {.x = 85, .y = 581};
             SDL_QueryTexture(chara6->image, NULL, NULL, &rect_chara.w, &rect_chara.h);
@@ -396,8 +518,9 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
             switch (event.type)
             {
                 case SDL_QUIT: //直接退出
-                    SDL_DestroyWindow(window);
-                    SDL_DestroyRenderer(renderer);
+                    CharacterImageDestroy();
+                    SummonImageDestroy();
+                    quit_delete();
                     exit(0);
                 case SDL_KEYDOWN:
                     if (event.key.keysym.sym == SDLK_LCTRL || event.key.keysym.sym == SDLK_RCTRL)
@@ -439,7 +562,7 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
 
                         if (x >= 363 && x <= 673 && y>= 446 && y <= 518)
                         {
-                            if (IfFirstChooseCharacter(&Alhaitham))
+                            if (IfFirstChooseCharacter(&Alhaitham) && count < 3)
                             {
                                 *(chara[count]) = Alhaitham;
                                 count++;
@@ -453,7 +576,7 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
 
                         if (x >= 363 && x <= 673 && y>= 518 && y <= 591)
                         {
-                            if (IfFirstChooseCharacter(&Zihuang))
+                            if (IfFirstChooseCharacter(&Zihuang) && count < 3)
                             {
                                 *(chara[count]) = Zihuang;
                                 count++;
@@ -467,7 +590,7 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
 
                         if (x >= 363 && x <= 673 && y>= 591 && y <= 671)
                         {
-                            if (IfFirstChooseCharacter(&Huoxing))
+                            if (IfFirstChooseCharacter(&Huoxing) && count < 3)
                             {
                                 *(chara[count]) = Huoxing;
                                 count++;
@@ -481,7 +604,7 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
 
                         if (x >= 363 && x <= 673 && y>= 671 && y <= 734)
                         {
-                            if (IfFirstChooseCharacter(&Antant))
+                            if (IfFirstChooseCharacter(&Antant) && count < 3)
                             {
                                 *(chara[count]) = Antant;
                                 count++;
@@ -495,7 +618,7 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
 
                         if (x >= 673 && x <= 967 && y>= 446 && y <= 518)
                         {
-                            if (IfFirstChooseCharacter(&Lingren))
+                            if (IfFirstChooseCharacter(&Lingren) && count < 3)
                             {
                                 *(chara[count]) = Lingren;
                                 count++;
@@ -512,6 +635,5 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
                     break;
             }
         }
-
     }
 }

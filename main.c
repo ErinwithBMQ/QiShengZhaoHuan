@@ -9,6 +9,9 @@
 #include <action.h>
 #include <page.h>
 #include <battle.h>
+#include <record.h>
+#include <summon.h>
+#include <character_skill.h>
 
 #undef main
 
@@ -118,21 +121,39 @@ Character Antant = {
         .zhuang = {0,0},
         .if_xuan = false,
         .if_chu = false,
+        .ysbf = Antant_ysbf,
 };
 
-void quit_delete();
+Summon Zhujiao = {
+        .index = 1,
+        .name = "助教",
+        .yuansu = 5,
+        .shanghai = 1,
+        .shanghai_more = 0,
+        .turn = 3,
+        .turn_now = 3,
+        .index_game = 0,
+};
 
 SDL_Window *window;
 SDL_Renderer *renderer;
 
+Summon *summon_all[6] = {NULL};
+
+int summon_index_we = 0;
+int summon_index_enemy = 3;
+
 int main(int argc, char *argv[])
 {
-    window = SDL_CreateWindow("Hello world", 100, 100, WIDTH, HIGH, SDL_WINDOW_SHOWN);
+    //初始化
+
+    window = SDL_CreateWindow("七圣召唤", 100, 100, WIDTH, HIGH, SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     CharacterImageLoad();
+    SummonImageLoad();
 
-    SDL_Init(SDL_INIT_VIDEO); //初始化
+    SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
     TTF_Init();
 
@@ -141,10 +162,15 @@ int main(int argc, char *argv[])
 
     atexit(&quit_delete);
     atexit(&CharacterImageDestroy);
+    atexit(&SummonImageDestroy);
 
     while (1)
     {
         MainPage();
+
+        //角色初始化
+
+        //chara1~3:敌方角色；chara4~6:我方角色
 
         Character chara1 = Huoxing;
         Character chara2 = Zihuang;
@@ -157,7 +183,30 @@ int main(int argc, char *argv[])
         memset(&chara5, 0, sizeof(chara5));
         memset(&chara6, 0, sizeof(chara6));
 
+        //summon0~3:我方召唤物
 
+        Summon summon0;
+        Summon summon1;
+        Summon summon2;
+        Summon summon3;
+        Summon summon4;
+        Summon summon5;
+
+        memset(&summon0, 0, sizeof(summon0));
+        memset(&summon1, 0, sizeof(summon1));
+        memset(&summon2, 0, sizeof(summon2));
+        memset(&summon3, 0, sizeof(summon3));
+        memset(&summon4, 0, sizeof(summon4));
+        memset(&summon5, 0, sizeof(summon5));
+
+        summon_all[0] = &summon0;
+        summon_all[1] = &summon1;
+        summon_all[2] = &summon2;
+        summon_all[3] = &summon3;
+        summon_all[4] = &summon4;
+        summon_all[5] = &summon5;
+
+        //选择角色
         if (!(ChooseCharacter(&chara4, &chara5, &chara6)))
         {
             continue;
@@ -167,39 +216,50 @@ int main(int argc, char *argv[])
         Character *chara_enemy_now = &chara2;
         chara2.if_chu = 1;
 
-        int count = 1;
+        int count = 1;   //当前回合数
+
+        //作战开始前选择出战角色
 
         BeginBattle(&chara1, &chara2, &chara3,
                     &chara4, &chara5, &chara6, &chara_now);
 
         int tou[6] = {0};
-        int who_first = 1;
+        int who_first = 1;  //默认一开始我方先行动
 
-        while (1)
+        while (1)  //每一次循环是一个回合
         {
-            for (int i = 0; i < 6; ++i)
+            for (int i = 0; i < 6; ++i)  //骰子数清空
             {
                 tou[i] = 0;
             }
 
+            //随机掷骰子
             Touzi(tou, count, chara_now);
+
+            //作战中
             int winorlose = InBattle(&count, &who_first, tou,
                                      &chara1, &chara2, &chara3,
                                      &chara4, &chara5, &chara6,
                                      &chara_now, &chara_enemy_now);
-            if (winorlose == -1)
+
+
+            if (winorlose == -1)  //进入下一回合
             {
-                AfterBattle(&count,
+                //回合后清算
+                winorlose = AfterBattle(&count, &chara_now, &chara_enemy_now,
                             &chara1, &chara2, &chara3,
                             &chara4, &chara5, &chara6);
             }
-            else if(winorlose == 1)
+
+            if(winorlose == 1)
             {
+                //胜利
                 WinBattle();
                 break;
             }
             else if(winorlose == 0)
             {
+                //失败
                 LoseBattle();
                 break;
             }
@@ -209,12 +269,3 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-void quit_delete()
-{
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-
-    IMG_Quit();
-    SDL_Quit();
-    TTF_Quit();
-}

@@ -9,6 +9,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
 #include "character.h"
+#include <summon.h>
 
 void CharacterImageLoad()
 {
@@ -279,9 +280,9 @@ bool IfCharacterChoose(Character *chara)
 
             switch (event.type) {
                 case SDL_QUIT:
-                    SDL_DestroyWindow(window);
-                    SDL_DestroyRenderer(renderer);
-
+                    CharacterImageDestroy();
+                    SummonImageDestroy();
+                    quit_delete();
                     exit(0);
 
                 case SDL_KEYDOWN:
@@ -337,4 +338,14 @@ bool IfFirstChooseCharacter(Character *chara)
                 }
         }
     }
+}
+
+void quit_delete()
+{
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+
+    IMG_Quit();
+    SDL_Quit();
+    TTF_Quit();
 }
