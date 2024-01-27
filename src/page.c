@@ -170,14 +170,28 @@ int InBattle(int *count, int *who_first, int tou[],
     bool if_final_b = false;
     int who_fight = *who_first;
 
-    while (if_final_a == false || if_final_b == false)
+    while (1)
     {
+        if (if_final_a == true && if_final_b == true)
+        {
+            if ((*charanow)->xue == 0)
+            {
+                ChangeCharacterWhenDead(charanow, chara4, chara5, chara6);
+                continue;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+
         SDL_RenderClear(renderer);
 
         ShowTheWhole(chara1, chara2, chara3, chara4, chara5, chara6);
         ShowTouzi(tou);
         ShowButtom();
-        ShowEndHH();
+        ShowEndHH(who_fight);
         ShowIfEndTurn(if_final_a, if_final_b);
 
         for (int i = 0; i < 5; ++i)
@@ -195,7 +209,6 @@ int InBattle(int *count, int *who_first, int tou[],
             ChangeCharacterWhenDead(charanow, chara4, chara5, chara6);
 
             continue;
-
         }
 
         if (who_fight == 1 && if_final_a == false)
@@ -232,6 +245,7 @@ int InBattle(int *count, int *who_first, int tou[],
                 //TODO: 造成伤害动画,元素反应，特殊效果，召唤物
                 ReduceTou(*charanow, tou, 1);
                 kill_blood(*charanow, *chara_enemy_now, 1);
+                ShowKillEnemyBlood(chara1, chara2, chara3, (*charanow)->shanghai[0] + (*charanow)->shanghai_more[0]);
 
                 if ((*charanow)->baofa_now < (*charanow)->baofa_num)
                 {
@@ -263,12 +277,21 @@ int InBattle(int *count, int *who_first, int tou[],
                 //TODO: 造成伤害动画
                 ReduceTou(*charanow, tou, 2);
                 kill_blood(*charanow, *chara_enemy_now, 2);
+
+                if ((*charanow)->yszj != NULL)
+                {
+                    (*charanow)->yszj(chara1, chara2, chara3, *charanow);
+                }
+
+                ShowKillEnemyBlood(chara1, chara2, chara3, (*charanow)->shanghai[1] + (*charanow)->shanghai_more[1]);
                 YuanSuFuZhuo(*charanow, *chara_enemy_now);
 
                 if ((*charanow)->baofa_now < (*charanow)->baofa_num)
                 {
                     (*charanow)->baofa_now++;
                 }
+
+                if_all_attack = false;
 
                 ChangeCharacterEnemy(chara_enemy_now, chara1, chara2, chara3);
                 int n = if_end(chara1, chara2, chara3, chara4, chara5, chara6);
@@ -295,12 +318,16 @@ int InBattle(int *count, int *who_first, int tou[],
                 //TODO: 造成伤害动画
                 ReduceTou(*charanow, tou, 3);
                 kill_blood(*charanow, *chara_enemy_now, 3);
-                YuanSuFuZhuo(*charanow, *chara_enemy_now);
 
                 if ((*charanow)->ysbf != NULL)
                 {
                     (*charanow)->ysbf(chara1, chara2, chara3, *charanow);
                 }
+
+                if_all_attack = false;
+
+                ShowKillEnemyBlood(chara1, chara2, chara3, (*charanow)->shanghai[2] + (*charanow)->shanghai_more[2]);
+                YuanSuFuZhuo(*charanow, *chara_enemy_now);
 
                 (*charanow)->baofa_now = 0;
                 ChangeCharacterEnemy(chara_enemy_now, chara1, chara2, chara3);
@@ -343,9 +370,11 @@ int InBattle(int *count, int *who_first, int tou[],
             ShowEnemyAction();
             ChangeCharacterShanghai(*chara_enemy_now, *charanow);
             kill_blood(*chara_enemy_now, *charanow, 2);
+            ShowKillWeBlood(chara4, chara5, chara6, (*chara_enemy_now)->shanghai[1] + (*chara_enemy_now)->shanghai_more[1]);
             YuanSuFuZhuo(*chara_enemy_now, *charanow);
             who_fight = 1;
             if_final_b = true;
+            if_all_attack = false;
 
             int n = if_end(chara1, chara2, chara3, chara4, chara5, chara6);
             if (n == -1)
@@ -409,7 +438,11 @@ int AfterBattle(int *count, Character **chara_now, Character **chara_enemy_now,
 
             ChangeSummonShanghai(summon_all[i], *chara_enemy_now);
             SummonKillBlood(summon_all[i], *chara_enemy_now);
-            SummonDestroy(summon_all[i]);
+            ShowKillEnemyBlood(chara1, chara2, chara3, summon_all[i]->shanghai + summon_all[i]->shanghai_more);
+            if (SummonDestroy(summon_all[i]))
+            {
+                i--;
+            }
 
             ChangeCharacterEnemy(chara_enemy_now, chara1, chara2, chara3);
             int n = if_end(chara1, chara2, chara3, chara4, chara5, chara6);
@@ -621,6 +654,20 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
                             if (IfFirstChooseCharacter(&Lingren) && count < 3)
                             {
                                 *(chara[count]) = Lingren;
+                                count++;
+                                break;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        if (x >= 673 && x <= 967 && y>= 518 && y <= 591)
+                        {
+                            if (IfFirstChooseCharacter(&CXK) && count < 3)
+                            {
+                                *(chara[count]) = CXK;
                                 count++;
                                 break;
                             }

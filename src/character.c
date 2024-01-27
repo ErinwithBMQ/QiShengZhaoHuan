@@ -42,6 +42,12 @@ void CharacterImageLoad()
     Antant.image_dead = IMG_LoadTexture(renderer, "./res/image/5_dead.png");
     Antant.image_message = IMG_LoadTexture(renderer, "./res/image/5_message.png");
     Antant.image_message_big = IMG_LoadTexture(renderer, "./res/image/5_message_big.png");
+
+    CXK.image = IMG_LoadTexture(renderer, "./res/image/6.jpg");
+    CXK.image_choose = IMG_LoadTexture(renderer, "./res/image/6_xuan.jpg");
+    CXK.image_dead = IMG_LoadTexture(renderer, "./res/image/6_dead.jpg");
+    CXK.image_message = IMG_LoadTexture(renderer, "./res/image/6_message.png");
+    CXK.image_message_big = IMG_LoadTexture(renderer, "./res/image/6_message_big.png");
 }
 
 void CharacterImageDestroy()
@@ -75,6 +81,12 @@ void CharacterImageDestroy()
     SDL_DestroyTexture(Antant.image_choose);
     SDL_DestroyTexture(Antant.image_message);
     SDL_DestroyTexture(Antant.image_message_big);
+
+    SDL_DestroyTexture(CXK.image);
+    SDL_DestroyTexture(CXK.image_dead);
+    SDL_DestroyTexture(CXK.image_choose);
+    SDL_DestroyTexture(CXK.image_message);
+    SDL_DestroyTexture(CXK.image_message_big);
 }
 
 void PresentCharacterGame(Character *chara, int num)

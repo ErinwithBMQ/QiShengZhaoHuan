@@ -58,6 +58,7 @@ Character Lingren = {
         .zhuang = {0,0},
         .if_xuan = false,
         .if_chu = false,
+        .ysbf = Lingren_ysbf,
 };
 
 Character Huoxing = {
@@ -121,13 +122,58 @@ Character Antant = {
         .zhuang = {0,0},
         .if_xuan = false,
         .if_chu = false,
+        .yszj = Antant_yszj,
         .ysbf = Antant_ysbf,
+};
+
+Character CXK = {
+        .index = 6,
+        .xue = 10,
+        .hudun = 0,
+        .name = {
+                "蔡徐坤",
+                "你干嘛",
+                "唱跳Rap篮球",
+                "鸡你太美",
+        },
+        .baofa_num = 3,
+        .baofa_now = 0,
+        .shanghai = {2,2,5},
+        .shanghai_more = {0, 0, 0},
+        .yuansu = 1,
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+        .if_chu = false,
+        .yszj = CXK_yszj,
 };
 
 Summon Zhujiao = {
         .index = 1,
         .name = "助教",
         .yuansu = 5,
+        .shanghai = 1,
+        .shanghai_more = 0,
+        .turn = 3,
+        .turn_now = 3,
+        .index_game = 0,
+};
+
+Summon Qingjing = {
+        .index = 2,
+        .name = "清净之园囿",
+        .yuansu = 2,
+        .shanghai = 2,
+        .shanghai_more = 0,
+        .turn = 3,
+        .turn_now = 3,
+        .index_game = 0,
+};
+
+Summon Lanqiu = {
+        .index = 3,
+        .name = "篮球",
+        .yuansu = -1,
         .shanghai = 1,
         .shanghai_more = 0,
         .turn = 3,
@@ -142,6 +188,8 @@ Summon *summon_all[6] = {NULL};
 
 int summon_index_we = 0;
 int summon_index_enemy = 3;
+
+bool if_all_attack = false;
 
 int main(int argc, char *argv[])
 {

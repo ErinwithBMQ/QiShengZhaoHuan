@@ -10,18 +10,23 @@
 void SummonImageLoad()
 {
     Zhujiao.image = IMG_LoadTexture(renderer, "./res/image/zhujiao.png");
+    Qingjing.image = IMG_LoadTexture(renderer, "./res/image/qingjing.png");
+    Lanqiu.image = IMG_LoadTexture(renderer, "./res/image/lanqiu.png");
 }
 
 void SummonImageDestroy()
 {
     SDL_DestroyTexture(Zhujiao.image);
+    SDL_DestroyTexture(Qingjing.image);
+    SDL_DestroyTexture(Lanqiu.image);
 }
 
 void PresentSummonGame(Summon *summon)
 {
-    if (summon->index_game < 3)
+    int index = summon->index_game;
+    if (index < 3)
     {
-        SDL_Rect rect_summon = {.x = 965, .y = 475};
+        SDL_Rect rect_summon = {.x = 965 + index * 115, .y = 475};
         SDL_QueryTexture(summon->image, NULL, NULL, &rect_summon.w, &rect_summon.h);
         SDL_RenderCopy(renderer, summon->image, NULL, &rect_summon);
 
@@ -48,6 +53,7 @@ void PresentSummonGame(Summon *summon)
 void ChangeSummonShanghai(Summon *summon, Character *enemy)
 {
     int yuansu = summon->yuansu;
+
     if (yuansu == 5)
     {
         srand((unsigned int)time(NULL));
@@ -55,29 +61,39 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
     }
 
     summon->shanghai_more = 0;
+
+    if (yuansu == -1)
+    {
+        return;
+    }
+
     if (enemy->yuansu_fu[0]) //如果对方是火元素附着
     {
         if (yuansu == 2) //水系角色
         {
             summon->shanghai_more += 2;
             summon->shanghai_more += 2;
+            enemy->yuansu_fu[0] = false;
         }
         else if (yuansu == 1)  //雷系角色
         {
             summon->shanghai_more += 2;
             summon->shanghai_more += 2;
+            enemy->yuansu_fu[0] = false;
         }
         else if (yuansu == 4) //草系角色
         {
             summon->shanghai_more += 1;
             summon->shanghai_more += 1;
+            enemy->yuansu_fu[0] = false;
         }
         else if (yuansu == 3) //冰系角色
         {
             summon->shanghai_more += 2;
             summon->shanghai_more += 2;
+            enemy->yuansu_fu[0] = false;
         }
-        enemy->yuansu_fu[0] = false;
+
         return;
     }
     else if (enemy->yuansu_fu[1]) //雷元素附着
@@ -86,23 +102,27 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
         {
             summon->shanghai_more += 1;
             summon->shanghai_more += 1;
+            enemy->yuansu_fu[1] = false;
         }
         else if (yuansu == 0)  //火系角色
         {
             summon->shanghai_more += 2;
             summon->shanghai_more += 2;
+            enemy->yuansu_fu[1] = false;
         }
         else if (yuansu == 4) //草系角色
         {
             summon->shanghai_more += 1;
             summon->shanghai_more += 1;
+            enemy->yuansu_fu[1] = false;
         }
         else if (yuansu == 3) //冰系角色
         {
             summon->shanghai_more += 1;
             summon->shanghai_more += 1;
+            enemy->yuansu_fu[1] = false;
         }
-        enemy->yuansu_fu[1] = false;
+
         return;
     }
     else if (enemy->yuansu_fu[2]) //水元素附着
@@ -111,18 +131,24 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
         {
             summon->shanghai_more += 1;
             summon->shanghai_more += 1;
+            enemy->yuansu_fu[2] = false;
         }
         else if (yuansu == 0)  //火系角色
         {
             summon->shanghai_more += 2;
             summon->shanghai_more += 2;
+            enemy->yuansu_fu[2] = false;
         }
         else if (yuansu == 4) //草系角色
         {
             summon->shanghai_more += 1;
             summon->shanghai_more += 1;
+            enemy->yuansu_fu[2] = false;
         }
-        enemy->yuansu_fu[2] = false;
+        else if (yuansu == 3) //冰系角色
+        {
+            enemy->yuansu_fu[2] = false;
+        }
         return;
     }
     else if (enemy->yuansu_fu[3]) //冰元素附着
@@ -131,18 +157,24 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
         {
             summon->shanghai_more += 1;
             summon->shanghai_more += 1;
+            enemy->yuansu_fu[3] = false;
         }
         else if (yuansu == 0)  //火系角色
         {
             summon->shanghai_more += 2;
             summon->shanghai_more += 2;
+            enemy->yuansu_fu[3] = false;
         }
         else if (yuansu == 4) //草系角色
         {
             summon->shanghai_more += 1;
             summon->shanghai_more += 1;
+            enemy->yuansu_fu[3] = false;
         }
-        enemy->yuansu_fu[3] = false;
+        else if (yuansu == 2) //水系角色
+        {
+            enemy->yuansu_fu[3] = false;
+        }
         return;
     }
     else if (enemy->yuansu_fu[4]) //草元素附着
@@ -151,23 +183,26 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
         {
             summon->shanghai_more += 1;
             summon->shanghai_more += 1;
+            enemy->yuansu_fu[4] = false;
         }
         else if (yuansu == 0)  //火系角色
         {
             summon->shanghai_more += 1;
             summon->shanghai_more += 1;
+            enemy->yuansu_fu[4] = false;
         }
         else if (yuansu == 1) //雷系角色
         {
             summon->shanghai_more += 1;
             summon->shanghai_more += 1;
+            enemy->yuansu_fu[4] = false;
         }
         else if (yuansu == 3) //冰系角色
         {
             summon->shanghai_more += 1;
             summon->shanghai_more += 1;
+            enemy->yuansu_fu[4] = false;
         }
-        enemy->yuansu_fu[4] = false;
         return;
     }
 
@@ -197,7 +232,7 @@ void SummonKillBlood(Summon *summon, Character *enemy)
     }
 }
 
-void SummonDestroy(Summon *summon)
+bool SummonDestroy(Summon *summon)
 {
     if (summon->turn_now == 0)
     {
@@ -215,7 +250,7 @@ void SummonDestroy(Summon *summon)
                 summon_all[i - 1] = summon_all[i];
             }
             summon_index_we--;
-            return;
+            return 1;
         }
         else
         {
@@ -225,8 +260,10 @@ void SummonDestroy(Summon *summon)
                 summon_all[i - 1] = summon_all[i];
             }
             summon_index_enemy--;
-            return;
+            return 1;
         }
     }
+
+    return 0;
 
 }

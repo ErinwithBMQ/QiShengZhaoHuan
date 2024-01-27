@@ -31,6 +31,8 @@ extern int summon_index_we;
 extern int summon_index_enemy;
 
 extern Summon Zhujiao;
+extern Summon Qingjing;
+extern Summon Lanqiu;
 
 void SummonImageLoad();
 void SummonImageDestroy();
@@ -41,6 +43,6 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy);  //计算元素反�
 
 void SummonKillBlood(Summon *summon, Character *enemy);  //扣血
 
-void SummonDestroy(Summon *summon); //回合满销毁
+bool SummonDestroy(Summon *summon); //回合满销毁
 
 #endif //QSZH_SUMMON_H

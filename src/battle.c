@@ -539,14 +539,26 @@ int IfChooseSkill()
     }
 }
 
-void ShowEndHH()
+void ShowEndHH(int who_fight)
 {
-    SDL_Texture *texture_HH = IMG_LoadTexture(renderer, "./res/image/jshh.png");
-    SDL_Rect rect_HH = {.x = 10, .y = 350};
-    SDL_QueryTexture(texture_HH, NULL, NULL, &rect_HH.w, &rect_HH.h);
-    SDL_RenderCopy(renderer, texture_HH, NULL, &rect_HH);
+    if (who_fight)
+    {
+        SDL_Texture *texture_HH = IMG_LoadTexture(renderer, "./res/image/end_we.png");
+        SDL_Rect rect_HH = {.x = 10, .y = 350};
+        SDL_QueryTexture(texture_HH, NULL, NULL, &rect_HH.w, &rect_HH.h);
+        SDL_RenderCopy(renderer, texture_HH, NULL, &rect_HH);
 
-    SDL_DestroyTexture(texture_HH);
+        SDL_DestroyTexture(texture_HH);
+    }
+    else
+    {
+        SDL_Texture *texture_HH = IMG_LoadTexture(renderer, "./res/image/end_enemy.png");
+        SDL_Rect rect_HH = {.x = 10, .y = 350};
+        SDL_QueryTexture(texture_HH, NULL, NULL, &rect_HH.w, &rect_HH.h);
+        SDL_RenderCopy(renderer, texture_HH, NULL, &rect_HH);
+
+        SDL_DestroyTexture(texture_HH);
+    }
 }
 
 bool IfTouEnough(Character *chara, int tou[], int n)
@@ -611,7 +623,7 @@ void ReduceTou(Character *chara, int tou[], int n)
             for (int i = 0; i < 5; ++i) {
                 if (i != yuansu)
                 {
-                    total++;
+                    total += tou[i];
                 }
             }
 
@@ -847,6 +859,11 @@ bool IfChangeCharacter(Character *charanow, Character *chara, int num, int tou[]
     }
     else
     {
+        if (chara->xue == 0)
+        {
+            return false;
+        }
+
         if (IfTouNotZero(tou))
         {
             while (1)
@@ -1025,8 +1042,8 @@ bool IfEndTurn(bool if_final_a)
 
     while (1)
     {
-        SDL_Texture *texture_trun = IMG_LoadTexture(renderer, "./res/image/endturn.png");
-        SDL_Rect rect_turn = {.x = 120, .y = 350};
+        SDL_Texture *texture_trun = IMG_LoadTexture(renderer, "./res/image/endturn1.png");
+        SDL_Rect rect_turn = {.x = 120, .y = 380};
         SDL_QueryTexture(texture_trun, NULL, NULL, &rect_turn.w, &rect_turn.h);
         SDL_RenderCopy(renderer, texture_trun, NULL, &rect_turn);
         SDL_RenderPresent(renderer);
@@ -1043,7 +1060,7 @@ bool IfEndTurn(bool if_final_a)
                         int x = event.button.x;
                         int y = event.button.y;
 
-                        if (x >= 120 && x <= 389 && y >= 350 && y <= 450)
+                        if (x >= 120 && x <= 389 && y >= 380 && y <= 440)
                         {
                             return true;
                         }
@@ -1110,7 +1127,7 @@ void ShowWeAction()
     SDL_DestroyTexture(texture_action);
 }
 
-void ChangeCharacterWhenDead(Character **chara, Character *chara4, Character *chara5, Character *chara6)
+bool ChangeCharacterWhenDead(Character **chara, Character *chara4, Character *chara5, Character *chara6)
 {
     TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 24);
     SDL_Color color_message = {0xff, 0xff, 0xff, 0xff};
@@ -1151,27 +1168,27 @@ void ChangeCharacterWhenDead(Character **chara, Character *chara4, Character *ch
                             if (IfChangeCharacterDead(*chara, chara4, 4))
                             {
                                 *chara = chara4;
-                                return;
+                                return 1;
                             }
-                            return;
+                            return 0;
                         }
                         else if (x >= 570 && x <= 690 && y >= 400 && y <= 655)
                         {
                             if (IfChangeCharacterDead(*chara, chara5, 5))
                             {
                                 *chara = chara5;
-                                return;
+                                return 1;
                             }
-                            return;
+                            return 0;
                         }
                         else if (x >= 740 && x <= 860 && y >= 400 && y <= 655)
                         {
                             if (IfChangeCharacterDead(*chara, chara6, 6))
                             {
                                 *chara = chara6;
-                                return;
+                                return 1;
                             }
-                            return;
+                            return 0;
                         }
                     }
             }
@@ -1248,4 +1265,226 @@ bool IfChangeCharacterDead(Character *charanow, Character *chara, int num)
             }
         }
     }
+}
+
+void ShowKillEnemyBlood(Character *chara1, Character *chara2, Character *chara3, int bloodkill)
+{
+    if (if_all_attack)
+    {
+        SDL_Texture *texture_kill = IMG_LoadTexture(renderer, "./res/image/killblood.png");
+        SDL_Rect rect_kill = {.x = 395, .y = 135};
+        SDL_QueryTexture(texture_kill, NULL, NULL, &rect_kill.w, &rect_kill.h);
+
+        TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 36);
+        SDL_Color color_message = {0x00, 0x00, 0x00, 0x00};
+        SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "-1", color_message);
+        SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+        SDL_Rect rect_message;
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+
+        if (chara1->xue > 0)
+        {
+            if (chara1->if_chu)
+            {
+                rect_kill.y += 30;
+            }
+            SDL_RenderCopy(renderer, texture_kill, NULL, &rect_kill);
+            rect_message.x = rect_kill.x + 40;
+            rect_message.y = rect_kill.y + 40;
+            SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+        }
+
+        rect_kill.x += 170;
+        rect_kill.y = 135;
+
+        if (chara2->xue > 0)
+        {
+            if (chara2->if_chu)
+            {
+                rect_kill.y += 30;
+            }
+            SDL_RenderCopy(renderer, texture_kill, NULL, &rect_kill);
+            rect_message.x = rect_kill.x + 40;
+            rect_message.y = rect_kill.y + 40;
+            SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+        }
+
+
+        rect_kill.x += 170;
+        rect_kill.y = 135;
+
+        if (chara3->xue > 0)
+        {
+            if (chara3->if_chu)
+            {
+                rect_kill.y += 30;
+            }
+            SDL_RenderCopy(renderer, texture_kill, NULL, &rect_kill);
+            rect_message.x = rect_kill.x + 40;
+            rect_message.y = rect_kill.y + 40;
+            SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+        }
+
+
+        SDL_DestroyTexture(texture_kill);
+        SDL_DestroyTexture(texture_message);
+        SDL_FreeSurface(surface_message);
+        TTF_CloseFont(font_message);
+    }
+
+    int n = 0;
+
+    if (chara1->if_chu)
+    {
+        n = 0;
+    }
+    else if(chara2->if_chu)
+    {
+        n = 1;
+    }
+    else if (chara3->if_chu)
+    {
+        n = 2;
+    }
+
+
+    SDL_Texture *texture_kill = IMG_LoadTexture(renderer, "./res/image/killblood.png");
+    SDL_Rect rect_kill = {.x = 395 + 170 * n, .y = 165};
+
+    SDL_QueryTexture(texture_kill, NULL, NULL, &rect_kill.w, &rect_kill.h);
+    SDL_RenderCopy(renderer, texture_kill, NULL, &rect_kill);
+
+    TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 36);
+    SDL_Color color_message = {0x00, 0x00, 0x00, 0x00};
+
+    char num[3] = {'-', bloodkill + '0', '\0'};
+
+    SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, num, color_message);
+    SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    SDL_Rect rect_message;
+    rect_message.x = rect_kill.x + 40;
+    rect_message.y = rect_kill.y + 40;
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    SDL_RenderPresent(renderer);
+
+    SDL_Delay(1000);
+
+    SDL_DestroyTexture(texture_kill);
+    SDL_DestroyTexture(texture_message);
+    SDL_FreeSurface(surface_message);
+    TTF_CloseFont(font_message);
+}
+
+void ShowKillWeBlood(Character *chara4, Character *chara5, Character *chara6, int bloodkill)
+{
+    if (if_all_attack)
+    {
+        SDL_Texture *texture_kill = IMG_LoadTexture(renderer, "./res/image/killblood.png");
+        SDL_Rect rect_kill = {.x = 395, .y = 480};
+        SDL_QueryTexture(texture_kill, NULL, NULL, &rect_kill.w, &rect_kill.h);
+
+        TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 36);
+        SDL_Color color_message = {0x00, 0x00, 0x00, 0x00};
+        SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "-1", color_message);
+        SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+        SDL_Rect rect_message;
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+
+        if (chara4->xue > 0)
+        {
+            if (chara4->if_chu)
+            {
+                rect_kill.y -= 30;
+            }
+            SDL_RenderCopy(renderer, texture_kill, NULL, &rect_kill);
+            rect_message.x = rect_kill.x + 40;
+            rect_message.y = rect_kill.y + 40;
+            SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+        }
+
+        rect_kill.x += 170;
+        rect_kill.y = 480;
+
+        if (chara5->xue > 0)
+        {
+            if (chara5->if_chu)
+            {
+                rect_kill.y -= 30;
+            }
+            SDL_RenderCopy(renderer, texture_kill, NULL, &rect_kill);
+            rect_message.x = rect_kill.x + 40;
+            rect_message.y = rect_kill.y + 40;
+            SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+        }
+
+
+        rect_kill.x += 170;
+        rect_kill.y = 480;
+
+        if (chara6->xue > 0)
+        {
+            if (chara6->if_chu)
+            {
+                rect_kill.y -= 30;
+            }
+            SDL_RenderCopy(renderer, texture_kill, NULL, &rect_kill);
+            rect_message.x = rect_kill.x + 40;
+            rect_message.y = rect_kill.y + 40;
+            SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+        }
+
+
+        SDL_DestroyTexture(texture_kill);
+        SDL_DestroyTexture(texture_message);
+        SDL_FreeSurface(surface_message);
+        TTF_CloseFont(font_message);
+    }
+
+    int n = 0;
+
+    if (chara4->if_chu)
+    {
+        n = 0;
+    }
+    else if(chara5->if_chu)
+    {
+        n = 1;
+    }
+    else if (chara6->if_chu)
+    {
+        n = 2;
+    }
+
+
+    SDL_Texture *texture_kill = IMG_LoadTexture(renderer, "./res/image/killblood.png");
+    SDL_Rect rect_kill = {.x = 395 + 170 * n, .y = 450};
+
+    SDL_QueryTexture(texture_kill, NULL, NULL, &rect_kill.w, &rect_kill.h);
+    SDL_RenderCopy(renderer, texture_kill, NULL, &rect_kill);
+
+    TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 36);
+    SDL_Color color_message = {0x00, 0x00, 0x00, 0x00};
+
+    char num[3] = {'-', bloodkill + '0', '\0'};
+
+    SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, num, color_message);
+    SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    SDL_Rect rect_message;
+    rect_message.x = rect_kill.x + 40;
+    rect_message.y = rect_kill.y + 40;
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    SDL_RenderPresent(renderer);
+
+    SDL_Delay(1000);
+
+    SDL_DestroyTexture(texture_kill);
+    SDL_DestroyTexture(texture_message);
+    SDL_FreeSurface(surface_message);
+    TTF_CloseFont(font_message);
 }

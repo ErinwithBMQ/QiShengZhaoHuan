@@ -9,6 +9,8 @@
 
 #include <character.h>
 
+extern bool if_all_attack;
+
 void ChangeCharacterShanghai(Character *chara, Character *enemy); //计算角色伤害并更新
 void CleanShanghai(Character *chara);  //清除加成伤害
 
@@ -19,7 +21,7 @@ void ShowButtom();          //展示选择技能按钮
 void ShowShanghai(Character *chara, int n);  //展示角色本次能造成多少伤害
 void ShowTheWhole(Character *chara1, Character *chara2, Character *chara3,
                   Character *chara4, Character *chara5, Character *chara6);  //展示台面、六个角色信息
-void ShowEndHH();  //展示结束回合按钮
+void ShowEndHH(int who_fight);  //展示结束回合按钮
 void ShowIfEndTurn(bool if_final_a, bool if_final_b); //展示是否结束回合
 
 int ChooseWhichSkill(Character **chara, int tou[],
@@ -51,7 +53,9 @@ void ChangeCharacterEnemy(Character **chara_enemy_now, Character *chara1, Charac
 void ShowEnemyAction();  //展示敌方正在行动
 void ShowWeAction();     //展示我方正在行动
 
-void ChangeCharacterWhenDead(Character **chara, Character *chara4, Character *chara5, Character *chara6);
+bool ChangeCharacterWhenDead(Character **chara, Character *chara4, Character *chara5, Character *chara6);
 //我方角色死亡时强制切换角色
 
+void ShowKillEnemyBlood(Character *chara1, Character *chara2, Character *chara3, int bloodkill);
+void ShowKillWeBlood(Character *chara4, Character *chara5, Character *chara6, int bloodkill);
 #endif //QSZH_BATTLE_H

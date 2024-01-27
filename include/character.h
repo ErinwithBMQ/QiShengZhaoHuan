@@ -42,6 +42,7 @@ extern Character Lingren;
 extern Character Huoxing;
 extern Character Zihuang;
 extern Character Antant;
+extern Character CXK;
 
 extern SDL_Renderer *renderer;
 extern SDL_Window *window;

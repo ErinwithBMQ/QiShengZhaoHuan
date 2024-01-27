@@ -15,7 +15,11 @@
 #include <character.h>
 #include <summon.h>
 
-void Antant_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+extern bool if_all_attack;
 
+void Antant_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void Antant_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void Lingren_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void CXK_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 
 #endif //QSZH_CHARACTER_SKILL_H
