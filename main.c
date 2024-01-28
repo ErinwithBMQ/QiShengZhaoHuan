@@ -148,6 +148,29 @@ Character CXK = {
         .yszj = CXK_yszj,
 };
 
+Character Chen = {
+        .index = 7,
+        .xue = 10,
+        .hudun = 0,
+        .name = {
+                "假日威龙陈",
+                "高压冲击",
+                "“堇青之夜”",
+                "“假日风暴”",
+        },
+        .baofa_num = 3,
+        .baofa_now = 0,
+        .shanghai = {2,2,6},
+        .shanghai_more = {0, 0, 0},
+        .yuansu = 2,
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+        .if_chu = false,
+        .yszj = Chen_yszj,
+        .ysbf = Chen_ysbf,
+};
+
 Summon Zhujiao = {
         .index = 1,
         .name = "助教",

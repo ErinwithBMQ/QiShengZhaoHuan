@@ -48,6 +48,12 @@ void CharacterImageLoad()
     CXK.image_dead = IMG_LoadTexture(renderer, "./res/image/6_dead.jpg");
     CXK.image_message = IMG_LoadTexture(renderer, "./res/image/6_message.png");
     CXK.image_message_big = IMG_LoadTexture(renderer, "./res/image/6_message_big.png");
+
+    Chen.image = IMG_LoadTexture(renderer, "./res/image/7.png");
+    Chen.image_choose = IMG_LoadTexture(renderer, "./res/image/7_xuan.png");
+    Chen.image_dead = IMG_LoadTexture(renderer, "./res/image/7_dead.png");
+    Chen.image_message = IMG_LoadTexture(renderer, "./res/image/7_message.png");
+    Chen.image_message_big = IMG_LoadTexture(renderer, "./res/image/7_message_big.png");
 }
 
 void CharacterImageDestroy()
@@ -87,6 +93,12 @@ void CharacterImageDestroy()
     SDL_DestroyTexture(CXK.image_choose);
     SDL_DestroyTexture(CXK.image_message);
     SDL_DestroyTexture(CXK.image_message_big);
+
+    SDL_DestroyTexture(Chen.image);
+    SDL_DestroyTexture(Chen.image_dead);
+    SDL_DestroyTexture(Chen.image_choose);
+    SDL_DestroyTexture(Chen.image_message);
+    SDL_DestroyTexture(Chen.image_message_big);
 }
 
 void PresentCharacterGame(Character *chara, int num)
@@ -183,7 +195,7 @@ void PresentCharacterGame(Character *chara, int num)
         }
         else if (chara->yuansu_fu[3])
         {
-            surface_yuansu = IMG_Load("./res/image/bing_3.png");
+            surface_yuansu = IMG_Load("./res/image/feng_3.png");
         }
         else if (chara->yuansu_fu[4])
         {
@@ -263,17 +275,22 @@ bool IfCharacterChoose(Character *chara)
     while (1)
     {
         TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 32);
-        SDL_Color color_message = {0x00, 0x00, 0x00, 0x00};
+        SDL_Color color_message = {0xff, 0xff, 0xff, 0xff};
 
-        SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "是否选择该角色", color_message);
+        SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "是否选择该角色：", color_message);
         SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
-        SDL_Rect rect_message = {.x = 500, .y = 330};
+        SDL_Rect rect_message = {.x = 430, .y = 380};
         SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
         SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
 
-        SDL_Surface *surface_yesno = TTF_RenderUTF8_Solid(font_message, "按space选中，按esc取消选择", color_message);
+        SDL_Texture *texture_change = IMG_LoadTexture(renderer, "./res/image/change.png");
+        SDL_Rect rect_change = {.x = 1050, .y = 570};
+        SDL_QueryTexture(texture_change, NULL, NULL, &rect_change.w, &rect_change.h);
+        SDL_RenderCopy(renderer, texture_change, NULL, &rect_change);
+
+        SDL_Surface *surface_yesno = TTF_RenderUTF8_Solid(font_message, chara->name[0], color_message);
         SDL_Texture *texture_yesno = SDL_CreateTextureFromSurface(renderer, surface_yesno);
-        SDL_Rect rect_yesno = {.x = 400, .y = 380};
+        SDL_Rect rect_yesno = {.x = 680, .y = 380};
         SDL_QueryTexture(texture_yesno, NULL, NULL, &rect_yesno.w, &rect_yesno.h);
         SDL_RenderCopy(renderer, texture_yesno, NULL, &rect_yesno);
 
@@ -284,6 +301,7 @@ bool IfCharacterChoose(Character *chara)
         TTF_CloseFont(font_message);
         SDL_FreeSurface(surface_message);
         SDL_DestroyTexture(texture_message);
+        SDL_DestroyTexture(texture_change);
         SDL_FreeSurface(surface_yesno);
         SDL_DestroyTexture(texture_yesno);
 
@@ -309,6 +327,25 @@ bool IfCharacterChoose(Character *chara)
                         chara->if_xuan = false;
                         chara->if_chu = true;
                         return true;
+                    }
+                case SDL_MOUSEBUTTONDOWN: //鼠标左键
+                    if (event.button.button == SDL_BUTTON_LEFT)
+                    {
+                        int x = event.button.x;
+                        int y = event.button.y;
+
+                        if (x >= 1060 && x <= 1140 && y >= 580 && y <= 660)
+                        {
+                            chara->if_xuan = false;
+                            chara->if_chu = true;
+                            return true;
+                        }
+                        else
+                        {
+                            chara->if_xuan = false;
+                            SDL_RenderClear(renderer);
+                            return false;
+                        }
                     }
                     break;
                 default:

@@ -21,5 +21,7 @@ void Antant_yszj(Character *chara1, Character *chara2, Character *chara3, Charac
 void Antant_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void Lingren_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void CXK_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void Chen_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void Chen_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 
 #endif //QSZH_CHARACTER_SKILL_H

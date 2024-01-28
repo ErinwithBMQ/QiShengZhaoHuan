@@ -44,7 +44,7 @@ void MainPage()
                     break;
             }
         }
-        SDL_Delay(3);
+        SDL_Delay(5);
     }
 }
 
@@ -79,7 +79,7 @@ void WinBattle()
                     break;
             }
         }
-        SDL_Delay(3);
+        SDL_Delay(5);
     }
 }
 
@@ -101,7 +101,20 @@ void BeginBattle(Character *chara1, Character *chara2, Character *chara3,
         PresentCharacterGame(chara5, 5);
         PresentCharacterGame(chara6, 6);
 
+        TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 32);
+        SDL_Color color_message = {0xff, 0xff, 0xff, 0xff};
+
+        SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "请选择初始出战角色", color_message);
+        SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+        SDL_Rect rect_message = {.x = 470, .y = 330};
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+        SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
         SDL_RenderPresent(renderer);
+
+        TTF_CloseFont(font_message);
+        SDL_FreeSurface(surface_message);
+        SDL_DestroyTexture(texture_message);
 
         while (SDL_PollEvent(&event))
         {
@@ -155,7 +168,7 @@ void BeginBattle(Character *chara1, Character *chara2, Character *chara3,
                     break;
             }
         }
-        SDL_Delay(3);
+        SDL_Delay(5);
     }
 }
 
@@ -189,10 +202,19 @@ int InBattle(int *count, int *who_first, int tou[],
         SDL_RenderClear(renderer);
 
         ShowTheWhole(chara1, chara2, chara3, chara4, chara5, chara6);
-        ShowTouzi(tou);
+        ShowTou(tou);
         ShowButtom();
         ShowEndHH(who_fight);
         ShowIfEndTurn(if_final_a, if_final_b);
+
+        if (who_fight == 1)
+        {
+            ShowWeAction();
+        }
+        else
+        {
+            ShowEnemyAction();
+        }
 
         for (int i = 0; i < 5; ++i)
         {
@@ -214,7 +236,6 @@ int InBattle(int *count, int *who_first, int tou[],
         if (who_fight == 1 && if_final_a == false)
         {
             ChangeCharacterShanghai(*charanow, *chara_enemy_now);
-            ShowWeAction();
 
             int whichone = ChooseWhichSkill(charanow, tou, chara4, chara5, chara6, if_final_a);
 
@@ -324,10 +345,10 @@ int InBattle(int *count, int *who_first, int tou[],
                     (*charanow)->ysbf(chara1, chara2, chara3, *charanow);
                 }
 
-                if_all_attack = false;
-
                 ShowKillEnemyBlood(chara1, chara2, chara3, (*charanow)->shanghai[2] + (*charanow)->shanghai_more[2]);
                 YuanSuFuZhuo(*charanow, *chara_enemy_now);
+
+                if_all_attack = false;
 
                 (*charanow)->baofa_now = 0;
                 ChangeCharacterEnemy(chara_enemy_now, chara1, chara2, chara3);
@@ -366,8 +387,10 @@ int InBattle(int *count, int *who_first, int tou[],
 
         if (who_fight == 0 && if_final_b == false)  //对方行动
         {
-            //TODO:对手逻辑的编写.我方角色死后切换角色
-            ShowEnemyAction();
+            //TODO:对手逻辑的编写
+
+            SDL_Delay(1000);
+
             ChangeCharacterShanghai(*chara_enemy_now, *charanow);
             kill_blood(*chara_enemy_now, *charanow, 2);
             ShowKillWeBlood(chara4, chara5, chara6, (*chara_enemy_now)->shanghai[1] + (*chara_enemy_now)->shanghai_more[1]);
@@ -429,7 +452,7 @@ int AfterBattle(int *count, Character **chara_now, Character **chara_enemy_now,
 
             SDL_RenderPresent(renderer);
 
-            SDL_Delay(1500);
+            SDL_Delay(1000);
 
             TTF_CloseFont(font_summon);
             SDL_FreeSurface(surface_turn);
@@ -456,6 +479,7 @@ int AfterBattle(int *count, Character **chara_now, Character **chara_enemy_now,
                 return 0;
             }
         }
+        SDL_Delay(5);
     }
 
     SDL_RenderClear(renderer);
@@ -489,7 +513,7 @@ int AfterBattle(int *count, Character **chara_now, Character **chara_enemy_now,
 
     SDL_RenderPresent(renderer);
 
-    SDL_Delay(1500);
+    SDL_Delay(1000);
 
     TTF_CloseFont(font_summon);
     SDL_FreeSurface(surface_turn);
@@ -676,11 +700,26 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
                                 break;
                             }
                         }
+
+                        if (x >= 673 && x <= 967 && y>= 671 && y <= 734)
+                        {
+                            if (IfFirstChooseCharacter(&Chen) && count < 3)
+                            {
+                                *(chara[count]) = Chen;
+                                count++;
+                                break;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
                     }
                     break;
                 default:
                     break;
             }
         }
+        SDL_Delay(5);
     }
 }

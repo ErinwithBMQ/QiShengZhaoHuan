@@ -58,6 +58,11 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
     {
         srand((unsigned int)time(NULL));
         yuansu = rand() % 5;
+
+        if (yuansu == 3)
+        {
+            return;
+        }
     }
 
     summon->shanghai_more = 0;
@@ -87,13 +92,6 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
             summon->shanghai_more += 1;
             enemy->yuansu_fu[0] = false;
         }
-        else if (yuansu == 3) //冰系角色
-        {
-            summon->shanghai_more += 2;
-            summon->shanghai_more += 2;
-            enemy->yuansu_fu[0] = false;
-        }
-
         return;
     }
     else if (enemy->yuansu_fu[1]) //雷元素附着
@@ -116,13 +114,6 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
             summon->shanghai_more += 1;
             enemy->yuansu_fu[1] = false;
         }
-        else if (yuansu == 3) //冰系角色
-        {
-            summon->shanghai_more += 1;
-            summon->shanghai_more += 1;
-            enemy->yuansu_fu[1] = false;
-        }
-
         return;
     }
     else if (enemy->yuansu_fu[2]) //水元素附着
@@ -145,36 +136,6 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
             summon->shanghai_more += 1;
             enemy->yuansu_fu[2] = false;
         }
-        else if (yuansu == 3) //冰系角色
-        {
-            enemy->yuansu_fu[2] = false;
-        }
-        return;
-    }
-    else if (enemy->yuansu_fu[3]) //冰元素附着
-    {
-        if (yuansu == 1) //雷系角色
-        {
-            summon->shanghai_more += 1;
-            summon->shanghai_more += 1;
-            enemy->yuansu_fu[3] = false;
-        }
-        else if (yuansu == 0)  //火系角色
-        {
-            summon->shanghai_more += 2;
-            summon->shanghai_more += 2;
-            enemy->yuansu_fu[3] = false;
-        }
-        else if (yuansu == 4) //草系角色
-        {
-            summon->shanghai_more += 1;
-            summon->shanghai_more += 1;
-            enemy->yuansu_fu[3] = false;
-        }
-        else if (yuansu == 2) //水系角色
-        {
-            enemy->yuansu_fu[3] = false;
-        }
         return;
     }
     else if (enemy->yuansu_fu[4]) //草元素附着
@@ -192,12 +153,6 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
             enemy->yuansu_fu[4] = false;
         }
         else if (yuansu == 1) //雷系角色
-        {
-            summon->shanghai_more += 1;
-            summon->shanghai_more += 1;
-            enemy->yuansu_fu[4] = false;
-        }
-        else if (yuansu == 3) //冰系角色
         {
             summon->shanghai_more += 1;
             summon->shanghai_more += 1;

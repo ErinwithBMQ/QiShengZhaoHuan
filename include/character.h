@@ -9,7 +9,7 @@
 
 #include <stdbool.h>
 
-//元素对应：0火系，1雷系，2水系，3冰系，4草系
+//元素对应：0火系，1雷系，2水系，3风系，4草系
 
 typedef struct chara {
     int index;         //角色编号
@@ -25,12 +25,14 @@ typedef struct chara {
     bool zhuang[2];    //该角色其他状态.第一位是死亡，第二位是冰冻
     bool if_xuan;      //是否为选中状态
     bool if_chu;       //是否为当前出战角色
+    int special_state;
 
     SDL_Texture *image;          //角色正常图片
     SDL_Texture *image_dead;     //角色死亡图片
     SDL_Texture *image_choose;   //角色被选中图片
     SDL_Texture *image_message;  //角色信息图片
     SDL_Texture *image_message_big;  //角色信息图片（大）
+    SDL_Texture *image_special;
 
     void (*yszj)(struct chara *chara1, struct chara *chara2, struct chara *chara3, struct chara *chara);
     void (*ysbf)(struct chara *chara1, struct chara *chara2, struct chara *chara3, struct chara *chara);
@@ -43,6 +45,7 @@ extern Character Huoxing;
 extern Character Zihuang;
 extern Character Antant;
 extern Character CXK;
+extern Character Chen;
 
 extern SDL_Renderer *renderer;
 extern SDL_Window *window;
