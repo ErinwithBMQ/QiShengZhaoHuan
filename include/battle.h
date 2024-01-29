@@ -12,6 +12,7 @@
 extern bool if_all_attack;
 
 void ChangeCharacterShanghai(Character *chara, Character *enemy); //计算角色伤害并更新
+void ChangeCharacterShanghaiPu(Character *chara, Character *enemy);
 void CleanShanghai(Character *chara);  //清除加成伤害
 
 void Touzi(int tou[], int count, Character *chara);  //每回合开始显示第几回合，模拟掷骰子

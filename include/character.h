@@ -25,7 +25,9 @@ typedef struct chara {
     bool zhuang[2];    //该角色其他状态.第一位是死亡，第二位是冰冻
     bool if_xuan;      //是否为选中状态
     bool if_chu;       //是否为当前出战角色
-    int special_state;
+    int special_state; //特殊状态剩余次数
+    int huiorcount; //回合减少还是次数减少，0为无特殊状态，1为回合减少，2为次数减少
+    bool if_pugongfumo; //普通攻击是否处于附魔状态
 
     SDL_Texture *image;          //角色正常图片
     SDL_Texture *image_dead;     //角色死亡图片
@@ -49,6 +51,7 @@ extern Character Chen;
 
 extern SDL_Renderer *renderer;
 extern SDL_Window *window;
+extern Mix_Music *music;
 
 void quit_delete();
 

@@ -37,6 +37,12 @@ Character Alhaitham = {
         .zhuang = {0,0},
         .if_xuan = false,
         .if_chu = false,
+        .yszj = Alhaitham_yszj,
+        .ysbf = Alhaitham_ysbf,
+        .SpecialAddition = Alhaitham_SpecialAdditon,
+        .special_state = 0,
+        .huiorcount = 1,
+        .if_pugongfumo = false,
 };
 
 Character Lingren = {
@@ -58,7 +64,11 @@ Character Lingren = {
         .zhuang = {0,0},
         .if_xuan = false,
         .if_chu = false,
+        .yszj = Lingren_yszj,
         .ysbf = Lingren_ysbf,
+        .SpecialAddition = Lingren_SpecialAdditon,
+        .special_state = 0,
+        .huiorcount = 2,
 };
 
 Character Huoxing = {
@@ -146,6 +156,10 @@ Character CXK = {
         .if_xuan = false,
         .if_chu = false,
         .yszj = CXK_yszj,
+        .ysbf = CXK_ysbf,
+        .SpecialAddition = CXK_SpecialAddition,
+        .special_state = 10,
+        .huiorcount = 3,
 };
 
 Character Chen = {
@@ -214,6 +228,8 @@ int summon_index_enemy = 3;
 
 bool if_all_attack = false;
 
+Mix_Music *music;
+
 int main(int argc, char *argv[])
 {
     //初始化
@@ -227,6 +243,7 @@ int main(int argc, char *argv[])
     SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
     TTF_Init();
+    Mix_Init(MIX_INIT_MP3);
 
     SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
     SDL_RenderClear(renderer);
@@ -234,6 +251,13 @@ int main(int argc, char *argv[])
     atexit(&quit_delete);
     atexit(&CharacterImageDestroy);
     atexit(&SummonImageDestroy);
+
+    Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048);
+
+    music = Mix_LoadMUS("./res/music/01.mp3");
+
+    Mix_PlayMusic(music, 20);
+
 
     while (1)
     {

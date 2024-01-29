@@ -92,6 +92,73 @@ void ChangeCharacterShanghai(Character *chara, Character *enemy) //底层基础�
     }
 }
 
+void ChangeCharacterShanghaiPu(Character *chara, Character *enemy)
+{
+    if (chara->if_pugongfumo)
+    {
+        if (enemy->yuansu_fu[0]) //如果对方是火元素附着
+        {
+            if (chara->yuansu == 2) //水系角色
+            {
+                chara->shanghai_more[0] += 2;
+            }
+            else if (chara->yuansu == 1)  //雷系角色
+            {
+                chara->shanghai_more[0] += 2;
+            }
+            else if (chara->yuansu == 4) //草系角色
+            {
+                chara->shanghai_more[0] += 1;
+            }
+        }
+        else if (enemy->yuansu_fu[1]) //雷元素附着
+        {
+            if (chara->yuansu == 2) //水系角色
+            {
+                chara->shanghai_more[0] += 1;
+            }
+            else if (chara->yuansu == 0)  //火系角色
+            {
+                chara->shanghai_more[0] += 2;
+            }
+            else if (chara->yuansu == 4) //草系角色
+            {
+                chara->shanghai_more[0] += 1;
+            }
+        }
+        else if (enemy->yuansu_fu[2]) //水元素附着
+        {
+            if (chara->yuansu == 1) //雷系角色
+            {
+                chara->shanghai_more[0] += 1;
+            }
+            else if (chara->yuansu == 0)  //火系角色
+            {
+                chara->shanghai_more[0] += 2;
+            }
+            else if (chara->yuansu == 4) //草系角色
+            {
+                chara->shanghai_more[0] += 1;
+            }
+        }
+        else if (enemy->yuansu_fu[4]) //草元素附着
+        {
+            if (chara->yuansu == 2) //水系角色
+            {
+                chara->shanghai_more[0] += 1;
+            }
+            else if (chara->yuansu == 0)  //火系角色
+            {
+                chara->shanghai_more[0] += 1;
+            }
+            else if (chara->yuansu == 1) //雷系角色
+            {
+                chara->shanghai_more[0] += 1;
+            }
+        }
+    }
+}
+
 void Touzi(int tou[], int count, Character *chara)
 {
     SDL_Texture *texture_back = IMG_LoadTexture(renderer, "./res/image/water.jpg");
@@ -813,7 +880,7 @@ void ShowShanghai(Character *chara, int n)
     SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
     SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
 
-    if (n != 1)
+    if (n != 1 || (n == 1 && chara->if_pugongfumo == 1))
     {
         rect_message.x = 430;
         rect_message.y = 385;
@@ -1542,7 +1609,7 @@ void ShowTou(int tou[])
     char num[2] = {total + '0', '\0'};
     SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, num, color_message);
     SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
-    SDL_Rect rect_message = {.x = 1223, .y = 87};
+    SDL_Rect rect_message = {.x = 1223, .y = 84};
     SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
     SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
 

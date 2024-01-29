@@ -19,9 +19,23 @@ extern bool if_all_attack;
 
 void Antant_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void Antant_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+
+void Lingren_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void Lingren_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void Lingren_SpecialAdditon(Character *chara);
+void QingliuSkill(Character *chara4, Character *chara5, Character *chara6);
+
 void CXK_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void CXK_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void CXK_SpecialAddition(Character *chara);
 void Chen_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void Chen_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void Alhaitham_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void Alhaitham_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void Alhaitham_SpecialAdditon(Character *chara);
+
+void SpecialAdditionReduceTurn(Character *chara4, Character *chara5, Character *chara6);  //回合减少的特殊状态
+void SpecialAdditionReduceCountPu(Character *chara); //普攻减少的特殊状态
+void SpecialAdditionReduceCountAll(Character *chara);  //只要攻击就减少的特殊状态
 
 #endif //QSZH_CHARACTER_SKILL_H

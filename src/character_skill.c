@@ -91,6 +91,11 @@ void Antant_ysbf(Character *chara1, Character *chara2, Character *chara3, Charac
     summon_index_we++;
 }
 
+void Lingren_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara)
+{
+    chara->special_state = 3;
+}
+
 void Lingren_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara)
 {
     for (int i = 0; i < 3; ++i)
@@ -104,6 +109,25 @@ void Lingren_ysbf(Character *chara1, Character *chara2, Character *chara3, Chara
     *(summon_all[summon_index_we]) = Qingjing;
     summon_all[summon_index_we]->index_game = summon_index_we;
     summon_index_we++;
+}
+
+void Lingren_SpecialAdditon(Character *chara)
+{
+    chara->if_pugongfumo = true;
+    chara->shanghai_more[0] += 1;
+}
+
+void QingliuSkill(Character *chara4, Character *chara5, Character *chara6)
+{
+    for (int i = 0; i <= summon_index_we; ++i)
+    {
+        if (summon_all[i]->index == 2)
+        {
+            chara4->shanghai_more[0] += 1;
+            chara5->shanghai_more[0] += 1;
+            chara6->shanghai_more[0] += 1;
+        }
+    }
 }
 
 void CXK_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara)
@@ -120,6 +144,24 @@ void CXK_yszj(Character *chara1, Character *chara2, Character *chara3, Character
     *(summon_all[summon_index_we]) = Lanqiu;
     summon_all[summon_index_we]->index_game = summon_index_we;
     summon_index_we++;
+}
+
+void CXK_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara)
+{
+    Mix_HaltMusic();
+    music = Mix_LoadMUS("./res/music/Chicken.mp3");
+    Mix_PlayMusic(music, 20);
+}
+
+void CXK_SpecialAddition(Character *chara)
+{
+    for (int i = 0; i <= summon_index_we; ++i)
+    {
+        if (summon_all[i]->index == 3)
+        {
+            chara->shanghai_more[2] += 2;
+        }
+    }
 }
 
 void Chen_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara)
@@ -260,6 +302,60 @@ void Chen_ysbf(Character *chara1, Character *chara2, Character *chara3, Characte
         }
         return;
     }
+}
 
+void Alhaitham_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara)
+{
+    chara->special_state = 2;
+}
 
+void Alhaitham_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara)
+{
+    if (chara->special_state > 0)
+    {
+        chara->special_state = 0;
+    }
+    else
+    {
+        chara->special_state = 2;
+    }
+}
+
+void Alhaitham_SpecialAdditon(Character *chara)
+{
+    chara->if_pugongfumo = true;
+    chara->shanghai_more[0] += 1;
+    chara->shanghai_more[2] += 2;
+}
+
+void SpecialAdditionReduceTurn(Character *chara4, Character *chara5, Character *chara6)
+{
+    if (chara4->special_state > 0 && chara4->huiorcount == 1)
+    {
+        chara4->special_state--;
+    }
+    if (chara5->special_state > 0 && chara5->huiorcount == 1)
+    {
+        chara5->special_state--;
+    }
+    if (chara6->special_state > 0 && chara6->huiorcount == 1)
+    {
+        chara6->special_state--;
+    }
+}
+
+void SpecialAdditionReduceCountPu(Character *chara)
+{
+    if (chara->special_state > 0 && chara->huiorcount == 2)
+    {
+        chara->special_state--;
+    }
+}
+
+void SpecialAdditionReduceCountAll(Character *chara)
+{
+    if (chara->special_state > 0 && chara->huiorcount == 3)
+    {
+        chara->special_state--;
+    }
 }

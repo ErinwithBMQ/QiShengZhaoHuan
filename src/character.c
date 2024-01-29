@@ -18,24 +18,28 @@ void CharacterImageLoad()
     Alhaitham.image_dead = IMG_LoadTexture(renderer, "./res/image/1_dead.png");
     Alhaitham.image_message = IMG_LoadTexture(renderer, "./res/image/1_message.png");
     Alhaitham.image_message_big = IMG_LoadTexture(renderer, "./res/image/1_message_big.png");
+    Alhaitham.image_special = IMG_LoadTexture(renderer, "./res/image/1_special.png");
 
     Lingren.image = IMG_LoadTexture(renderer, "./res/image/2.png");
     Lingren.image_choose = IMG_LoadTexture(renderer, "./res/image/2_xuan.png");
     Lingren.image_dead = IMG_LoadTexture(renderer, "./res/image/2_dead.png");
     Lingren.image_message = IMG_LoadTexture(renderer, "./res/image/2_message.png");
     Lingren.image_message_big = IMG_LoadTexture(renderer, "./res/image/2_message_big.png");
+    Lingren.image_special = IMG_LoadTexture(renderer, "./res/image/2_special.png");
 
     Huoxing.image = IMG_LoadTexture(renderer, "./res/image/3.png");
     Huoxing.image_choose = IMG_LoadTexture(renderer, "./res/image/3_xuan.png");
     Huoxing.image_dead = IMG_LoadTexture(renderer, "./res/image/3_dead.png");
     Huoxing.image_message = IMG_LoadTexture(renderer, "./res/image/3_message.png");
     Huoxing.image_message_big = IMG_LoadTexture(renderer, "./res/image/3_message_big.png");
+    Huoxing.image_special = IMG_LoadTexture(renderer, "./res/image/3_special.png");
 
     Zihuang.image = IMG_LoadTexture(renderer, "./res/image/4.png");
     Zihuang.image_choose = IMG_LoadTexture(renderer, "./res/image/4_xuan.png");
     Zihuang.image_dead = IMG_LoadTexture(renderer, "./res/image/4_dead.png");
     Zihuang.image_message = IMG_LoadTexture(renderer, "./res/image/4_message.png");
     Zihuang.image_message_big = IMG_LoadTexture(renderer, "./res/image/4_message_big.png");
+    Zihuang.image_special = IMG_LoadTexture(renderer, "./res/image/4_special.png");
 
     Antant.image = IMG_LoadTexture(renderer, "./res/image/5.png");
     Antant.image_choose = IMG_LoadTexture(renderer, "./res/image/5_xuan.png");
@@ -63,42 +67,49 @@ void CharacterImageDestroy()
     SDL_DestroyTexture(Alhaitham.image_dead);
     SDL_DestroyTexture(Alhaitham.image_message);
     SDL_DestroyTexture(Alhaitham.image_message_big);
+    SDL_DestroyTexture(Alhaitham.image_special);
 
     SDL_DestroyTexture(Lingren.image);
     SDL_DestroyTexture(Lingren.image_dead);
     SDL_DestroyTexture(Lingren.image_choose);
     SDL_DestroyTexture(Lingren.image_message);
     SDL_DestroyTexture(Lingren.image_message_big);
+    SDL_DestroyTexture(Lingren.image_special);
 
     SDL_DestroyTexture(Huoxing.image);
     SDL_DestroyTexture(Huoxing.image_dead);
     SDL_DestroyTexture(Huoxing.image_choose);
     SDL_DestroyTexture(Huoxing.image_message);
     SDL_DestroyTexture(Huoxing.image_message_big);
+    SDL_DestroyTexture(Huoxing.image_special);
 
     SDL_DestroyTexture(Zihuang.image);
     SDL_DestroyTexture(Zihuang.image_dead);
     SDL_DestroyTexture(Zihuang.image_choose);
     SDL_DestroyTexture(Zihuang.image_message);
     SDL_DestroyTexture(Zihuang.image_message_big);
+    SDL_DestroyTexture(Zihuang.image_special);
 
     SDL_DestroyTexture(Antant.image);
     SDL_DestroyTexture(Antant.image_dead);
     SDL_DestroyTexture(Antant.image_choose);
     SDL_DestroyTexture(Antant.image_message);
     SDL_DestroyTexture(Antant.image_message_big);
+    SDL_DestroyTexture(Antant.image_special);
 
     SDL_DestroyTexture(CXK.image);
     SDL_DestroyTexture(CXK.image_dead);
     SDL_DestroyTexture(CXK.image_choose);
     SDL_DestroyTexture(CXK.image_message);
     SDL_DestroyTexture(CXK.image_message_big);
+    SDL_DestroyTexture(CXK.image_special);
 
     SDL_DestroyTexture(Chen.image);
     SDL_DestroyTexture(Chen.image_dead);
     SDL_DestroyTexture(Chen.image_choose);
     SDL_DestroyTexture(Chen.image_message);
     SDL_DestroyTexture(Chen.image_message_big);
+    SDL_DestroyTexture(Chen.image_special);
 }
 
 void PresentCharacterGame(Character *chara, int num)
@@ -233,6 +244,28 @@ void PresentCharacterGame(Character *chara, int num)
         {
             rect_star.y += 27;
             SDL_RenderCopy(renderer, texture_star, NULL, &rect_star);
+        }
+
+        int special_num = chara->special_state;
+        if (special_num > 0)
+        {
+            SDL_Rect rect_special = {.x = rect.x + 2, .y = rect.y + 175};
+            SDL_QueryTexture(chara->image_special, NULL, NULL, &rect_special.w, &rect_special.h);
+            SDL_RenderCopy(renderer, chara->image_special, NULL, &rect_special);
+
+            TTF_Font *font_specialnum = TTF_OpenFont("./res/HYWH85W.ttf", 24);
+            SDL_Color color_specialnum = {0xff, 0xff, 0xff, 0xff};
+            char specialnum[2] = {special_num + '0', '\0'};
+            rect_special.x += 30;
+            SDL_Surface *surface_specialnum = TTF_RenderText_Blended(font_specialnum, specialnum, color_specialnum);
+            SDL_Texture *texture_specialnum = SDL_CreateTextureFromSurface(renderer, surface_specialnum);
+
+            SDL_QueryTexture(texture_specialnum, NULL, NULL, &rect_special.w, &rect_special.h);
+            SDL_RenderCopy(renderer, texture_specialnum, NULL, &rect_special);
+
+            TTF_CloseFont(font_specialnum);
+            SDL_FreeSurface(surface_specialnum);
+            SDL_DestroyTexture(texture_specialnum);
         }
 
         //有开就有关
@@ -393,8 +426,11 @@ void quit_delete()
 {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    Mix_CloseAudio();
+    Mix_FreeMusic(music);
 
     IMG_Quit();
     SDL_Quit();
     TTF_Quit();
+    Mix_Quit();
 }
