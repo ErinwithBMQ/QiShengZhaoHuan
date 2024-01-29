@@ -58,6 +58,13 @@ void CharacterImageLoad()
     Chen.image_dead = IMG_LoadTexture(renderer, "./res/image/7_dead.png");
     Chen.image_message = IMG_LoadTexture(renderer, "./res/image/7_message.png");
     Chen.image_message_big = IMG_LoadTexture(renderer, "./res/image/7_message_big.png");
+
+    Ren.image = IMG_LoadTexture(renderer, "./res/image/9.png");
+    Ren.image_choose = IMG_LoadTexture(renderer, "./res/image/9_xuan.png");
+    Ren.image_dead = IMG_LoadTexture(renderer, "./res/image/9_dead.png");
+    Ren.image_message = IMG_LoadTexture(renderer, "./res/image/9_message.png");
+    Ren.image_message_big = IMG_LoadTexture(renderer, "./res/image/9_message_big.png");
+    Ren.image_special = IMG_LoadTexture(renderer, "./res/image/9_special.png");
 }
 
 void CharacterImageDestroy()
@@ -110,6 +117,13 @@ void CharacterImageDestroy()
     SDL_DestroyTexture(Chen.image_message);
     SDL_DestroyTexture(Chen.image_message_big);
     SDL_DestroyTexture(Chen.image_special);
+
+    SDL_DestroyTexture(Ren.image);
+    SDL_DestroyTexture(Ren.image_choose);
+    SDL_DestroyTexture(Ren.image_dead);
+    SDL_DestroyTexture(Ren.image_message);
+    SDL_DestroyTexture(Ren.image_message_big);
+    SDL_DestroyTexture(Ren.image_special);
 }
 
 void PresentCharacterGame(Character *chara, int num)
@@ -247,7 +261,7 @@ void PresentCharacterGame(Character *chara, int num)
         }
 
         int special_num = chara->special_state;
-        if (special_num > 0)
+        if (special_num > 0 && special_num != 10)
         {
             SDL_Rect rect_special = {.x = rect.x + 2, .y = rect.y + 175};
             SDL_QueryTexture(chara->image_special, NULL, NULL, &rect_special.w, &rect_special.h);

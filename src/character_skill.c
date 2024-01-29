@@ -311,11 +311,11 @@ void Alhaitham_yszj(Character *chara1, Character *chara2, Character *chara3, Cha
 
 void Alhaitham_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara)
 {
-    if (chara->special_state > 0)
+    if (chara->special_state == 2)
     {
         chara->special_state = 0;
     }
-    else
+    else if (chara->special_state == 0)
     {
         chara->special_state = 2;
     }
@@ -325,7 +325,152 @@ void Alhaitham_SpecialAdditon(Character *chara)
 {
     chara->if_pugongfumo = true;
     chara->shanghai_more[0] += 1;
-    chara->shanghai_more[2] += 2;
+    if (chara->special_state == 1)
+    {
+        chara->shanghai_more[2] += 1;
+    }
+    else if (chara->special_state == 2)
+    {
+        chara->shanghai_more[2] += 2;
+    }
+}
+
+void Huoxing_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara)
+{
+    chara->special_state = 2;
+}
+
+void Huoxing_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara)
+{
+    if (chara->special_state > 0)
+    {
+        chara->xue += 2;
+        if (chara->xue > 10)
+        {
+            chara->xue = 10;
+        }
+    }
+}
+
+void Huoxing_SpecialAdditon(Character *chara)
+{
+    chara->if_pugongfumo = true;
+    chara->shanghai_more[0] += 1;
+    chara->shanghai_more[2] += 3;
+}
+
+void Zihuang_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara)
+{
+    chara->special_state = 3;
+}
+
+void Zihuang_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara)
+{
+    if (chara->special_state > 0)
+    {
+        chara->xue = 6;
+    }
+}
+
+void Zihuang_SpecialAdditon(Character *chara)
+{
+    if (chara->xue == 9 || chara->xue == 6)
+    {
+        chara->shanghai_more[0] += 3;
+        chara->shanghai_more[1] += 3;
+        chara->shanghai_more[2] += 3;
+    }
+}
+
+void Ren_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara)
+{
+    if (chara->special_state > 0)
+    {
+        chara->xue++;
+        if (chara->xue > 10)
+        {
+            chara->xue = 10;
+        }
+    }
+
+    chara->special_state = 2;
+}
+
+void Ren_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara)
+{
+    chara->xue = 5;
+    if_all_attack = true;
+    if (chara1->if_chu == 1)
+    {
+        if (chara2->hudun > 0)
+        {
+            chara2->hudun--;
+        }
+        else if (chara2->xue > 0)
+        {
+            chara2->xue--;
+        }
+
+        if (chara3->hudun > 0)
+        {
+            chara3->hudun--;
+        }
+        else if (chara3->xue > 0)
+        {
+            chara3->xue--;
+        }
+        return;
+    }
+
+    if (chara2->if_chu == 1)
+    {
+        if (chara1->hudun > 0)
+        {
+            chara1->hudun--;
+        }
+        else if (chara1->xue > 0)
+        {
+            chara1->xue--;
+        }
+
+        if (chara3->hudun > 0)
+        {
+            chara3->hudun--;
+        }
+        else if (chara3->xue > 0)
+        {
+            chara3->xue--;
+        }
+        return;
+    }
+
+    if (chara3->if_chu == 1)
+    {
+        if (chara2->hudun > 0)
+        {
+            chara2->hudun--;
+        }
+        else if (chara2->xue > 0)
+        {
+            chara2->xue--;
+        }
+
+        if (chara1->hudun > 0)
+        {
+            chara1->hudun--;
+        }
+        else if (chara1->xue > 0)
+        {
+            chara1->xue--;
+        }
+        return;
+    }
+}
+
+void Ren_SpecialAddition(Character *chara)
+{
+    chara->if_pugongfumo = true;
+    chara->shanghai_more[0] += 1;
 }
 
 void SpecialAdditionReduceTurn(Character *chara4, Character *chara5, Character *chara6)
@@ -354,6 +499,18 @@ void SpecialAdditionReduceCountPu(Character *chara)
 
 void SpecialAdditionReduceCountAll(Character *chara)
 {
+    if (chara->index == 4)
+    {
+        if (chara->xue == 9 || chara->xue == 6)
+        {
+            if (chara->special_state > 0 && chara->huiorcount == 3)
+            {
+                chara->special_state--;
+            }
+        }
+        return;
+    }
+
     if (chara->special_state > 0 && chara->huiorcount == 3)
     {
         chara->special_state--;

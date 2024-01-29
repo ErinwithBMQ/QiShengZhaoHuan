@@ -26,7 +26,7 @@ typedef struct chara {
     bool if_xuan;      //是否为选中状态
     bool if_chu;       //是否为当前出战角色
     int special_state; //特殊状态剩余次数
-    int huiorcount; //回合减少还是次数减少，0为无特殊状态，1为回合减少，2为次数减少
+    int huiorcount; //回合减少还是次数减少，0为无特殊状态，1为回合减少，2为普攻次数减少，3为攻击次数减少
     bool if_pugongfumo; //普通攻击是否处于附魔状态
 
     SDL_Texture *image;          //角色正常图片
@@ -48,6 +48,7 @@ extern Character Zihuang;
 extern Character Antant;
 extern Character CXK;
 extern Character Chen;
+extern Character Ren;
 
 extern SDL_Renderer *renderer;
 extern SDL_Window *window;

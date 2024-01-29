@@ -252,7 +252,7 @@ void ShowTouzi(int tou[])
     SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
     SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
 
-    surface_message = TTF_RenderUTF8_Solid(font_message, "冰元素骰个数：", color_message);
+    surface_message = TTF_RenderUTF8_Solid(font_message, "风元素骰个数：", color_message);
     texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
     rect_message.x = 960;
     rect_message.y = 340;

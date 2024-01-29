@@ -184,6 +184,8 @@ int InBattle(int *count, int *who_first, int tou[],
     bool if_final_b = false;
     int who_fight = *who_first;
 
+    int enemy_count = 0;
+
     while (1)
     {
         if (if_final_a == true && if_final_b == true)
@@ -363,6 +365,7 @@ int InBattle(int *count, int *who_first, int tou[],
             {
                 //TODO: 造成伤害动画
                 ReduceTou(*charanow, tou, 3);
+                SpecialAdditionReduceCountAll(*charanow);
 
                 if ((*charanow)->ysbf != NULL)
                 {
@@ -370,7 +373,6 @@ int InBattle(int *count, int *who_first, int tou[],
                 }
 
                 kill_blood(*charanow, *chara_enemy_now, 3);
-                SpecialAdditionReduceCountAll(*charanow);
 
                 ShowKillEnemyBlood(chara1, chara2, chara3, (*charanow)->shanghai[2] + (*charanow)->shanghai_more[2]);
                 YuanSuFuZhuo(*charanow, *chara_enemy_now);
@@ -721,6 +723,20 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
                             if (IfFirstChooseCharacter(&CXK) && count < 3)
                             {
                                 *(chara[count]) = CXK;
+                                count++;
+                                break;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        if (x >= 673 && x <= 967 && y>= 591 && y <= 671)
+                        {
+                            if (IfFirstChooseCharacter(&Ren) && count < 3)
+                            {
+                                *(chara[count]) = Ren;
                                 count++;
                                 break;
                             }

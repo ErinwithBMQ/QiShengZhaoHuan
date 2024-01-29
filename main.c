@@ -90,6 +90,11 @@ Character Huoxing = {
         .zhuang = {0,0},
         .if_xuan = false,
         .if_chu = false,
+        .yszj = Huoxing_yszj,
+        .ysbf = Huoxing_ysbf,
+        .SpecialAddition = Huoxing_SpecialAdditon,
+        .special_state = 0,
+        .huiorcount = 1,
 };
 
 Character Zihuang = {
@@ -111,6 +116,11 @@ Character Zihuang = {
         .zhuang = {0,0},
         .if_xuan = false,
         .if_chu = false,
+        .yszj = Zihuang_yszj,
+        .ysbf = Zihuang_ysbf,
+        .SpecialAddition = Zihuang_SpecialAdditon,
+        .special_state = 0,
+        .huiorcount = 3,
 };
 
 Character Antant = {
@@ -159,7 +169,7 @@ Character CXK = {
         .ysbf = CXK_ysbf,
         .SpecialAddition = CXK_SpecialAddition,
         .special_state = 10,
-        .huiorcount = 3,
+        .huiorcount = 0,
 };
 
 Character Chen = {
@@ -183,6 +193,32 @@ Character Chen = {
         .if_chu = false,
         .yszj = Chen_yszj,
         .ysbf = Chen_ysbf,
+};
+
+Character Ren = {
+        .index = 9,
+        .xue = 10,
+        .hudun = 0,
+        .name = {
+                "刃",
+                "支离剑",
+                "地狱变",
+                "大辟万死",
+        },
+        .baofa_num = 3,
+        .baofa_now = 0,
+        .shanghai = {2,2,6},
+        .shanghai_more = {0, 0, 0},
+        .yuansu = 3,
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+        .if_chu = false,
+        .yszj = Ren_yszj,
+        .ysbf = Ren_ysbf,
+        .SpecialAddition = Ren_SpecialAddition,
+        .special_state = 0,
+        .huiorcount = 1,
 };
 
 Summon Zhujiao = {
@@ -254,13 +290,12 @@ int main(int argc, char *argv[])
 
     Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048);
 
-    music = Mix_LoadMUS("./res/music/01.mp3");
-
-    Mix_PlayMusic(music, 20);
-
-
     while (1)
     {
+        music = Mix_LoadMUS("./res/music/BGM1.mp3");
+
+        Mix_PlayMusic(music, 20);
+
         MainPage();
 
         //角色初始化
@@ -312,6 +347,11 @@ int main(int argc, char *argv[])
         chara2.if_chu = 1;
 
         int count = 1;   //当前回合数
+
+
+        music = Mix_LoadMUS("./res/music/BGM2.mp3");
+
+        Mix_PlayMusic(music, 20);
 
         //作战开始前选择出战角色
 

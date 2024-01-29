@@ -28,11 +28,26 @@ void QingliuSkill(Character *chara4, Character *chara5, Character *chara6);
 void CXK_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void CXK_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void CXK_SpecialAddition(Character *chara);
+
 void Chen_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void Chen_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+
 void Alhaitham_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void Alhaitham_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void Alhaitham_SpecialAdditon(Character *chara);
+
+void Huoxing_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void Huoxing_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void Huoxing_SpecialAdditon(Character *chara);
+
+void Zihuang_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void Zihuang_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void Zihuang_SpecialAdditon(Character *chara);
+
+void Ren_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void Ren_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void Ren_SpecialAddition(Character *chara);
+
 
 void SpecialAdditionReduceTurn(Character *chara4, Character *chara5, Character *chara6);  //回合减少的特殊状态
 void SpecialAdditionReduceCountPu(Character *chara); //普攻减少的特殊状态
