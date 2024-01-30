@@ -384,15 +384,6 @@ void Zihuang_SpecialAdditon(Character *chara)
 
 void Ren_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara)
 {
-    if (chara->special_state > 0)
-    {
-        chara->xue++;
-        if (chara->xue > 10)
-        {
-            chara->xue = 10;
-        }
-    }
-
     chara->special_state = 2;
 }
 
@@ -471,6 +462,20 @@ void Ren_SpecialAddition(Character *chara)
 {
     chara->if_pugongfumo = true;
     chara->shanghai_more[0] += 1;
+}
+
+void RenPuHuiXue(Character *chara)
+{
+    if (chara->index == 9)
+    {
+        if (chara->special_state > 0)
+        {
+            if (chara->xue < 10)
+            {
+                chara->xue++;
+            }
+        }
+    }
 }
 
 void SpecialAdditionReduceTurn(Character *chara4, Character *chara5, Character *chara6)

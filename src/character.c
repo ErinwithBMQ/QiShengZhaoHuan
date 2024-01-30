@@ -282,6 +282,60 @@ void PresentCharacterGame(Character *chara, int num)
             SDL_DestroyTexture(texture_specialnum);
         }
 
+        if (chara->if_chu && chara->index_game >= 4)
+        {
+            bool if_both = false;
+            if (jihua > 0)
+            {
+                if_both = true;
+                SDL_Texture *texture_jihua = IMG_LoadTexture(renderer, "./res/image/jihua.png");
+                SDL_Rect rect_jihua = {.x = rect.x, .y = rect.y + 205};
+                SDL_QueryTexture(texture_jihua, NULL, NULL, &rect_jihua.w, &rect_jihua.h);
+                SDL_RenderCopy(renderer, texture_jihua, NULL, &rect_jihua);
+
+                TTF_Font *font_jihuanum = TTF_OpenFont("./res/HYWH85W.ttf", 24);
+                SDL_Color color_jihuanum = {0xff, 0xff, 0xff, 0xff};
+                char jihuanum[2] = {jihua + '0', '\0'};
+                rect_jihua.x += 30;
+                SDL_Surface *surface_jihuanum = TTF_RenderText_Blended(font_jihuanum, jihuanum, color_jihuanum);
+                SDL_Texture *texture_jihuanum = SDL_CreateTextureFromSurface(renderer, surface_jihuanum);
+                SDL_QueryTexture(texture_jihuanum, NULL, NULL, &rect_jihua.w, &rect_jihua.h);
+                SDL_RenderCopy(renderer, texture_jihuanum, NULL, &rect_jihua);
+
+                SDL_DestroyTexture(texture_jihuanum);
+                SDL_DestroyTexture(texture_jihua);
+                SDL_FreeSurface(surface_jihuanum);
+                TTF_CloseFont(font_jihuanum);
+            }
+
+            if (caoyuanhe > 0)
+            {
+                SDL_Texture *texture_he = IMG_LoadTexture(renderer, "./res/image/caoyuanhe.png");
+                SDL_Rect rect_he = {.x = rect.x, .y = rect.y + 205};
+                if (if_both)
+                {
+                    rect_he.x += 60;
+                }
+                SDL_QueryTexture(texture_he, NULL, NULL, &rect_he.w, &rect_he.h);
+                SDL_RenderCopy(renderer, texture_he, NULL, &rect_he);
+
+                TTF_Font *font_henum = TTF_OpenFont("./res/HYWH85W.ttf", 24);
+                SDL_Color color_henum = {0xff, 0xff, 0xff, 0xff};
+                char henum[2] = {caoyuanhe + '0', '\0'};
+                rect_he.x += 30;
+                SDL_Surface *surface_henum = TTF_RenderText_Blended(font_henum, henum, color_henum);
+                SDL_Texture *texture_henum = SDL_CreateTextureFromSurface(renderer, surface_henum);
+                SDL_QueryTexture(texture_henum, NULL, NULL, &rect_he.w, &rect_he.h);
+                SDL_RenderCopy(renderer, texture_henum, NULL, &rect_he);
+
+                SDL_DestroyTexture(texture_henum);
+                SDL_DestroyTexture(texture_he);
+                SDL_FreeSurface(surface_henum);
+                TTF_CloseFont(font_henum);
+            }
+
+        }
+
         //有开就有关
         SDL_FreeSurface(surface_yuansu);
         SDL_DestroyTexture(texture_xue);

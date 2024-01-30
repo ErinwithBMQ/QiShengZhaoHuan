@@ -12,6 +12,7 @@
 #include <record.h>
 #include <summon.h>
 #include <character_skill.h>
+#include <ElementalReaction.h>
 
 #undef main
 
@@ -254,6 +255,17 @@ Summon Lanqiu = {
         .index_game = 0,
 };
 
+Summon Fire = {
+        .index = 4,
+        .name = "燃烧火焰",
+        .yuansu = 0,
+        .shanghai = 1,
+        .shanghai_more = 0,
+        .turn = 2,
+        .turn_now = 1,
+        .index_game = 0,
+};
+
 SDL_Window *window;
 SDL_Renderer *renderer;
 
@@ -265,6 +277,9 @@ int summon_index_enemy = 3;
 bool if_all_attack = false;
 
 Mix_Music *music;
+
+int jihua;
+int caoyuanhe;
 
 int main(int argc, char *argv[])
 {
@@ -309,6 +324,10 @@ int main(int argc, char *argv[])
         Character chara5;
         Character chara6;
 
+        chara1.index_game = 1;
+        chara2.index_game = 2;
+        chara3.index_game = 3;
+
         memset(&chara4, 0, sizeof(chara4));
         memset(&chara5, 0, sizeof(chara5));
         memset(&chara6, 0, sizeof(chara6));
@@ -347,6 +366,8 @@ int main(int argc, char *argv[])
         chara2.if_chu = 1;
 
         int count = 1;   //当前回合数
+        jihua = 0;
+        caoyuanhe = 0;
 
 
         music = Mix_LoadMUS("./res/music/BGM2.mp3");

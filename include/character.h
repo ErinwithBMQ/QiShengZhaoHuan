@@ -13,6 +13,7 @@
 
 typedef struct chara {
     int index;         //角色编号
+    int index_game;    //游戏内编号。1~3为敌方角色， 4~6为我方角色
     int xue;           //角色血量
     int hudun;         //角色目前护盾数
     char *name[4];     //依次存放名字，普通攻击，元素战技，元素爆发的名字
@@ -22,11 +23,11 @@ typedef struct chara {
     int shanghai_more[3]; //依次存放三种攻击因为元素反应或技能效果的加成伤害
     int yuansu;       //该角色元素类型
     bool yuansu_fu[5]; //当前角色身上的元素附着状态
-    bool zhuang[2];    //该角色其他状态.第一位是死亡，第二位是冰冻
+    bool zhuang[2];
     bool if_xuan;      //是否为选中状态
     bool if_chu;       //是否为当前出战角色
     int special_state; //特殊状态剩余次数
-    int huiorcount; //回合减少还是次数减少，0为无特殊状态，1为回合减少，2为普攻次数减少，3为攻击次数减少
+    int huiorcount; // 回合减少还是次数减少，0为无特殊状态，1为回合减少，2为普攻次数减少，3为攻击次数减少
     bool if_pugongfumo; //普通攻击是否处于附魔状态
 
     SDL_Texture *image;          //角色正常图片
@@ -53,6 +54,9 @@ extern Character Ren;
 extern SDL_Renderer *renderer;
 extern SDL_Window *window;
 extern Mix_Music *music;
+
+extern int jihua;
+extern int caoyuanhe;
 
 void quit_delete();
 

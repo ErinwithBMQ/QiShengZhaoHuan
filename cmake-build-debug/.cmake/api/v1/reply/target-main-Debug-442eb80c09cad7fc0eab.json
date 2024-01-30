@@ -42,7 +42,7 @@
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 20,
+				"line" : 21,
 				"parent" : 0
 			},
 			{
@@ -97,7 +97,8 @@
 				4,
 				5,
 				6,
-				7
+				7,
+				8
 			]
 		}
 	],
@@ -176,7 +177,8 @@
 				4,
 				5,
 				6,
-				7
+				7,
+				8
 			]
 		}
 	],
@@ -228,6 +230,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "src/character_skill.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/ElementalReaction.c",
 			"sourceGroupIndex" : 0
 		}
 	],

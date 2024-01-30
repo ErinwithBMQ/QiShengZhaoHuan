@@ -47,6 +47,7 @@ void Zihuang_SpecialAdditon(Character *chara);
 void Ren_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void Ren_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void Ren_SpecialAddition(Character *chara);
+void RenPuHuiXue(Character *chara);
 
 
 void SpecialAdditionReduceTurn(Character *chara4, Character *chara5, Character *chara6);  //回合减少的特殊状态

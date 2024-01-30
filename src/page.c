@@ -2,6 +2,8 @@
 // Created by Erin on 2024/1/15.
 //
 
+// TODO：1.深度元素反应  2.行动牌  3.战斗日志  4.战斗动画  5.难度选择以及对手逻辑  6.元素骰子重投
+
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -12,6 +14,7 @@
 #include <page.h>
 #include <summon.h>
 #include <character_skill.h>
+#include <ElementalReaction.h>
 
 void MainPage()
 {
@@ -180,15 +183,16 @@ int InBattle(int *count, int *who_first, int tou[],
 {
     SDL_RenderClear(renderer);
 
+    // 初始化是否结束回合，谁先开始行动
     bool if_final_a = false;
     bool if_final_b = false;
     int who_fight = *who_first;
 
-    int enemy_count = 0;
+    int enemy_count = 0;  //对方行动步骤
 
     while (1)
     {
-        if (if_final_a == true && if_final_b == true)
+        if (if_final_a == true && if_final_b == true)  //特殊情况：两方都结束回合但我方角色死亡需要切换角色
         {
             if ((*charanow)->xue == 0)
             {
@@ -197,10 +201,11 @@ int InBattle(int *count, int *who_first, int tou[],
             }
             else
             {
-                break;
+                break;  //结束本回合
             }
         }
 
+        //页面显示
 
         SDL_RenderClear(renderer);
 
@@ -229,6 +234,8 @@ int InBattle(int *count, int *who_first, int tou[],
 
         SDL_RenderPresent(renderer);
 
+
+        //我方角色死亡强制切换角色
         if ((*charanow)->xue == 0)
         {
             ChangeCharacterWhenDead(charanow, chara4, chara5, chara6);
@@ -236,11 +243,11 @@ int InBattle(int *count, int *who_first, int tou[],
             continue;
         }
 
-        if (who_fight == 1 && if_final_a == false)
+        if (who_fight == 1 && if_final_a == false)  //我方行动
         {
-            ChangeCharacterShanghai(*charanow, *chara_enemy_now);
+            ChangeCharacterShanghai(*charanow, *chara_enemy_now);  //提前计算基础元素反应伤害
 
-            if ((*charanow)->special_state > 0)
+            if ((*charanow)->special_state > 0)  //调用角色本身特殊状态函数
             {
                 if ((*charanow)->SpecialAddition != NULL)
                 {
@@ -252,9 +259,17 @@ int InBattle(int *count, int *who_first, int tou[],
                 (*charanow)->if_pugongfumo = false;
             }
 
-            ChangeCharacterShanghaiPu(*charanow, *chara_enemy_now);
-            QingliuSkill(chara4, chara5, chara6);
 
+            //普攻附魔后计算基础元素反应增伤
+            ChangeCharacterShanghaiPu(*charanow, *chara_enemy_now);
+
+            //特殊增伤计算
+            QingliuSkill(chara4, chara5, chara6);
+            // TODO：激化、草原核的增伤
+            JihuaAddition(*charanow);
+            CaoyuanheAddition(*charanow);
+
+            //选择哪个技能
             int whichone = ChooseWhichSkill(charanow, tou, chara4, chara5, chara6, if_final_a);
 
             if (whichone == -1) //退出战斗
@@ -282,26 +297,44 @@ int InBattle(int *count, int *who_first, int tou[],
             else if (whichone == 1) //使用普通攻击
             {
                 //TODO: 造成伤害动画,元素反应，特殊效果，召唤物
-                ReduceTou(*charanow, tou, 1);
-                kill_blood(*charanow, *chara_enemy_now, 1);
-                ShowKillEnemyBlood(chara1, chara2, chara3, (*charanow)->shanghai[0] + (*charanow)->shanghai_more[0]);
+                ReduceTou(*charanow, tou, 1);  //减少骰子
+                kill_blood(*charanow, *chara_enemy_now, 1);  //扣血
 
+                // TODO：深度元素反应
+
+                //如果有附魔那就造成元素附着
                 if ((*charanow)->if_pugongfumo)
                 {
                     YuanSuFuZhuo(*charanow, *chara_enemy_now);
+                    JihuaReduce(*charanow);
+                    CaoyuanheReduce(*charanow);
+                    ChooseWhichReaction(*charanow, chara_enemy_now, chara1, chara2, chara3);
                 }
 
+                ShowKillEnemyBlood(chara1, chara2, chara3, (*charanow)->shanghai[0] + (*charanow)->shanghai_more[0]);  //展示扣血动画
+
+                //充能增加
                 if ((*charanow)->baofa_now < (*charanow)->baofa_num)
                 {
                     (*charanow)->baofa_now++;
                 }
 
+                //刃的回血机制判断
+                RenPuHuiXue(*charanow);
+
+                //关闭全部攻击
+                if_all_attack = false;
+
+                //是否减少特殊状态数目
                 SpecialAdditionReduceCountPu(*charanow);
                 SpecialAdditionReduceCountAll(*charanow);
 
+                //敌方是否要强制切换角色
                 ChangeCharacterEnemy(chara_enemy_now, chara1, chara2, chara3);
+                //判断是否结束游戏
                 int n = if_end(chara1, chara2, chara3, chara4, chara5, chara6);
-                if (n == 0)
+
+                if (n == 0)  //不结束，对方行动
                 {
                     if (!if_final_b)
                     {
@@ -310,11 +343,11 @@ int InBattle(int *count, int *who_first, int tou[],
 
                     continue;
                 }
-                else if (n == 1)
+                else if (n == 1)  //我方胜利
                 {
                     return 1;
                 }
-                else if (n == -1)
+                else if (n == -1)  //地方胜利
                 {
                     return 0;
                 }
@@ -325,10 +358,16 @@ int InBattle(int *count, int *who_first, int tou[],
                 ReduceTou(*charanow, tou, 2);
                 kill_blood(*charanow, *chara_enemy_now, 2);
 
+                JihuaReduce(*charanow);
+                CaoyuanheReduce(*charanow);
+
+                ChooseWhichReaction(*charanow, chara_enemy_now, chara1, chara2, chara3);
+
                 if ((*charanow)->yszj != NULL)
                 {
                     (*charanow)->yszj(chara1, chara2, chara3, *charanow);
                 }
+
                 SpecialAdditionReduceCountAll(*charanow);
 
                 ShowKillEnemyBlood(chara1, chara2, chara3, (*charanow)->shanghai[1] + (*charanow)->shanghai_more[1]);
@@ -367,12 +406,17 @@ int InBattle(int *count, int *who_first, int tou[],
                 ReduceTou(*charanow, tou, 3);
                 SpecialAdditionReduceCountAll(*charanow);
 
+                JihuaReduce(*charanow);
+                CaoyuanheReduce(*charanow);
+
                 if ((*charanow)->ysbf != NULL)
                 {
                     (*charanow)->ysbf(chara1, chara2, chara3, *charanow);
                 }
 
                 kill_blood(*charanow, *chara_enemy_now, 3);
+
+                ChooseWhichReaction(*charanow, chara_enemy_now, chara1, chara2, chara3);
 
                 ShowKillEnemyBlood(chara1, chara2, chara3, (*charanow)->shanghai[2] + (*charanow)->shanghai_more[2]);
                 YuanSuFuZhuo(*charanow, *chara_enemy_now);
@@ -653,6 +697,7 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
                             if (IfFirstChooseCharacter(&Alhaitham) && count < 3)
                             {
                                 *(chara[count]) = Alhaitham;
+                                chara[count]->index_game = count + 4;
                                 count++;
                                 break;
                             }
@@ -667,6 +712,7 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
                             if (IfFirstChooseCharacter(&Zihuang) && count < 3)
                             {
                                 *(chara[count]) = Zihuang;
+                                chara[count]->index_game = count + 4;
                                 count++;
                                 break;
                             }
@@ -681,6 +727,7 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
                             if (IfFirstChooseCharacter(&Huoxing) && count < 3)
                             {
                                 *(chara[count]) = Huoxing;
+                                chara[count]->index_game = count + 4;
                                 count++;
                                 break;
                             }
@@ -695,6 +742,7 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
                             if (IfFirstChooseCharacter(&Antant) && count < 3)
                             {
                                 *(chara[count]) = Antant;
+                                chara[count]->index_game = count + 4;
                                 count++;
                                 break;
                             }
@@ -709,6 +757,7 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
                             if (IfFirstChooseCharacter(&Lingren) && count < 3)
                             {
                                 *(chara[count]) = Lingren;
+                                chara[count]->index_game = count + 4;
                                 count++;
                                 break;
                             }
@@ -723,6 +772,7 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
                             if (IfFirstChooseCharacter(&CXK) && count < 3)
                             {
                                 *(chara[count]) = CXK;
+                                chara[count]->index_game = count + 4;
                                 count++;
                                 break;
                             }
@@ -737,6 +787,7 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
                             if (IfFirstChooseCharacter(&Ren) && count < 3)
                             {
                                 *(chara[count]) = Ren;
+                                chara[count]->index_game = count + 4;
                                 count++;
                                 break;
                             }
@@ -751,6 +802,7 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
                             if (IfFirstChooseCharacter(&Chen) && count < 3)
                             {
                                 *(chara[count]) = Chen;
+                                chara[count]->index_game = count + 4;
                                 count++;
                                 break;
                             }

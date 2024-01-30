@@ -33,6 +33,7 @@ extern int summon_index_enemy;
 extern Summon Zhujiao;
 extern Summon Qingjing;
 extern Summon Lanqiu;
+extern Summon Fire;
 
 void SummonImageLoad();
 void SummonImageDestroy();

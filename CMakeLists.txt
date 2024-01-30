@@ -14,7 +14,8 @@ add_executable(main main.c
         src/battle.c
         src/record.c
         src/summon.c
-        src/character_skill.c)
+        src/character_skill.c
+        src/ElementalReaction.c)
 
 
 target_link_libraries(main PRIVATE
