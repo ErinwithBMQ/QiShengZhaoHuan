@@ -4,9 +4,8 @@
 
 #include <ElementalReaction.h>
 
-void ChooseWhichReaction(Character *chara, Character **enemy, Character *chara1, Character *chara2, Character *chara3)
+void ChooseWhichReaction(int yuansu_we, Character **enemy, Character *chara1, Character *chara2, Character *chara3)
 {
-    int yuansu_we = chara->yuansu;
     int yuansu_enemy = -1;
     for (int i = 0; i < 5; ++i)
     {
@@ -39,11 +38,11 @@ void ChooseWhichReaction(Character *chara, Character **enemy, Character *chara1,
     }
     else if (yuansu_we == 3 && yuansu_enemy >= 0 && yuansu_enemy != 3)  //扩散
     {
-        KuoSan(chara, chara1, chara2, chara3, yuansu_enemy);
+        KuoSan(chara1, chara2, chara3, yuansu_enemy);
     }
     else if (yuansu_enemy == 3 && yuansu_we != 3)  //扩散
     {
-        KuoSan(chara, chara1, chara2, chara3, yuansu_we);
+        KuoSan(chara1, chara2, chara3, yuansu_we);
     }
 }
 
@@ -203,7 +202,7 @@ void ChaoZai(Character **enemy, Character *chara1, Character *chara2, Character 
     }
 }
 
-void KuoSan(Character *chara, Character *chara1, Character *chara2, Character *chara3, int yuansu)
+void KuoSan(Character *chara1, Character *chara2, Character *chara3, int yuansu)
 {
     shanghai[1]++;
     shanghai[3] = yuansu;
@@ -380,7 +379,21 @@ void KuosanJiashang(int yuansu, Character *enemy)
         enemy->yuansu_fu[yuansu_enemy] = false;
         shanghaimore[enemy->index_game] += 1;
     }
-    else if ((yuansu == 1 && yuansu_enemy == 4) || (yuansu == 4 && yuansu_enemy == 1)) //激化
+    else if (yuansu == 0 && yuansu_enemy == 4) //扩散出火的燃烧
+    {
+        if (enemy->hudun > 0)
+        {
+            enemy->hudun--;
+        }
+        else if (enemy->xue > 0)
+        {
+            enemy->xue --;
+        }
+        RanShao();
+        enemy->yuansu_fu[yuansu_enemy] = false;
+        shanghaimore[enemy->index_game] += 1;
+    }
+    else if (yuansu == 1 && yuansu_enemy == 4) //扩散出雷的激化
     {
         if (enemy->hudun > 0)
         {
@@ -394,7 +407,7 @@ void KuosanJiashang(int yuansu, Character *enemy)
         enemy->yuansu_fu[yuansu_enemy] = false;
         shanghaimore[enemy->index_game] += 1;
     }
-    else if ((yuansu == 2 && yuansu_enemy == 4) || (yuansu == 4 && yuansu_enemy == 2)) //绽放
+    else if (yuansu == 2 && yuansu_enemy == 4) //扩散出水的绽放
     {
         if (enemy->hudun > 0)
         {
@@ -405,6 +418,19 @@ void KuosanJiashang(int yuansu, Character *enemy)
             enemy->xue --;
         }
         caoyuanhe += 1;
+        enemy->yuansu_fu[yuansu_enemy] = false;
+        shanghaimore[enemy->index_game] += 1;
+    }
+    else if ((yuansu == 4 && yuansu_enemy == 0) || (yuansu == 4 && yuansu_enemy == 1) || (yuansu == 4 && yuansu_enemy == 2)) //扩散草，只加伤，不产生燃烧、激化或绽放反应
+    {
+        if (enemy->hudun > 0)
+        {
+            enemy->hudun--;
+        }
+        else if (enemy->xue > 0)
+        {
+            enemy->xue --;
+        }
         enemy->yuansu_fu[yuansu_enemy] = false;
         shanghaimore[enemy->index_game] += 1;
     }

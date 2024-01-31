@@ -58,7 +58,7 @@ Character Lingren = {
                 "神里流·水囿",
         },
         .baofa_num = 2,
-        .baofa_now = 0,
+        .baofa_now = 2,
         .shanghai = {2,2,1},
         .shanghai_more = {0, 0, 0},
         .yuansu = 2,

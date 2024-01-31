@@ -12,6 +12,7 @@ void SummonImageLoad()
     Zhujiao.image = IMG_LoadTexture(renderer, "./res/image/zhujiao.png");
     Qingjing.image = IMG_LoadTexture(renderer, "./res/image/qingjing.png");
     Lanqiu.image = IMG_LoadTexture(renderer, "./res/image/lanqiu.png");
+    Fire.image = IMG_LoadTexture(renderer, "./res/image/ranshao.png");
 }
 
 void SummonImageDestroy()
@@ -19,6 +20,7 @@ void SummonImageDestroy()
     SDL_DestroyTexture(Zhujiao.image);
     SDL_DestroyTexture(Qingjing.image);
     SDL_DestroyTexture(Lanqiu.image);
+    SDL_DestroyTexture(Fire.image);
 }
 
 void PresentSummonGame(Summon *summon)
@@ -63,6 +65,7 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
         {
             return;
         }
+        summon->yuansu = yuansu;
     }
 
     summon->shanghai_more = 0;
@@ -77,18 +80,15 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
         if (yuansu == 2) //水系角色
         {
             summon->shanghai_more += 2;
-            summon->shanghai_more += 2;
             enemy->yuansu_fu[0] = false;
         }
         else if (yuansu == 1)  //雷系角色
         {
             summon->shanghai_more += 2;
-            summon->shanghai_more += 2;
             enemy->yuansu_fu[0] = false;
         }
         else if (yuansu == 4) //草系角色
         {
-            summon->shanghai_more += 1;
             summon->shanghai_more += 1;
             enemy->yuansu_fu[0] = false;
         }
@@ -99,18 +99,15 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
         if (yuansu == 2) //水系角色
         {
             summon->shanghai_more += 1;
-            summon->shanghai_more += 1;
             enemy->yuansu_fu[1] = false;
         }
         else if (yuansu == 0)  //火系角色
         {
             summon->shanghai_more += 2;
-            summon->shanghai_more += 2;
             enemy->yuansu_fu[1] = false;
         }
         else if (yuansu == 4) //草系角色
         {
-            summon->shanghai_more += 1;
             summon->shanghai_more += 1;
             enemy->yuansu_fu[1] = false;
         }
@@ -121,18 +118,15 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
         if (yuansu == 1) //雷系角色
         {
             summon->shanghai_more += 1;
-            summon->shanghai_more += 1;
             enemy->yuansu_fu[2] = false;
         }
         else if (yuansu == 0)  //火系角色
         {
             summon->shanghai_more += 2;
-            summon->shanghai_more += 2;
             enemy->yuansu_fu[2] = false;
         }
         else if (yuansu == 4) //草系角色
         {
-            summon->shanghai_more += 1;
             summon->shanghai_more += 1;
             enemy->yuansu_fu[2] = false;
         }
@@ -143,18 +137,15 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
         if (yuansu == 2) //水系角色
         {
             summon->shanghai_more += 1;
-            summon->shanghai_more += 1;
             enemy->yuansu_fu[4] = false;
         }
         else if (yuansu == 0)  //火系角色
         {
             summon->shanghai_more += 1;
-            summon->shanghai_more += 1;
             enemy->yuansu_fu[4] = false;
         }
         else if (yuansu == 1) //雷系角色
         {
-            summon->shanghai_more += 1;
             summon->shanghai_more += 1;
             enemy->yuansu_fu[4] = false;
         }

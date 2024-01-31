@@ -329,7 +329,7 @@ int InBattle(int *count, int *who_first, int tou[],
                 //如果有附魔那就造成元素附着
                 if ((*charanow)->if_pugongfumo)
                 {
-                    ChooseWhichReaction(*charanow, chara_enemy_now, chara1, chara2, chara3);
+                    ChooseWhichReaction((*charanow)->yuansu, chara_enemy_now, chara1, chara2, chara3);
                     YuanSuFuZhuo(*charanow, *chara_enemy_now);
                     JihuaReduce(*charanow);
                     CaoyuanheReduce(*charanow);
@@ -380,7 +380,7 @@ int InBattle(int *count, int *who_first, int tou[],
                 JihuaReduce(*charanow);
                 CaoyuanheReduce(*charanow);
 
-                ChooseWhichReaction(*charanow, chara_enemy_now, chara1, chara2, chara3);
+                ChooseWhichReaction((*charanow)->yuansu, chara_enemy_now, chara1, chara2, chara3);
 
                 if ((*charanow)->yszj != NULL)
                 {
@@ -431,7 +431,7 @@ int InBattle(int *count, int *who_first, int tou[],
                 shanghai[3] = 5;
                 shanghai[4] = (*chara_enemy_now)->index_game;
 
-                ChooseWhichReaction(*charanow, chara_enemy_now, chara1, chara2, chara3);
+                ChooseWhichReaction((*charanow)->yuansu, chara_enemy_now, chara1, chara2, chara3);
 
                 //ShowKillEnemyBlood(chara1, chara2, chara3, (*charanow)->shanghai[2] + (*charanow)->shanghai_more[2]);
                 YuanSuFuZhuo(*charanow, *chara_enemy_now);
@@ -538,7 +538,10 @@ int AfterBattle(int *count, Character **chara_now, Character **chara_enemy_now,
             SDL_DestroyTexture(texture_turn);
             SDL_DestroyTexture(texture_back);
 
+            ChooseWhichReaction(summon_all[i]->yuansu, chara_enemy_now, chara1, chara2, chara3);
+
             ChangeSummonShanghai(summon_all[i], *chara_enemy_now);
+
             SummonKillBlood(summon_all[i], *chara_enemy_now);
 
             shanghai[0] = summon_all[i]->shanghai + summon_all[i]->shanghai_more;
@@ -548,7 +551,11 @@ int AfterBattle(int *count, Character **chara_now, Character **chara_enemy_now,
 
             ShowKillBlood(chara1, chara2, chara3, chara4, chara5, chara6);
 
-            //ShowKillEnemyBlood(chara1, chara2, chara3, summon_all[i]->shanghai + summon_all[i]->shanghai_more);
+            if (summon_all[i]->index == 1)
+            {
+                summon_all[i]->yuansu = 5;
+            }
+
             if (SummonDestroy(summon_all[i]))
             {
                 i--;

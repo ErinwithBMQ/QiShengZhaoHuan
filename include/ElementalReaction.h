@@ -18,9 +18,9 @@
 #include <battle.h>
 extern int shanghaimore[7];
 
-void ChooseWhichReaction(Character *chara, Character **enemy, Character *chara1, Character *chara2, Character *chara3);
+void ChooseWhichReaction(int yuansu_we, Character **enemy, Character *chara1, Character *chara2, Character *chara3);
 
-void KuoSan(Character *chara, Character *chara1, Character *chara2, Character *chara3, int yuansu);
+void KuoSan(Character *chara1, Character *chara2, Character *chara3, int yuansu);
 void JiHua();
 void ZhanFang();
 void ChaoZai(Character **enemy, Character *chara1, Character *chara2, Character *chara3);
