@@ -355,10 +355,38 @@ bool IfCharacterAlive(Character *chara)
 {
     if (!chara->xue)
     {
-        chara->zhuang[0] = 1;
         return false;
     }
     return true;
+}
+
+void CharacterDeadOrAlive(Character *chara1, Character *chara2, Character *chara3,
+                          Character *chara4, Character *chara5, Character *chara6)
+{
+    if (chara1->xue == 0)
+    {
+        chara1->zhuang[0] = true;
+    }
+    if (chara2->xue == 0)
+    {
+        chara2->zhuang[0] = true;
+    }
+    if (chara3->xue == 0)
+    {
+        chara3->zhuang[0] = true;
+    }
+    if (chara4->xue == 0)
+    {
+        chara4->zhuang[0] = true;
+    }
+    if (chara5->xue == 0)
+    {
+        chara5->zhuang[0] = true;
+    }
+    if (chara6->xue == 0)
+    {
+        chara6->zhuang[0] = true;
+    }
 }
 
 bool IfChongMan(Character *chara)

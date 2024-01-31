@@ -15,15 +15,19 @@
 #include <character.h>
 #include <summon.h>
 #include <character_skill.h>
+#include <battle.h>
+extern int shanghaimore[7];
 
 void ChooseWhichReaction(Character *chara, Character **enemy, Character *chara1, Character *chara2, Character *chara3);
 
-void KuoSan(Character *chara, Character *chara1, Character *chara2, Character *chara3);
+void KuoSan(Character *chara, Character *chara1, Character *chara2, Character *chara3, int yuansu);
 void JiHua();
 void ZhanFang();
 void ChaoZai(Character **enemy, Character *chara1, Character *chara2, Character *chara3);
 void GanDian(Character *chara1, Character *chara2, Character *chara3);
 void RanShao();
+
+void KuosanJiashang(int yuansu, Character *enemy);
 
 void JihuaAddition(Character *chara);
 void CaoyuanheAddition(Character *chara);

@@ -29,7 +29,7 @@ void ChooseWhichReaction(Character *chara, Character **enemy, Character *chara1,
     {
         GanDian(chara1, chara2, chara3);
     }
-    else if ((yuansu_we == 1 && yuansu_enemy == 4) || (yuansu_we == 4 && yuansu_enemy == 0)) //激化
+    else if ((yuansu_we == 1 && yuansu_enemy == 4) || (yuansu_we == 4 && yuansu_enemy == 1)) //激化
     {
         JiHua();
     }
@@ -37,9 +37,13 @@ void ChooseWhichReaction(Character *chara, Character **enemy, Character *chara1,
     {
         ZhanFang();
     }
-    else if ((yuansu_we == 3 && yuansu_enemy >= 0) || yuansu_enemy == 3)
+    else if (yuansu_we == 3 && yuansu_enemy >= 0 && yuansu_enemy != 3)  //扩散
     {
-        KuoSan(chara, chara1, chara2, chara3);
+        KuoSan(chara, chara1, chara2, chara3, yuansu_enemy);
+    }
+    else if (yuansu_enemy == 3 && yuansu_we != 3)  //扩散
+    {
+        KuoSan(chara, chara1, chara2, chara3, yuansu_we);
     }
 }
 
@@ -71,7 +75,7 @@ void RanShao()
 
 void GanDian(Character *chara1, Character *chara2, Character *chara3)
 {
-    if_all_attack = true;
+    shanghai[1]++;
     if (chara1->if_chu == 1)
     {
         if (chara2->hudun > 0)
@@ -199,9 +203,11 @@ void ChaoZai(Character **enemy, Character *chara1, Character *chara2, Character 
     }
 }
 
-void KuoSan(Character *chara, Character *chara1, Character *chara2, Character *chara3)
+void KuoSan(Character *chara, Character *chara1, Character *chara2, Character *chara3, int yuansu)
 {
-    if_all_attack = true;
+    shanghai[1]++;
+    shanghai[3] = yuansu;
+
     if (chara1->if_chu == 1)
     {
         if (chara2->hudun > 0)
@@ -212,6 +218,7 @@ void KuoSan(Character *chara, Character *chara1, Character *chara2, Character *c
         {
             chara2->xue--;
         }
+        KuosanJiashang(yuansu, chara2);
 
         if (chara3->hudun > 0)
         {
@@ -221,6 +228,7 @@ void KuoSan(Character *chara, Character *chara1, Character *chara2, Character *c
         {
             chara3->xue--;
         }
+        KuosanJiashang(yuansu, chara3);
         return;
     }
 
@@ -234,6 +242,7 @@ void KuoSan(Character *chara, Character *chara1, Character *chara2, Character *c
         {
             chara1->xue--;
         }
+        KuosanJiashang(yuansu, chara1);
 
         if (chara3->hudun > 0)
         {
@@ -243,6 +252,7 @@ void KuoSan(Character *chara, Character *chara1, Character *chara2, Character *c
         {
             chara3->xue--;
         }
+        KuosanJiashang(yuansu, chara3);
         return;
     }
 
@@ -256,6 +266,7 @@ void KuoSan(Character *chara, Character *chara1, Character *chara2, Character *c
         {
             chara2->xue--;
         }
+        KuosanJiashang(yuansu, chara2);
 
         if (chara1->hudun > 0)
         {
@@ -265,6 +276,7 @@ void KuoSan(Character *chara, Character *chara1, Character *chara2, Character *c
         {
             chara1->xue--;
         }
+        KuosanJiashang(yuansu, chara1);
         return;
     }
 }
@@ -320,5 +332,85 @@ void CaoyuanheReduce(Character *chara)
         {
             caoyuanhe--;
         }
+    }
+}
+
+void KuosanJiashang(int yuansu, Character *enemy)
+{
+    int yuansu_enemy = -1;
+    for (int i = 0; i < 5; ++i)
+    {
+        if (enemy->yuansu_fu[i])
+        {
+            yuansu_enemy = i;
+            break;
+        }
+    }
+
+    if ((yuansu == 0 && yuansu_enemy == 1) || (yuansu == 1 && yuansu_enemy == 0) ||
+            (yuansu == 0 && yuansu_enemy == 2) || (yuansu == 2 && yuansu_enemy == 0)) //超载和蒸发
+    {
+        if (enemy->hudun >= 2)
+        {
+            enemy->hudun -= 2;
+        }
+        else if (enemy->xue > 0)
+        {
+            int left = 2 - enemy->hudun;
+            enemy->hudun = 0;
+            enemy->xue -= left;
+            if (enemy->xue < 0)
+            {
+                enemy->xue = 0;
+            }
+        }
+        enemy->yuansu_fu[yuansu_enemy] = false;
+        shanghaimore[enemy->index_game] += 2;
+    }
+    else if ((yuansu == 1 && yuansu_enemy == 2) || (yuansu == 2 && yuansu_enemy == 1) || (yuansu > 0 && yuansu_enemy == 3)) //感电和再次扩散，仅加伤害
+    {
+        if (enemy->hudun > 0)
+        {
+            enemy->hudun--;
+        }
+        else if (enemy->xue > 0)
+        {
+            enemy->xue--;
+        }
+        enemy->yuansu_fu[yuansu_enemy] = false;
+        shanghaimore[enemy->index_game] += 1;
+    }
+    else if ((yuansu == 1 && yuansu_enemy == 4) || (yuansu == 4 && yuansu_enemy == 1)) //激化
+    {
+        if (enemy->hudun > 0)
+        {
+            enemy->hudun--;
+        }
+        else if (enemy->xue > 0)
+        {
+            enemy->xue --;
+        }
+        jihua += 2;
+        enemy->yuansu_fu[yuansu_enemy] = false;
+        shanghaimore[enemy->index_game] += 1;
+    }
+    else if ((yuansu == 2 && yuansu_enemy == 4) || (yuansu == 4 && yuansu_enemy == 2)) //绽放
+    {
+        if (enemy->hudun > 0)
+        {
+            enemy->hudun--;
+        }
+        else if (enemy->xue > 0)
+        {
+            enemy->xue --;
+        }
+        caoyuanhe += 1;
+        enemy->yuansu_fu[yuansu_enemy] = false;
+        shanghaimore[enemy->index_game] += 1;
+    }
+
+    if (yuansu_enemy == -1)
+    {
+        enemy->yuansu_fu[yuansu] = true;
     }
 }

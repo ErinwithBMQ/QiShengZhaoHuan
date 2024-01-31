@@ -68,6 +68,9 @@ void PresentCharacterGame(Character *chara, int num);  //在游戏中展示角�
 
 bool IfCharacterAlive(Character *chara); //判断角色是否死亡
 
+void CharacterDeadOrAlive(Character *chara1, Character *chara2, Character *chara3,
+                          Character *chara4, Character *chara5, Character *chara6);
+
 bool IfChongMan(Character *chara);  //判断角色充能是否充满
 
 bool IfCharacterChoose(Character *chara);  //是否选中该角色

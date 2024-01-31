@@ -3,10 +3,11 @@
 //
 
 #include <character_skill.h>
+#include <battle.h>
 
 void Antant_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara)
 {
-    if_all_attack = true;
+    shanghai[1]++;
     if (chara1->if_chu == 1)
     {
         if (chara2->hudun > 0)
@@ -166,7 +167,7 @@ void CXK_SpecialAddition(Character *chara)
 
 void Chen_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara)
 {
-    if_all_attack = true;
+    shanghai[1]++;
     if (chara1->if_chu == 1)
     {
         if (chara2->hudun > 0)
@@ -236,7 +237,7 @@ void Chen_yszj(Character *chara1, Character *chara2, Character *chara3, Characte
 
 void Chen_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara)
 {
-    if_all_attack = true;
+    shanghai[1]++;
     if (chara1->if_chu == 1)
     {
         if (chara2->hudun > 0)
@@ -390,7 +391,7 @@ void Ren_yszj(Character *chara1, Character *chara2, Character *chara3, Character
 void Ren_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara)
 {
     chara->xue = 5;
-    if_all_attack = true;
+    shanghai[1]++;
     if (chara1->if_chu == 1)
     {
         if (chara2->hudun > 0)

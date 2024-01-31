@@ -9,7 +9,8 @@
 
 #include <character.h>
 
-extern bool if_all_attack;
+extern int shanghai[5];
+extern bool if_showkillblood;
 
 void ChangeCharacterShanghai(Character *chara, Character *enemy); //计算角色伤害并更新
 void ChangeCharacterShanghaiPu(Character *chara, Character *enemy);
@@ -59,6 +60,9 @@ void ShowWeAction();     //展示我方正在行动
 bool ChangeCharacterWhenDead(Character **chara, Character *chara4, Character *chara5, Character *chara6);
 //我方角色死亡时强制切换角色
 
-void ShowKillEnemyBlood(Character *chara1, Character *chara2, Character *chara3, int bloodkill);
-void ShowKillWeBlood(Character *chara4, Character *chara5, Character *chara6, int bloodkill);
+void ShowKillBlood(Character *chara1, Character *chara2, Character *chara3,
+                   Character *chara4, Character *chara5, Character *chara6);
+void ShowKillBloodOwn(Character *chara, int bloodkill, int yuansu, bool if_main);
+
+
 #endif //QSZH_BATTLE_H

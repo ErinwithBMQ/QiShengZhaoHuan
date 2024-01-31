@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <intrin.h>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -272,14 +273,17 @@ SDL_Renderer *renderer;
 Summon *summon_all[6] = {NULL};
 
 int summon_index_we = 0;
-int summon_index_enemy = 3;
-
-bool if_all_attack = false;
+int summon_index_enemy = 4;
 
 Mix_Music *music;
 
 int jihua;
 int caoyuanhe;
+
+int shanghai[5];  //0：对主对象造成的伤害；1：对后台造成的伤害；2：对主对象造成伤害的元素类型；3：对后台造成伤害的元素类型; 4: 主攻击对象
+bool if_showkillblood;
+
+int shanghaimore[7];
 
 int main(int argc, char *argv[])
 {
@@ -368,6 +372,8 @@ int main(int argc, char *argv[])
         int count = 1;   //当前回合数
         jihua = 0;
         caoyuanhe = 0;
+        summon_index_we = 0;
+        summon_index_enemy = 4;
 
 
         music = Mix_LoadMUS("./res/music/BGM2.mp3");
@@ -397,7 +403,6 @@ int main(int argc, char *argv[])
                                      &chara1, &chara2, &chara3,
                                      &chara4, &chara5, &chara6,
                                      &chara_now, &chara_enemy_now);
-
 
             if (winorlose == -1)  //进入下一回合
             {
