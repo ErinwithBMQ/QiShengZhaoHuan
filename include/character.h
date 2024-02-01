@@ -9,7 +9,7 @@
 
 #include <stdbool.h>
 
-//元素对应：0火系，1雷系，2水系，3风系，4草系
+//元素对应：0火系，1雷系，2水系，3风系，4草系, 5随机元素，-1无元素
 
 typedef struct chara {
     int index;         //角色编号
@@ -50,6 +50,14 @@ extern Character Antant;
 extern Character CXK;
 extern Character Chen;
 extern Character Ren;
+
+extern Character Qiuqiuren;
+extern Character MudunQiuqiu;
+extern Character HuofuQiuqiu;
+extern Character LeifuQiuqiu;
+extern Character LeiQiuqiuShe;
+extern Character HailuanguiHuo;
+extern Character HailuanguiLei;
 
 extern SDL_Renderer *renderer;
 extern SDL_Window *window;

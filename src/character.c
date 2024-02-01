@@ -65,6 +65,27 @@ void CharacterImageLoad()
     Ren.image_message = IMG_LoadTexture(renderer, "./res/image/9_message.png");
     Ren.image_message_big = IMG_LoadTexture(renderer, "./res/image/9_message_big.png");
     Ren.image_special = IMG_LoadTexture(renderer, "./res/image/9_special.png");
+
+    Qiuqiuren.image = IMG_LoadTexture(renderer, "./res/image/13.png");
+    Qiuqiuren.image_dead = IMG_LoadTexture(renderer, "./res/image/13_dead.png");
+
+    MudunQiuqiu.image = IMG_LoadTexture(renderer, "./res/image/14.png");
+    MudunQiuqiu.image_dead = IMG_LoadTexture(renderer, "./res/image/14_dead.png");
+
+    HuofuQiuqiu.image = IMG_LoadTexture(renderer, "./res/image/15.png");
+    HuofuQiuqiu.image_dead = IMG_LoadTexture(renderer, "./res/image/15_dead.png");
+
+    LeifuQiuqiu.image = IMG_LoadTexture(renderer, "./res/image/16.png");
+    LeifuQiuqiu.image_dead = IMG_LoadTexture(renderer, "./res/image/16_dead.png");
+
+    LeiQiuqiuShe.image = IMG_LoadTexture(renderer, "./res/image/17.png");
+    LeiQiuqiuShe.image_dead = IMG_LoadTexture(renderer, "./res/image/17_dead.png");
+
+    HailuanguiHuo.image = IMG_LoadTexture(renderer, "./res/image/18.png");
+    HailuanguiHuo.image_dead = IMG_LoadTexture(renderer, "./res/image/18_dead.png");
+
+    HailuanguiLei.image = IMG_LoadTexture(renderer, "./res/image/19.png");
+    HailuanguiLei.image_dead = IMG_LoadTexture(renderer, "./res/image/19_dead.png");
 }
 
 void CharacterImageDestroy()
@@ -124,6 +145,27 @@ void CharacterImageDestroy()
     SDL_DestroyTexture(Ren.image_message);
     SDL_DestroyTexture(Ren.image_message_big);
     SDL_DestroyTexture(Ren.image_special);
+
+    SDL_DestroyTexture(Qiuqiuren.image);
+    SDL_DestroyTexture(Qiuqiuren.image_dead);
+
+    SDL_DestroyTexture(MudunQiuqiu.image);
+    SDL_DestroyTexture(MudunQiuqiu.image_dead);
+
+    SDL_DestroyTexture(HuofuQiuqiu.image);
+    SDL_DestroyTexture(HuofuQiuqiu.image_dead);
+
+    SDL_DestroyTexture(LeifuQiuqiu.image);
+    SDL_DestroyTexture(LeifuQiuqiu.image_dead);
+
+    SDL_DestroyTexture(LeiQiuqiuShe.image);
+    SDL_DestroyTexture(LeiQiuqiuShe.image_dead);
+
+    SDL_DestroyTexture(HailuanguiHuo.image);
+    SDL_DestroyTexture(HailuanguiHuo.image_dead);
+
+    SDL_DestroyTexture(HailuanguiLei.image);
+    SDL_DestroyTexture(HailuanguiLei.image_dead);
 }
 
 void PresentCharacterGame(Character *chara, int num)

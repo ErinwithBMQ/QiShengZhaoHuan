@@ -52,6 +52,105 @@ void MainPage()
     }
 }
 
+bool ChooseLevel(Character *chara1, Character *chara2, Character *chara3)
+{
+    SDL_RenderClear(renderer);
+    SDL_Texture *texture_choose = IMG_LoadTexture(renderer, "./res/image/choose_enemy.jpg");
+    SDL_RenderCopy(renderer, texture_choose, NULL, NULL);
+    SDL_RenderPresent(renderer);
+
+    SDL_DestroyTexture(texture_choose);
+
+    SDL_Event event;
+
+    while (1)
+    {
+        while (SDL_PollEvent(&event))
+        {
+            switch (event.type) {
+                case SDL_QUIT: //直接退出
+                    CharacterImageDestroy();
+                    SummonImageDestroy();
+                    quit_delete();
+                    exit(0);
+                case SDL_MOUSEBUTTONDOWN: //鼠标左键
+                    if (event.button.button == SDL_BUTTON_LEFT)
+                    {
+                        int x = event.button.x;
+                        int y = event.button.y;
+
+                        if (x >= 20 && x <= 569 && y >= 175 && y <= 246)
+                        {
+                            *chara1 = Qiuqiuren;
+                            *chara2 = Qiuqiuren;
+                            *chara3 = Qiuqiuren;
+                            return 1;
+                        }
+                        else if (x >= 20 && x <= 569 && y >= 314 && y <= 389)
+                        {
+                            *chara1 = Qiuqiuren;
+                            *chara2 = MudunQiuqiu;
+                            *chara3 = Qiuqiuren;
+                            return 1;
+                        }
+                        else if (x >= 20 && x <= 569 && y >= 453 && y <= 525)
+                        {
+                            *chara1 = LeiQiuqiuShe;
+                            *chara2 = LeiQiuqiuShe;
+                            *chara3 = MudunQiuqiu;
+                            return 1;
+                        }
+                        else if (x >= 20 && x <= 569 && y >= 592 && y <= 670)
+                        {
+                            *chara1 = LeifuQiuqiu;
+                            *chara2 = HuofuQiuqiu;
+                            *chara3 = MudunQiuqiu;
+                            return 1;
+                        }
+                        else if (x >= 700 && x <= 1251 && y >= 175 && y <= 246)
+                        {
+                            *chara1 = HailuanguiHuo;
+                            *chara2 = HailuanguiLei;
+                            *chara3 = HailuanguiHuo;
+                            return 1;
+                        }
+                        else if (x >= 700 && x <= 1251 && y >= 314 && y <= 389)
+                        {
+                            *chara1 = MudunQiuqiu;
+                            *chara2 = HailuanguiLei;
+                            *chara3 = HailuanguiHuo;
+                            return 1;
+                        }
+                        else if (x >= 700 && x <= 1251 && y >= 453 && y <= 525)
+                        {
+                            *chara1 = MudunQiuqiu;
+                            *chara2 = HailuanguiLei;
+                            *chara3 = HuofuQiuqiu;
+                            return 1;
+                        }
+                        else if (x >= 700 && x <= 1251 && y >= 592 && y <= 670)
+                        {
+                            *chara1 = LeiQiuqiuShe;
+                            *chara2 = HailuanguiLei;
+                            *chara3 = HuofuQiuqiu;
+                            return 1;
+                        }
+                        else if (x >= 1180 && x <= 1265 && y >= 20 && y <= 113)
+                        {
+                            return 0;
+                        }
+                    }
+                default:
+                    break;
+            }
+        }
+    }
+
+
+
+
+}
+
 void WinBattle()
 {
     SDL_Event event_main;
@@ -232,6 +331,7 @@ int InBattle(int *count, int *who_first, int tou[],
         ShowButtom();
         ShowEndHH(who_fight);
         ShowIfEndTurn(if_final_a, if_final_b);
+        ShowTurn(*count);
 
         if (who_fight == 1)
         {
@@ -242,7 +342,7 @@ int InBattle(int *count, int *who_first, int tou[],
             ShowEnemyAction();
         }
 
-        for (int i = 0; i < 5; ++i)
+        for (int i = 0; i < 4; ++i)
         {
             if (summon_all[i]->index != 0)
             {
@@ -283,7 +383,7 @@ int InBattle(int *count, int *who_first, int tou[],
 
             //特殊增伤计算
             QingliuSkill(chara4, chara5, chara6);
-            // TODO：激化、草原核的增伤
+            //激化、草原核的增伤
             JihuaAddition(*charanow);
             CaoyuanheAddition(*charanow);
 
@@ -314,7 +414,7 @@ int InBattle(int *count, int *who_first, int tou[],
             }
             else if (whichone == 1) //使用普通攻击
             {
-                //TODO: 造成伤害动画,元素反应，特殊效果，召唤物
+                //TODO: 造成伤害动画
                 ReduceTou(*charanow, tou, 1);  //减少骰子
                 kill_blood(*charanow, *chara_enemy_now, 1);  //扣血
 
@@ -324,7 +424,6 @@ int InBattle(int *count, int *who_first, int tou[],
                 shanghai[3] = 5;
                 shanghai[4] = (*chara_enemy_now)->index_game;
 
-                // TODO：深度元素反应
 
                 //如果有附魔那就造成元素附着
                 if ((*charanow)->if_pugongfumo)
@@ -335,7 +434,6 @@ int InBattle(int *count, int *who_first, int tou[],
                     CaoyuanheReduce(*charanow);
                     shanghai[2] = (*charanow)->yuansu;
                 }
-
 
                 //充能增加
                 if ((*charanow)->baofa_now < (*charanow)->baofa_num)
@@ -396,7 +494,6 @@ int InBattle(int *count, int *who_first, int tou[],
                     (*charanow)->baofa_now++;
                 }
 
-
                 ChangeCharacterEnemy(chara_enemy_now, chara1, chara2, chara3);
 
                 int n1 = if_end(chara1, chara2, chara3, chara4, chara5, chara6);
@@ -433,7 +530,6 @@ int InBattle(int *count, int *who_first, int tou[],
 
                 ChooseWhichReaction((*charanow)->yuansu, chara_enemy_now, chara1, chara2, chara3);
 
-                //ShowKillEnemyBlood(chara1, chara2, chara3, (*charanow)->shanghai[2] + (*charanow)->shanghai_more[2]);
                 YuanSuFuZhuo(*charanow, *chara_enemy_now);
 
 
@@ -468,23 +564,54 @@ int InBattle(int *count, int *who_first, int tou[],
         {
             //TODO:对手逻辑的编写
 
-            SDL_Delay(1000);
+            SDL_Delay(1200);
+            if (enemy_count == 3)
+            {
+                if_final_b = true;
+            }
+            else if (enemy_count == 0)
+            {
+                ChangeCharacterShanghai(*chara_enemy_now, *charanow);
+                kill_blood(*chara_enemy_now, *charanow, 2);
 
-            ChangeCharacterShanghai(*chara_enemy_now, *charanow);
-            kill_blood(*chara_enemy_now, *charanow, 2);
+                shanghai[0] = (*chara_enemy_now)->shanghai[1] + (*chara_enemy_now)->shanghai_more[1];
+                if_showkillblood = true;
+                shanghai[2] = (*chara_enemy_now)->yuansu;
+                shanghai[3] = 5;
+                shanghai[4] = (*charanow)->index_game;
 
-            shanghai[0] = (*chara_enemy_now)->shanghai[1] + (*chara_enemy_now)->shanghai_more[1];
-            if_showkillblood = true;
-            shanghai[2] = (*chara_enemy_now)->yuansu;
-            shanghai[3] = 5;
-            shanghai[4] = (*charanow)->index_game;
+                YuanSuFuZhuo(*chara_enemy_now, *charanow);
 
-            YuanSuFuZhuo(*chara_enemy_now, *charanow);
-            who_fight = 1;
-            if_final_b = true;
+                enemy_count++;
+            }
+            else if (enemy_count == 1)
+            {
+                kill_blood(*chara_enemy_now, *charanow, 1);
+                shanghai[0] = (*chara_enemy_now)->shanghai[0] + (*chara_enemy_now)->shanghai_more[0];
+                if_showkillblood = true;
+                shanghai[2] = 5;
+                shanghai[3] = 5;
+                shanghai[4] = (*charanow)->index_game;
 
+                enemy_count++;
+            }
+            else if (enemy_count == 2)
+            {
+                if (ChangeEnemyAuto(chara_enemy_now, chara1, chara2, chara3))
+                {
+                    enemy_count++;
+                }
+                else
+                {
+                    if_final_b = true;
+                }
+            }
+
+            if (!if_final_a)
+            {
+                who_fight = 1;
+            }
         }
-
 
         SDL_Delay(5);
     }
@@ -496,7 +623,7 @@ int AfterBattle(int *count, Character **chara_now, Character **chara_enemy_now,
                  Character *chara1, Character *chara2, Character *chara3,
                  Character *chara4, Character *chara5, Character *chara6)
 {
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < 4; ++i)
     {
         if (summon_all[i]->index != 0)
         {
@@ -512,7 +639,7 @@ int AfterBattle(int *count, Character **chara_now, Character **chara_enemy_now,
             PresentCharacterGame(chara5, 5);
             PresentCharacterGame(chara6, 6);
 
-            for (int j = 0; j < 5; ++j)
+            for (int j = 0; j < 4; ++j)
             {
                 if (summon_all[j]->index != 0)
                 {
@@ -588,7 +715,7 @@ int AfterBattle(int *count, Character **chara_now, Character **chara_enemy_now,
     PresentCharacterGame(chara5, 5);
     PresentCharacterGame(chara6, 6);
 
-    for (int j = 0; j < 5; ++j)
+    for (int j = 0; j < 4; ++j)
     {
         if (summon_all[j]->index != 0)
         {

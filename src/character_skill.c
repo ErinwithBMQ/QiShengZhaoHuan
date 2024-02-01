@@ -79,7 +79,7 @@ void Antant_yszj(Character *chara1, Character *chara2, Character *chara3, Charac
 
 void Antant_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara)
 {
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < 4; ++i)
     {
         if (summon_all[i]->index == 1)
         {
@@ -99,7 +99,7 @@ void Lingren_yszj(Character *chara1, Character *chara2, Character *chara3, Chara
 
 void Lingren_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara)
 {
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < 4; ++i)
     {
         if (summon_all[i]->index == 2)
         {
@@ -133,7 +133,7 @@ void QingliuSkill(Character *chara4, Character *chara5, Character *chara6)
 
 void CXK_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara)
 {
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < 4; ++i)
     {
         if (summon_all[i]->index == 3)
         {

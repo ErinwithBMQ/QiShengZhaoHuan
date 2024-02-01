@@ -188,26 +188,14 @@ bool SummonDestroy(Summon *summon)
             memset(summon, 0, sizeof(*summon));
         }
 
-        if (index < 3)
+        for (int i = index + 1; i <= 3; ++i)
         {
-            for (int i = index + 1; i <= 2; ++i)
-            {
-                summon_all[i]->index_game--;
-                summon_all[i - 1] = summon_all[i];
-            }
-            summon_index_we--;
-            return 1;
+            summon_all[i]->index_game--;
+            summon_all[i - 1] = summon_all[i];
         }
-        else
-        {
-            for (int i = index + 1; i <= 5; ++i)
-            {
-                summon_all[i]->index_game--;
-                summon_all[i - 1] = summon_all[i];
-            }
-            summon_index_enemy--;
-            return 1;
-        }
+        summon_index_we--;
+        return 1;
+
     }
 
     return 0;

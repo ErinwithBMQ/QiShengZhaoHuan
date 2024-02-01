@@ -16,7 +16,7 @@ void ChangeCharacterShanghai(Character *chara, Character *enemy); //计算角色
 void ChangeCharacterShanghaiPu(Character *chara, Character *enemy);
 void CleanShanghai(Character *chara);  //清除加成伤害
 
-void Touzi(int tou[], int count, Character *chara);  //每回合开始显示第几回合，模拟掷骰子
+void Touzi(int tou[], int count, Character *chara, int who_first);  //每回合开始显示第几回合，模拟掷骰子
 
 void ShowTou(int tou[]);
 
@@ -27,6 +27,7 @@ void ShowTheWhole(Character *chara1, Character *chara2, Character *chara3,
                   Character *chara4, Character *chara5, Character *chara6);  //展示台面、六个角色信息
 void ShowEndHH(int who_fight);  //展示结束回合按钮
 void ShowIfEndTurn(bool if_final_a, bool if_final_b); //展示是否结束回合
+void ShowTurn(int count);
 
 int ChooseWhichSkill(Character **chara, int tou[],
                      Character *chara4, Character *chara5, Character *chara6, bool if_finnal_a);  //观测鼠标，选择哪一个按钮
@@ -53,6 +54,7 @@ void PrintTouNotEnough();  //提示骰子不够
 void PrintChongnengNotEnough();  //提示充能不够
 
 void ChangeCharacterEnemy(Character **chara_enemy_now, Character *chara1, Character *chara2, Character *chara3);
+bool ChangeEnemyAuto(Character **chara_enemy_now, Character *chara1, Character *chara2, Character *chara3);
 
 void ShowEnemyAction();  //展示敌方正在行动
 void ShowWeAction();     //展示我方正在行动

@@ -58,7 +58,7 @@ Character Lingren = {
                 "神里流·水囿",
         },
         .baofa_num = 2,
-        .baofa_now = 2,
+        .baofa_now = 0,
         .shanghai = {2,2,1},
         .shanghai_more = {0, 0, 0},
         .yuansu = 2,
@@ -223,6 +223,153 @@ Character Ren = {
         .huiorcount = 1,
 };
 
+Character Qiuqiuren = {
+        .index = 13,
+        .xue = 6,
+        .hudun = 0,
+        .name = {
+                "丘丘人",
+                "普通的攻击",
+                "用力的攻击",
+                "全力攻击",
+        },
+        .baofa_num = 2,
+        .baofa_now = 0,
+        .shanghai = {1,3,4},
+        .shanghai_more = {0, 0, 0},
+        .yuansu = -1,
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+        .if_chu = false,
+};
+
+Character MudunQiuqiu = {
+        .index = 14,
+        .xue = 10,
+        .hudun = 3,
+        .name = {
+                "木盾丘丘暴徒",
+                "普通的攻击",
+                "开盾攻击",
+                "全力的一击",
+        },
+        .baofa_num = 2,
+        .baofa_now = 0,
+        .shanghai = {2,3,5},
+        .shanghai_more = {0, 0, 0},
+        .yuansu = -1,
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+        .if_chu = false,
+};
+
+Character HuofuQiuqiu = {
+        .index = 15,
+        .xue = 10,
+        .hudun = 0,
+        .name = {
+                "火斧丘丘暴徒",
+                "普通的攻击",
+                "元素攻击",
+                "全力的一击",
+        },
+        .baofa_num = 2,
+        .baofa_now = 0,
+        .shanghai = {2,3,5},
+        .shanghai_more = {0, 0, 0},
+        .yuansu = 0,
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+        .if_chu = false,
+};
+
+Character LeifuQiuqiu = {
+        .index = 16,
+        .xue = 10,
+        .hudun = 0,
+        .name = {
+                "雷斧丘丘暴徒",
+                "普通的攻击",
+                "元素攻击",
+                "全力的一击",
+        },
+        .baofa_num = 2,
+        .baofa_now = 0,
+        .shanghai = {2,3,5},
+        .shanghai_more = {0, 0, 0},
+        .yuansu = 1,
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+        .if_chu = false,
+};
+
+Character LeiQiuqiuShe = {
+        .index = 17,
+        .xue = 6,
+        .hudun = 0,
+        .name = {
+                "雷丘丘射手",
+                "普通的攻击",
+                "元素攻击",
+                "全力的一击",
+        },
+        .baofa_num = 2,
+        .baofa_now = 0,
+        .shanghai = {1,3,5},
+        .shanghai_more = {0, 0, 0},
+        .yuansu = 1,
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+        .if_chu = false,
+};
+
+Character HailuanguiHuo = {
+        .index = 18,
+        .xue = 10,
+        .hudun = 0,
+        .name = {
+                "海乱鬼·火",
+                "普通的攻击",
+                "元素攻击",
+                "仅此一刀！",
+        },
+        .baofa_num = 2,
+        .baofa_now = 0,
+        .shanghai = {2,3,6},
+        .shanghai_more = {0, 0, 0},
+        .yuansu = 0,
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+        .if_chu = false,
+};
+
+Character HailuanguiLei = {
+        .index = 19,
+        .xue = 10,
+        .hudun = 0,
+        .name = {
+                "海乱鬼·雷",
+                "普通的攻击",
+                "元素攻击",
+                "仅此一刀！",
+        },
+        .baofa_num = 2,
+        .baofa_now = 0,
+        .shanghai = {2,3,6},
+        .shanghai_more = {0, 0, 0},
+        .yuansu = 1,
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+        .if_chu = false,
+};
+
 Summon Zhujiao = {
         .index = 1,
         .name = "助教",
@@ -270,10 +417,9 @@ Summon Fire = {
 SDL_Window *window;
 SDL_Renderer *renderer;
 
-Summon *summon_all[6] = {NULL};
+Summon *summon_all[4] = {NULL};
 
 int summon_index_we = 0;
-int summon_index_enemy = 4;
 
 Mix_Music *music;
 
@@ -320,13 +466,23 @@ int main(int argc, char *argv[])
         //角色初始化
 
         //chara1~3:敌方角色；chara4~6:我方角色
-
-        Character chara1 = Huoxing;
-        Character chara2 = Zihuang;
-        Character chara3 = Alhaitham;
+        Character chara1;
+        Character chara2;
+        Character chara3;
         Character chara4;
         Character chara5;
         Character chara6;
+
+        memset(&chara1, 0, sizeof(chara1));
+        memset(&chara2, 0, sizeof(chara2));
+        memset(&chara3, 0, sizeof(chara3));
+
+
+        bool choosewhichlevel = ChooseLevel(&chara1, &chara2, &chara3);
+        if (!choosewhichlevel)
+        {
+            continue;
+        }
 
         chara1.index_game = 1;
         chara2.index_game = 2;
@@ -342,22 +498,16 @@ int main(int argc, char *argv[])
         Summon summon1;
         Summon summon2;
         Summon summon3;
-        Summon summon4;
-        Summon summon5;
 
         memset(&summon0, 0, sizeof(summon0));
         memset(&summon1, 0, sizeof(summon1));
         memset(&summon2, 0, sizeof(summon2));
         memset(&summon3, 0, sizeof(summon3));
-        memset(&summon4, 0, sizeof(summon4));
-        memset(&summon5, 0, sizeof(summon5));
 
         summon_all[0] = &summon0;
         summon_all[1] = &summon1;
         summon_all[2] = &summon2;
         summon_all[3] = &summon3;
-        summon_all[4] = &summon4;
-        summon_all[5] = &summon5;
 
         //选择角色
         if (!(ChooseCharacter(&chara4, &chara5, &chara6)))
@@ -373,7 +523,6 @@ int main(int argc, char *argv[])
         jihua = 0;
         caoyuanhe = 0;
         summon_index_we = 0;
-        summon_index_enemy = 4;
 
 
         music = Mix_LoadMUS("./res/music/BGM2.mp3");
@@ -396,7 +545,7 @@ int main(int argc, char *argv[])
             }
 
             //随机掷骰子
-            Touzi(tou, count, chara_now);
+            Touzi(tou, count, chara_now, who_first);
 
             //作战中
             int winorlose = InBattle(&count, &who_first, tou,

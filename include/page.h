@@ -8,7 +8,7 @@
 #define SDL_SAMPLE_PAGE_H
 
 void MainPage();
-int ChooseLevel();
+bool ChooseLevel(Character *chara1, Character *chara2, Character *chara3);
 bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6);
 
 void BeginBattle(Character *chara1, Character *chara2, Character *chara3,

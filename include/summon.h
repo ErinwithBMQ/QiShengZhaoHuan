@@ -26,9 +26,8 @@ typedef struct summon {
     int index_game; //召唤物游戏内编号
 } Summon;
 
-extern Summon *summon_all[6];
+extern Summon *summon_all[4];
 extern int summon_index_we;
-extern int summon_index_enemy;
 
 extern Summon Zhujiao;
 extern Summon Qingjing;

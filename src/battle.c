@@ -160,7 +160,7 @@ void ChangeCharacterShanghaiPu(Character *chara, Character *enemy)
     }
 }
 
-void Touzi(int tou[], int count, Character *chara)
+void Touzi(int tou[], int count, Character *chara, int who_first)
 {
     SDL_Texture *texture_back = IMG_LoadTexture(renderer, "./res/image/water.jpg");
     SDL_RenderCopy(renderer, texture_back, NULL, NULL);
@@ -181,12 +181,26 @@ void Touzi(int tou[], int count, Character *chara)
     SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
     SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
 
+    if (who_first == 1)
+    {
+        surface_message = TTF_RenderUTF8_Solid(font_message, "我方优先行动", color_message);
+    }
+    else
+    {
+        surface_message = TTF_RenderUTF8_Solid(font_message, "敌方优先行动", color_message);
+    }
+    texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    rect_message.x = 480;
+    rect_message.y = 400;
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
     int yuansu = chara->yuansu;
-    tou[yuansu]++;
+    tou[yuansu] += 2;
     tou[5]++;
 
     srand((unsigned int)time(NULL));
-    for (int i = 0; i < 6; ++i)
+    for (int i = 0; i < 5; ++i)
     {
         int result = rand() % 6;
         tou[result] += 1;
@@ -469,7 +483,6 @@ int ChooseWhichSkill(Character **chara, int tou[],
                     break;
             }
         }
-        SDL_Delay(5);
     }
 }
 
@@ -612,7 +625,6 @@ int IfChooseSkill(int n)
             default:
                 break;
         }
-        SDL_Delay(5);
     }
 }
 
@@ -823,6 +835,10 @@ void PrintChongnengNotEnough()
 void YuanSuFuZhuo(Character *chara, Character *enemy)
 {
     int yuansu = chara->yuansu;
+    if (yuansu == -1)
+    {
+        return;
+    }
     for (int i = 0; i < 5; ++i)
     {
         if (enemy->yuansu_fu[i] == true && i != yuansu)
@@ -865,8 +881,8 @@ void ShowShanghai(Character *chara, int n)
     SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
     SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
 
-    char shanghai[10];
-    itoa((chara->shanghai[n - 1] + chara->shanghai_more[n - 1]), shanghai, 10);
+    char shanghaishow[10];
+    itoa((chara->shanghai[n - 1] + chara->shanghai_more[n - 1]), shanghaishow, 10);
     rect_message.x = 430;
     rect_message.y = 360;
     surface_message = TTF_RenderUTF8_Solid(font_message, "对敌人造成    点伤害", color_message);
@@ -876,7 +892,7 @@ void ShowShanghai(Character *chara, int n)
 
     rect_message.x = 550;
     rect_message.y = 360;
-    surface_message = TTF_RenderUTF8_Solid(font_message, shanghai, color_message);
+    surface_message = TTF_RenderUTF8_Solid(font_message, shanghaishow, color_message);
     texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
     SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
     SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
@@ -1037,7 +1053,6 @@ bool IfChangeCharacter(Character *charanow, Character *chara, int num, int tou[]
                             break;
                     }
                 }
-                SDL_Delay(5);
             }
         }
         else
@@ -1134,6 +1149,64 @@ void ChangeCharacterEnemy(Character **chara_enemy_now, Character *chara1, Charac
     }
 }
 
+bool ChangeEnemyAuto(Character **chara_enemy_now, Character *chara1, Character *chara2, Character *chara3)
+{
+    if (chara1->if_chu)
+    {
+        if (chara2->xue > 0)
+        {
+            (*chara_enemy_now)->if_chu = false;
+            chara2->if_chu = true;
+            *chara_enemy_now = chara2;
+            return 1;
+        }
+        else if (chara3->xue > 0)
+        {
+            (*chara_enemy_now)->if_chu = false;
+            chara3->if_chu = true;
+            *chara_enemy_now = chara3;
+            return 1;
+        }
+        return 0;
+    }
+    else if (chara2->if_chu)
+    {
+        if (chara3->xue > 0)
+        {
+            (*chara_enemy_now)->if_chu = false;
+            chara3->if_chu = true;
+            *chara_enemy_now = chara3;
+            return 1;
+        }
+        else if (chara1->xue > 0)
+        {
+            (*chara_enemy_now)->if_chu = false;
+            chara1->if_chu = true;
+            *chara_enemy_now = chara1;
+            return 1;
+        }
+        return 0;
+    }
+    else if (chara3->if_chu)
+    {
+        if (chara1->xue > 0)
+        {
+            (*chara_enemy_now)->if_chu = false;
+            chara1->if_chu = true;
+            *chara_enemy_now = chara1;
+            return 1;
+        }
+        else if (chara2->xue > 0)
+        {
+            (*chara_enemy_now)->if_chu = false;
+            chara2->if_chu = true;
+            *chara_enemy_now = chara2;
+            return 1;
+        }
+        return 0;
+    }
+}
+
 bool IfEndTurn(bool if_final_a)
 {
     SDL_Event event;
@@ -1201,6 +1274,30 @@ void ShowIfEndTurn(bool if_final_a, bool if_final_b)
 
         SDL_DestroyTexture(texture_turn);
     }
+}
+
+void ShowTurn(int count)
+{
+    TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 24);
+    SDL_Color color_message = {0xff, 0xff, 0xff, 0xff};
+
+    SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "当前回合：", color_message);
+    SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    SDL_Rect rect_message = {.x = 545, .y = 5};
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    char arr[3];
+    itoa(count, arr, 10);
+    surface_message = TTF_RenderUTF8_Solid(font_message, arr, color_message);
+    texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    rect_message.x += 110;
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    SDL_DestroyTexture(texture_message);
+    SDL_FreeSurface(surface_message);
+    TTF_CloseFont(font_message);
 }
 
 void ShowEnemyAction()
@@ -1491,7 +1588,7 @@ void ShowKillBlood(Character *chara1, Character *chara2, Character *chara3,
     }
 
     SDL_RenderPresent(renderer);
-    SDL_Delay(1000);
+    SDL_Delay(800);
 
     if_showkillblood = false;
     for (int i = 0; i < 5; ++i)
@@ -1567,7 +1664,7 @@ void ShowKillBloodOwn(Character *chara, int bloodkill, int yuansu, bool if_main)
         color_message.g = 255;
         color_message.b = 45;
     }
-    else if (yuansu == 5)
+    else if (yuansu == 5 || yuansu == -1)
     {
         color_message.r = 71;
         color_message.g = 36;
