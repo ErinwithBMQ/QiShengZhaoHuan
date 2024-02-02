@@ -16,6 +16,7 @@
 #include <summon.h>
 #include <character_skill.h>
 #include <battle.h>
+
 extern int shanghaimore[7];
 
 void ChooseWhichReaction(int yuansu_we, Character **enemy, Character *chara1, Character *chara2, Character *chara3);

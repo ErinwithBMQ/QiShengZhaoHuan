@@ -263,6 +263,7 @@ Character MudunQiuqiu = {
         .zhuang = {0,0},
         .if_xuan = false,
         .if_chu = false,
+        .yszj = Mudun_yszj,
 };
 
 Character HuofuQiuqiu = {
@@ -340,13 +341,15 @@ Character HailuanguiHuo = {
         },
         .baofa_num = 2,
         .baofa_now = 0,
-        .shanghai = {2,3,6},
+        .shanghai = {1,2,5},
         .shanghai_more = {0, 0, 0},
         .yuansu = 0,
         .yuansu_fu = {0,0,0,0,0},
         .zhuang = {0,0},
         .if_xuan = false,
         .if_chu = false,
+        .yszj = Hai_yszj,
+        .SpecialAddition = Hai_SpecialAddition,
 };
 
 Character HailuanguiLei = {
@@ -361,13 +364,106 @@ Character HailuanguiLei = {
         },
         .baofa_num = 2,
         .baofa_now = 0,
-        .shanghai = {2,3,6},
+        .shanghai = {1,2,5},
         .shanghai_more = {0, 0, 0},
         .yuansu = 1,
         .yuansu_fu = {0,0,0,0,0},
         .zhuang = {0,0},
         .if_xuan = false,
         .if_chu = false,
+        .yszj = Hai_yszj,
+        .SpecialAddition = Hai_SpecialAddition,
+};
+
+Character Tewalin = {
+        .index = 20,
+        .xue = 20,
+        .hudun = 0,
+        .name = {
+                "风魔龙特瓦林",
+                "裂爪横击",
+                "暴风轰击",
+                "众天闭幕曲",
+        },
+        .baofa_num = 3,
+        .baofa_now = 0,
+        .shanghai = {2,2,6},
+        .shanghai_more = {0, 0, 0},
+        .yuansu = 3,
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+        .if_chu = false,
+        .yszj = Tewalin_yszj,
+        .ysbf = Tewalin_ysbf,
+};
+
+Character Shuichong = {
+        .index = 21,
+        .xue = 10,
+        .hudun = 0,
+        .name = {
+                "愚人众·水铳重卫士",
+                "铳枪攻击",
+                "水铳冲击",
+                "水铳守卫",
+        },
+        .baofa_num = 2,
+        .baofa_now = 0,
+        .shanghai = {2,3,4},
+        .shanghai_more = {0, 0, 0},
+        .yuansu = 2,
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+        .if_chu = false,
+        .ysbf = Leichui_ysbf,
+};
+
+Character Huochong = {
+        .index = 22,
+        .xue = 10,
+        .hudun = 0,
+        .name = {
+                "愚人众·火铳游击兵",
+                "铳枪攻击",
+                "火铳冲击",
+                "火铳守卫",
+        },
+        .baofa_num = 2,
+        .baofa_now = 0,
+        .shanghai = {2,3,4},
+        .shanghai_more = {0, 0, 0},
+        .yuansu = 0,
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+        .if_chu = false,
+        .ysbf = Leichui_ysbf,
+};
+
+Character Leichui = {
+        .index = 23,
+        .xue = 10,
+        .hudun = 0,
+        .name = {
+                "愚人众·雷锤前锋军",
+                "巨锤击打",
+                "雷电之锤",
+                "巨雷之声",
+        },
+        .baofa_num = 2,
+        .baofa_now = 0,
+        .shanghai = {2,3,4},
+        .shanghai_more = {0, 0, 0},
+        .yuansu = 1,
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+        .if_chu = false,
+        .yszj = Leichui_yszj,
+        .ysbf = Leichui_ysbf,
+        .SpecialAddition = Leichui_SpecialAddition,
 };
 
 Summon Zhujiao = {

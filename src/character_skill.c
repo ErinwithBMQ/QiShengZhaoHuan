@@ -479,6 +479,178 @@ void RenPuHuiXue(Character *chara)
     }
 }
 
+void Tewalin_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara)
+{
+    shanghai[1]++;
+    if (chara1->if_chu == 1)
+    {
+        if (chara2->hudun > 0)
+        {
+            chara2->hudun--;
+        }
+        else if (chara2->xue > 0)
+        {
+            chara2->xue--;
+        }
+
+        if (chara3->hudun > 0)
+        {
+            chara3->hudun--;
+        }
+        else if (chara3->xue > 0)
+        {
+            chara3->xue--;
+        }
+        return;
+    }
+
+    if (chara2->if_chu == 1)
+    {
+        if (chara1->hudun > 0)
+        {
+            chara1->hudun--;
+        }
+        else if (chara1->xue > 0)
+        {
+            chara1->xue--;
+        }
+
+        if (chara3->hudun > 0)
+        {
+            chara3->hudun--;
+        }
+        else if (chara3->xue > 0)
+        {
+            chara3->xue--;
+        }
+        return;
+    }
+
+    if (chara3->if_chu == 1)
+    {
+        if (chara2->hudun > 0)
+        {
+            chara2->hudun--;
+        }
+        else if (chara2->xue > 0)
+        {
+            chara2->xue--;
+        }
+
+        if (chara1->hudun > 0)
+        {
+            chara1->hudun--;
+        }
+        else if (chara1->xue > 0)
+        {
+            chara1->xue--;
+        }
+        return;
+    }
+}
+
+void Tewalin_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara)
+{
+    shanghai[1]++;
+    if (chara1->if_chu == 1)
+    {
+        if (chara2->hudun > 0)
+        {
+            chara2->hudun--;
+        }
+        else if (chara2->xue > 0)
+        {
+            chara2->xue--;
+        }
+
+        if (chara3->hudun > 0)
+        {
+            chara3->hudun--;
+        }
+        else if (chara3->xue > 0)
+        {
+            chara3->xue--;
+        }
+        return;
+    }
+
+    if (chara2->if_chu == 1)
+    {
+        if (chara1->hudun > 0)
+        {
+            chara1->hudun--;
+        }
+        else if (chara1->xue > 0)
+        {
+            chara1->xue--;
+        }
+
+        if (chara3->hudun > 0)
+        {
+            chara3->hudun--;
+        }
+        else if (chara3->xue > 0)
+        {
+            chara3->xue--;
+        }
+        return;
+    }
+
+    if (chara3->if_chu == 1)
+    {
+        if (chara2->hudun > 0)
+        {
+            chara2->hudun--;
+        }
+        else if (chara2->xue > 0)
+        {
+            chara2->xue--;
+        }
+
+        if (chara1->hudun > 0)
+        {
+            chara1->hudun--;
+        }
+        else if (chara1->xue > 0)
+        {
+            chara1->xue--;
+        }
+        return;
+    }
+}
+
+void Hai_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara)
+{
+    chara->special_state = 3;
+}
+
+void Hai_SpecialAddition(Character *chara)
+{
+    chara->if_pugongfumo = true;
+    chara->shanghai_more[0] += 1;
+}
+
+void Leichui_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara)
+{
+    chara->special_state = 2;
+}
+
+void Leichui_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara)
+{
+    chara->hudun += 3;
+}
+
+void Leichui_SpecialAddition(Character *chara)
+{
+    chara->if_pugongfumo = true;
+    chara->shanghai_more[0] += 1;
+}
+
+void Mudun_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara)
+{
+    chara->hudun += 2;
+}
+
 void SpecialAdditionReduceTurn(Character *chara4, Character *chara5, Character *chara6)
 {
     if (chara4->special_state > 0 && chara4->huiorcount == 1)

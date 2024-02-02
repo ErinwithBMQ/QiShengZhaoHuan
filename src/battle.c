@@ -337,7 +337,7 @@ void ShowButtom()
     SDL_DestroyTexture(texture_buttom);
 }
 
-int ChooseWhichSkill(Character **chara, int tou[],
+int ChooseWhichSkill(Character **chara, int tou[], Character *chara1, Character *chara2, Character *chara3,
                      Character *chara4, Character *chara5, Character *chara6, bool if_finnal_a)
 {
     SDL_Event event;
@@ -476,6 +476,21 @@ int ChooseWhichSkill(Character **chara, int tou[],
                                 *chara = chara6;
                                 return 4;
                             }
+                            return 0;
+                        }
+                        else if (x >= 400 && x <= 520 && y >= 125 && y <= 285)
+                        {
+                            ShowEnemyMessage(chara1);
+                            return 0;
+                        }
+                        else if (x >= 570 && x <= 690 && y >= 125 && y <= 285)
+                        {
+                            ShowEnemyMessage(chara2);
+                            return 0;
+                        }
+                        else if (x >= 740 && x <= 860 && y >= 125 && y <= 285)
+                        {
+                            ShowEnemyMessage(chara3);
                             return 0;
                         }
                     }
@@ -1298,6 +1313,34 @@ void ShowTurn(int count)
     SDL_DestroyTexture(texture_message);
     SDL_FreeSurface(surface_message);
     TTF_CloseFont(font_message);
+}
+
+void ShowEnemyMessage(Character *enemy)
+{
+    ShowCharacterMessage(enemy);
+    SDL_RenderPresent(renderer);
+    SDL_Event event_show;
+    while (SDL_WaitEvent(&event_show))
+    {
+        switch (event_show.type)
+        {
+            case SDL_QUIT:
+                CharacterImageDestroy();
+                SummonImageDestroy();
+                quit_delete();
+                exit(0);
+            case SDL_KEYDOWN:
+                if (event_show.key.keysym.sym == SDLK_ESCAPE)
+                {
+                    return;
+                }
+            case SDL_MOUSEBUTTONDOWN: //鼠标左键
+                if (event_show.button.button == SDL_BUTTON_LEFT)
+                {
+                    return;
+                }
+        }
+    }
 }
 
 void ShowEnemyAction()

@@ -2,7 +2,7 @@
 // Created by Erin on 2024/1/15.
 //
 
-// TODO：1.深度元素反应  2.行动牌  3.战斗日志  4.战斗动画  5.难度选择以及对手逻辑  6.元素骰子重投
+// TODO：2.行动牌  3.战斗日志  4.战斗动画  5.难度选择以及对手逻辑  6.元素骰子重投
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
@@ -116,15 +116,15 @@ bool ChooseLevel(Character *chara1, Character *chara2, Character *chara3)
                         }
                         else if (x >= 700 && x <= 1251 && y >= 314 && y <= 389)
                         {
-                            *chara1 = MudunQiuqiu;
-                            *chara2 = HailuanguiLei;
-                            *chara3 = HailuanguiHuo;
+                            *chara1 = Huochong;
+                            *chara2 = Leichui;
+                            *chara3 = Shuichong;
                             return 1;
                         }
                         else if (x >= 700 && x <= 1251 && y >= 453 && y <= 525)
                         {
-                            *chara1 = MudunQiuqiu;
-                            *chara2 = HailuanguiLei;
+                            *chara1 = LeifuQiuqiu;
+                            *chara2 = Tewalin;
                             *chara3 = HuofuQiuqiu;
                             return 1;
                         }
@@ -377,7 +377,6 @@ int InBattle(int *count, int *who_first, int tou[],
                 (*charanow)->if_pugongfumo = false;
             }
 
-
             //普攻附魔后计算基础元素反应增伤
             ChangeCharacterShanghaiPu(*charanow, *chara_enemy_now);
 
@@ -388,7 +387,7 @@ int InBattle(int *count, int *who_first, int tou[],
             CaoyuanheAddition(*charanow);
 
             //选择哪个技能
-            int whichone = ChooseWhichSkill(charanow, tou, chara4, chara5, chara6, if_final_a);
+            int whichone = ChooseWhichSkill(charanow, tou, chara1, chara2, chara3, chara4, chara5, chara6, if_final_a);
 
             if (whichone == -1) //退出战斗
             {
@@ -559,19 +558,35 @@ int InBattle(int *count, int *who_first, int tou[],
             }
         }
 
-
         if (who_fight == 0 && if_final_b == false)  //对方行动
         {
             //TODO:对手逻辑的编写
 
             SDL_Delay(1200);
+
+            ChangeCharacterShanghai(*chara_enemy_now, *charanow);  //提前计算基础元素反应伤害
+
+            if ((*chara_enemy_now)->special_state > 0)  //调用角色本身特殊状态函数
+            {
+                if ((*chara_enemy_now)->SpecialAddition != NULL)
+                {
+                    (*chara_enemy_now)->SpecialAddition(*chara_enemy_now);
+                }
+            }
+            else
+            {
+                (*chara_enemy_now)->if_pugongfumo = false;
+            }
+
+            //普攻附魔后计算基础元素反应增伤
+            ChangeCharacterShanghaiPu(*chara_enemy_now, *charanow);
+
             if (enemy_count == 3)
             {
                 if_final_b = true;
             }
-            else if (enemy_count == 0)
+            else if (enemy_count == 0 && ((*chara_enemy_now)->baofa_now < (*chara_enemy_now)->baofa_num))
             {
-                ChangeCharacterShanghai(*chara_enemy_now, *charanow);
                 kill_blood(*chara_enemy_now, *charanow, 2);
 
                 shanghai[0] = (*chara_enemy_now)->shanghai[1] + (*chara_enemy_now)->shanghai_more[1];
@@ -579,6 +594,41 @@ int InBattle(int *count, int *who_first, int tou[],
                 shanghai[2] = (*chara_enemy_now)->yuansu;
                 shanghai[3] = 5;
                 shanghai[4] = (*charanow)->index_game;
+
+                if ((*chara_enemy_now)->yszj != NULL)
+                {
+                    (*chara_enemy_now)->yszj(chara4, chara5, chara6, *chara_enemy_now);
+                }
+
+                if ((*chara_enemy_now)->baofa_now < (*chara_enemy_now)->baofa_num)
+                {
+                    (*chara_enemy_now)->baofa_now++;
+                }
+
+                ChooseWhichReaction((*chara_enemy_now)->yuansu, charanow, chara4, chara5, chara6);
+
+                YuanSuFuZhuo(*chara_enemy_now, *charanow);
+
+                enemy_count++;
+            }
+            else if ((*chara_enemy_now)->baofa_now == (*chara_enemy_now)->baofa_num && enemy_count == 0)
+            {
+                kill_blood(*chara_enemy_now, *charanow, 3);
+
+                shanghai[0] = (*chara_enemy_now)->shanghai[2] + (*chara_enemy_now)->shanghai_more[2];
+                if_showkillblood = true;
+                shanghai[2] = (*chara_enemy_now)->yuansu;
+                shanghai[3] = 5;
+                shanghai[4] = (*charanow)->index_game;
+
+                (*chara_enemy_now)->baofa_now = 0;
+
+                if ((*chara_enemy_now)->ysbf != NULL)
+                {
+                    (*chara_enemy_now)->ysbf(chara4, chara5, chara6, *chara_enemy_now);
+                }
+
+                ChooseWhichReaction((*chara_enemy_now)->yuansu, charanow, chara4, chara5, chara6);
 
                 YuanSuFuZhuo(*chara_enemy_now, *charanow);
 
@@ -593,19 +643,40 @@ int InBattle(int *count, int *who_first, int tou[],
                 shanghai[3] = 5;
                 shanghai[4] = (*charanow)->index_game;
 
+                if ((*chara_enemy_now)->if_pugongfumo)
+                {
+                    ChooseWhichReaction((*chara_enemy_now)->yuansu, charanow, chara4, chara5, chara6);
+                    YuanSuFuZhuo(*chara_enemy_now, *charanow);
+                    shanghai[2] = (*chara_enemy_now)->yuansu;
+                    (*chara_enemy_now)->special_state--;
+                }
+
+                if ((*chara_enemy_now)->baofa_now < (*chara_enemy_now)->baofa_num)
+                {
+                    (*chara_enemy_now)->baofa_now++;
+                }
+
                 enemy_count++;
             }
             else if (enemy_count == 2)
             {
-                if (ChangeEnemyAuto(chara_enemy_now, chara1, chara2, chara3))
+                if ((*chara_enemy_now)->baofa_now < (*chara_enemy_now)->baofa_num)
                 {
-                    enemy_count++;
+                    if (ChangeEnemyAuto(chara_enemy_now, chara1, chara2, chara3))
+                    {
+                        enemy_count++;
+                    }
                 }
                 else
                 {
                     if_final_b = true;
                 }
             }
+            else
+            {
+                if_final_b = true;
+            }
+
 
             if (!if_final_a)
             {
@@ -615,7 +686,6 @@ int InBattle(int *count, int *who_first, int tou[],
 
         SDL_Delay(5);
     }
-
     return -1;
 }
 

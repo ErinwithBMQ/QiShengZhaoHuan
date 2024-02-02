@@ -68,24 +68,50 @@ void CharacterImageLoad()
 
     Qiuqiuren.image = IMG_LoadTexture(renderer, "./res/image/13.png");
     Qiuqiuren.image_dead = IMG_LoadTexture(renderer, "./res/image/13_dead.png");
+    Qiuqiuren.image_message = IMG_LoadTexture(renderer, "./res/image/13_message.png");
 
     MudunQiuqiu.image = IMG_LoadTexture(renderer, "./res/image/14.png");
     MudunQiuqiu.image_dead = IMG_LoadTexture(renderer, "./res/image/14_dead.png");
+    MudunQiuqiu.image_message = IMG_LoadTexture(renderer, "./res/image/14_message.png");
 
     HuofuQiuqiu.image = IMG_LoadTexture(renderer, "./res/image/15.png");
     HuofuQiuqiu.image_dead = IMG_LoadTexture(renderer, "./res/image/15_dead.png");
+    HuofuQiuqiu.image_message = IMG_LoadTexture(renderer, "./res/image/15_message.png");
 
     LeifuQiuqiu.image = IMG_LoadTexture(renderer, "./res/image/16.png");
     LeifuQiuqiu.image_dead = IMG_LoadTexture(renderer, "./res/image/16_dead.png");
+    LeifuQiuqiu.image_message = IMG_LoadTexture(renderer, "./res/image/16_message.png");
 
     LeiQiuqiuShe.image = IMG_LoadTexture(renderer, "./res/image/17.png");
     LeiQiuqiuShe.image_dead = IMG_LoadTexture(renderer, "./res/image/17_dead.png");
+    LeiQiuqiuShe.image_message = IMG_LoadTexture(renderer, "./res/image/17_message.png");
 
     HailuanguiHuo.image = IMG_LoadTexture(renderer, "./res/image/18.png");
     HailuanguiHuo.image_dead = IMG_LoadTexture(renderer, "./res/image/18_dead.png");
+    HailuanguiHuo.image_message = IMG_LoadTexture(renderer, "./res/image/18_message.png");
+    HailuanguiHuo.image_special = IMG_LoadTexture(renderer, "./res/image/18_special.png");
 
     HailuanguiLei.image = IMG_LoadTexture(renderer, "./res/image/19.png");
     HailuanguiLei.image_dead = IMG_LoadTexture(renderer, "./res/image/19_dead.png");
+    HailuanguiLei.image_message = IMG_LoadTexture(renderer, "./res/image/19_message.png");
+    HailuanguiLei.image_special = IMG_LoadTexture(renderer, "./res/image/19_special.png");
+
+    Tewalin.image = IMG_LoadTexture(renderer, "./res/image/20.png");
+    Tewalin.image_dead = IMG_LoadTexture(renderer, "./res/image/20_dead.png");
+    Tewalin.image_message = IMG_LoadTexture(renderer, "./res/image/20_message.png");
+
+    Shuichong.image = IMG_LoadTexture(renderer, "./res/image/21.png");
+    Shuichong.image_dead = IMG_LoadTexture(renderer, "./res/image/21_dead.png");
+    Shuichong.image_message = IMG_LoadTexture(renderer, "./res/image/21_message.png");
+
+    Huochong.image = IMG_LoadTexture(renderer, "./res/image/22.png");
+    Huochong.image_dead = IMG_LoadTexture(renderer, "./res/image/22_dead.png");
+    Huochong.image_message = IMG_LoadTexture(renderer, "./res/image/22_message.png");
+
+    Leichui.image = IMG_LoadTexture(renderer, "./res/image/23.png");
+    Leichui.image_dead = IMG_LoadTexture(renderer, "./res/image/23_dead.png");
+    Leichui.image_message = IMG_LoadTexture(renderer, "./res/image/23_message.png");
+    Leichui.image_special = IMG_LoadTexture(renderer, "./res/image/23_special.png");
 }
 
 void CharacterImageDestroy()
@@ -148,24 +174,80 @@ void CharacterImageDestroy()
 
     SDL_DestroyTexture(Qiuqiuren.image);
     SDL_DestroyTexture(Qiuqiuren.image_dead);
+    SDL_DestroyTexture(Qiuqiuren.image_message);
+    SDL_DestroyTexture(Qiuqiuren.image_message_big);
+    SDL_DestroyTexture(Qiuqiuren.image_choose);
+    SDL_DestroyTexture(Qiuqiuren.image_special);
 
     SDL_DestroyTexture(MudunQiuqiu.image);
     SDL_DestroyTexture(MudunQiuqiu.image_dead);
+    SDL_DestroyTexture(MudunQiuqiu.image_message);
+    SDL_DestroyTexture(MudunQiuqiu.image_message_big);
+    SDL_DestroyTexture(MudunQiuqiu.image_choose);
+    SDL_DestroyTexture(MudunQiuqiu.image_special);
 
     SDL_DestroyTexture(HuofuQiuqiu.image);
     SDL_DestroyTexture(HuofuQiuqiu.image_dead);
+    SDL_DestroyTexture(HuofuQiuqiu.image_message);
+    SDL_DestroyTexture(HuofuQiuqiu.image_message_big);
+    SDL_DestroyTexture(HuofuQiuqiu.image_choose);
+    SDL_DestroyTexture(HuofuQiuqiu.image_special);
 
     SDL_DestroyTexture(LeifuQiuqiu.image);
     SDL_DestroyTexture(LeifuQiuqiu.image_dead);
+    SDL_DestroyTexture(LeifuQiuqiu.image_message);
+    SDL_DestroyTexture(LeifuQiuqiu.image_message_big);
+    SDL_DestroyTexture(LeifuQiuqiu.image_choose);
+    SDL_DestroyTexture(LeifuQiuqiu.image_special);
 
     SDL_DestroyTexture(LeiQiuqiuShe.image);
     SDL_DestroyTexture(LeiQiuqiuShe.image_dead);
+    SDL_DestroyTexture(LeiQiuqiuShe.image_message);
+    SDL_DestroyTexture(LeiQiuqiuShe.image_message_big);
+    SDL_DestroyTexture(LeiQiuqiuShe.image_choose);
+    SDL_DestroyTexture(LeiQiuqiuShe.image_special);
 
     SDL_DestroyTexture(HailuanguiHuo.image);
     SDL_DestroyTexture(HailuanguiHuo.image_dead);
+    SDL_DestroyTexture(HailuanguiHuo.image_message);
+    SDL_DestroyTexture(HailuanguiHuo.image_message_big);
+    SDL_DestroyTexture(HailuanguiHuo.image_choose);
+    SDL_DestroyTexture(HailuanguiHuo.image_special);
 
     SDL_DestroyTexture(HailuanguiLei.image);
     SDL_DestroyTexture(HailuanguiLei.image_dead);
+    SDL_DestroyTexture(HailuanguiLei.image_message);
+    SDL_DestroyTexture(HailuanguiLei.image_message_big);
+    SDL_DestroyTexture(HailuanguiLei.image_choose);
+    SDL_DestroyTexture(HailuanguiLei.image_special);
+
+    SDL_DestroyTexture(Tewalin.image);
+    SDL_DestroyTexture(Tewalin.image_dead);
+    SDL_DestroyTexture(Tewalin.image_message);
+    SDL_DestroyTexture(Tewalin.image_message_big);
+    SDL_DestroyTexture(Tewalin.image_choose);
+    SDL_DestroyTexture(Tewalin.image_special);
+
+    SDL_DestroyTexture(Huochong.image);
+    SDL_DestroyTexture(Huochong.image_dead);
+    SDL_DestroyTexture(Huochong.image_message);
+    SDL_DestroyTexture(Huochong.image_message_big);
+    SDL_DestroyTexture(Huochong.image_choose);
+    SDL_DestroyTexture(Huochong.image_special);
+
+    SDL_DestroyTexture(Shuichong.image);
+    SDL_DestroyTexture(Shuichong.image_dead);
+    SDL_DestroyTexture(Shuichong.image_message);
+    SDL_DestroyTexture(Shuichong.image_message_big);
+    SDL_DestroyTexture(Shuichong.image_choose);
+    SDL_DestroyTexture(Shuichong.image_special);
+
+    SDL_DestroyTexture(Leichui.image);
+    SDL_DestroyTexture(Leichui.image_dead);
+    SDL_DestroyTexture(Leichui.image_message);
+    SDL_DestroyTexture(Leichui.image_message_big);
+    SDL_DestroyTexture(Leichui.image_choose);
+    SDL_DestroyTexture(Leichui.image_special);
 }
 
 void PresentCharacterGame(Character *chara, int num)
@@ -223,11 +305,9 @@ void PresentCharacterGame(Character *chara, int num)
         //血量展示
         int xueliang = chara->xue;
         char xueliang_print[3];
-        if (xueliang == 10)
+        if (xueliang >= 10)
         {
-            xueliang_print[0] = '1';
-            xueliang_print[1] = '0';
-            xueliang_print[2] = '\0';
+            itoa(xueliang, xueliang_print, 10);
         }
         else
         {

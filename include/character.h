@@ -9,7 +9,7 @@
 
 #include <stdbool.h>
 
-//元素对应：0火系，1雷系，2水系，3风系，4草系, 5随机元素，-1无元素
+//元素对应：0火系，1雷系，2水系，3风系，4草系, 5随机元素，-1物理
 
 typedef struct chara {
     int index;         //角色编号
@@ -23,7 +23,7 @@ typedef struct chara {
     int shanghai_more[3]; //依次存放三种攻击因为元素反应或技能效果的加成伤害
     int yuansu;       //该角色元素类型
     bool yuansu_fu[5]; //当前角色身上的元素附着状态
-    bool zhuang[2];
+    bool zhuang[2];    //当前状态。0是死亡位
     bool if_xuan;      //是否为选中状态
     bool if_chu;       //是否为当前出战角色
     int special_state; //特殊状态剩余次数
@@ -35,8 +35,9 @@ typedef struct chara {
     SDL_Texture *image_choose;   //角色被选中图片
     SDL_Texture *image_message;  //角色信息图片
     SDL_Texture *image_message_big;  //角色信息图片（大）
-    SDL_Texture *image_special;
+    SDL_Texture *image_special;  //角色特殊状态图片
 
+    //技能对应的函数指针
     void (*yszj)(struct chara *chara1, struct chara *chara2, struct chara *chara3, struct chara *chara);
     void (*ysbf)(struct chara *chara1, struct chara *chara2, struct chara *chara3, struct chara *chara);
     void (*SpecialAddition)(struct chara *chara);
@@ -58,6 +59,10 @@ extern Character LeifuQiuqiu;
 extern Character LeiQiuqiuShe;
 extern Character HailuanguiHuo;
 extern Character HailuanguiLei;
+extern Character Tewalin;
+extern Character Shuichong;
+extern Character Huochong;
+extern Character Leichui;
 
 extern SDL_Renderer *renderer;
 extern SDL_Window *window;

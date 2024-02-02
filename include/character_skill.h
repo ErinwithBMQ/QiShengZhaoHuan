@@ -49,6 +49,18 @@ void Ren_ysbf(Character *chara1, Character *chara2, Character *chara3, Character
 void Ren_SpecialAddition(Character *chara);
 void RenPuHuiXue(Character *chara);
 
+void Tewalin_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void Tewalin_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+
+void Hai_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void Hai_SpecialAddition(Character *chara);
+
+void Leichui_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void Leichui_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void Leichui_SpecialAddition(Character *chara);
+
+void Mudun_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+
 void SpecialAdditionReduceTurn(Character *chara4, Character *chara5, Character *chara6);  //回合减少的特殊状态
 void SpecialAdditionReduceCountPu(Character *chara); //普攻减少的特殊状态
 void SpecialAdditionReduceCountAll(Character *chara);  //只要攻击就减少的特殊状态

@@ -29,7 +29,9 @@ void ShowEndHH(int who_fight);  //展示结束回合按钮
 void ShowIfEndTurn(bool if_final_a, bool if_final_b); //展示是否结束回合
 void ShowTurn(int count);
 
-int ChooseWhichSkill(Character **chara, int tou[],
+void ShowEnemyMessage(Character *enemy);
+
+int ChooseWhichSkill(Character **chara, int tou[], Character *chara1, Character *chara2, Character *chara3,
                      Character *chara4, Character *chara5, Character *chara6, bool if_finnal_a);  //观测鼠标，选择哪一个按钮
 
 int if_end(Character *chara1, Character *chara2, Character *chara3,
