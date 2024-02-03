@@ -15,6 +15,7 @@
 #include <summon.h>
 #include <character_skill.h>
 #include <ElementalReaction.h>
+#include <action.h>
 
 void MainPage()
 {
@@ -152,7 +153,7 @@ void WinBattle()
     SDL_Event event_main;
     while (1)
     {
-        SDL_Texture *texture_win = IMG_LoadTexture(renderer, "./res/image/win.png");
+        SDL_Texture *texture_win = IMG_LoadTexture(renderer, "./res/image/win.jpg");
         SDL_RenderCopy(renderer, texture_win, NULL, NULL);
         SDL_RenderPresent(renderer);
 
@@ -164,8 +165,8 @@ void WinBattle()
                 case SDL_QUIT:
                     quit_delete();
                     exit(0);
-                case SDL_KEYDOWN:
-                    if (event_main.key.keysym.sym == SDLK_SPACE)
+                case SDL_MOUSEBUTTONDOWN:
+                    if (event_main.button.button == SDL_BUTTON_LEFT)
                     {
                         SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
                         SDL_RenderClear(renderer); // 清除渲染器内容
@@ -326,6 +327,7 @@ int InBattle(int *count, int *who_first, int tou[],
         ShowEndHH(who_fight);
         ShowIfEndTurn(if_final_a, if_final_b);
         ShowTurn(*count);
+        ShowMyCard();
 
         if (who_fight == 1)
         {
@@ -376,6 +378,7 @@ int InBattle(int *count, int *who_first, int tou[],
 
             //特殊增伤计算
             QingliuSkill(chara4, chara5, chara6);
+            ActionLiaoliJiaShang(*charanow);
             //激化、草原核的增伤
             JihuaAddition(*charanow);
             CaoyuanheAddition(*charanow);
@@ -385,7 +388,7 @@ int InBattle(int *count, int *who_first, int tou[],
 
             if (whichone == -1) //退出战斗
             {
-                return 1;
+                return 0;
             }
             else if (whichone == 0)  //未选择技能
             {
@@ -446,6 +449,12 @@ int InBattle(int *count, int *who_first, int tou[],
                 //判断是否结束游戏
                 int n1 = if_end(chara1, chara2, chara3, chara4, chara5, chara6);
 
+                if (if_qiehuanjuese)
+                {
+                    ChaoZai(charanow, chara4, chara5, chara6);
+                    if_qiehuanjuese = false;
+                }
+
                 if (n1 == 0)  //不结束，对方行动
                 {
                     if (!if_final_b)
@@ -490,6 +499,13 @@ int InBattle(int *count, int *who_first, int tou[],
                 ChangeCharacterEnemy(chara_enemy_now, chara1, chara2, chara3);
 
                 int n1 = if_end(chara1, chara2, chara3, chara4, chara5, chara6);
+
+                if (if_qiehuanjuese)
+                {
+                    ChaoZai(charanow, chara4, chara5, chara6);
+                    if_qiehuanjuese = false;
+                }
+
                 if (n1 == 0)
                 {
                     if (!if_final_b)
@@ -529,6 +545,13 @@ int InBattle(int *count, int *who_first, int tou[],
                 (*charanow)->baofa_now = 0;
                 ChangeCharacterEnemy(chara_enemy_now, chara1, chara2, chara3);
                 int n1 = if_end(chara1, chara2, chara3, chara4, chara5, chara6);
+
+                if (if_qiehuanjuese)
+                {
+                    ChaoZai(charanow, chara4, chara5, chara6);
+                    if_qiehuanjuese = false;
+                }
+
                 if (n1 == 0)
                 {
                     if (!if_final_b)
@@ -541,12 +564,18 @@ int InBattle(int *count, int *who_first, int tou[],
             }
             else if (whichone == 4)  //切换角色
             {
-                if (!if_final_b)
+                if (!if_final_b && if_kuaijie == false)
                 {
                     who_fight = 0;
                 }
 
-                ReduceTouChange(chara4, chara5, chara6, tou);
+                if (!if_notusetou)
+                {
+                    ReduceTouChange(chara4, chara5, chara6, tou);
+                }
+
+                if_kuaijie = false;
+                if_notusetou = false;
 
                 continue;
             }
@@ -660,15 +689,15 @@ int InBattle(int *count, int *who_first, int tou[],
                     {
                         enemy_count++;
                     }
+                    else
+                    {
+                        if_final_b = true;
+                    }
                 }
                 else
                 {
                     if_final_b = true;
                 }
-            }
-            else
-            {
-                if_final_b = true;
             }
 
 
@@ -798,7 +827,9 @@ int AfterBattle(int *count, Character **chara_now, Character **chara_enemy_now,
 
     SDL_RenderPresent(renderer);
 
-    SDL_Delay(1000);
+    SDL_Delay(800);
+
+    SuijiChouka(2);
 
     TTF_CloseFont(font_summon);
     SDL_FreeSurface(surface_turn);
@@ -814,7 +845,35 @@ int AfterBattle(int *count, Character **chara_now, Character **chara_enemy_now,
 
 void LoseBattle()
 {
+    SDL_Event event_main;
+    while (1)
+    {
+        SDL_Texture *texture_LOSE = IMG_LoadTexture(renderer, "./res/image/lose.jpg");
+        SDL_RenderCopy(renderer, texture_LOSE, NULL, NULL);
+        SDL_RenderPresent(renderer);
 
+        SDL_DestroyTexture(texture_LOSE);
+
+        while (SDL_PollEvent(&event_main))
+        {
+            switch (event_main.type) {
+                case SDL_QUIT:
+                    quit_delete();
+                    exit(0);
+                case SDL_MOUSEBUTTONDOWN:
+                    if (event_main.button.button == SDL_BUTTON_LEFT)
+                    {
+                        SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
+                        SDL_RenderClear(renderer); // 清除渲染器内容
+                        return;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        SDL_Delay(5);
+    }
 }
 
 bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)

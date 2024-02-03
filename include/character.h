@@ -8,6 +8,10 @@
 #define SDL_SAMPLE_CHARACTER_H
 
 #include <stdbool.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 
 //元素对应：0火系，1雷系，2水系，3风系，4草系, 5随机元素，-1物理
 

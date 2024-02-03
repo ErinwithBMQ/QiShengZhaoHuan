@@ -178,6 +178,8 @@ void SuijiChouka(int num)
             rect_image.x += 104;
         }
     }
+    SDL_RenderPresent(renderer);
+    SDL_Delay(1000);
 }
 
 void Touzi(int tou[], int count, Character *chara, int who_first)
@@ -509,6 +511,19 @@ int ChooseWhichSkill(Character **chara, int tou[], Character *chara1, Character 
                         else if (x >= 740 && x <= 860 && y >= 125 && y <= 285)
                         {
                             ShowEnemyMessage(chara3);
+                            return 0;
+                        }
+                        else if (x >= 315 && x <= 933 && y >= 687 && y < 800)
+                        {
+                            int index_num = (x - 315) / 66;
+                            if (my_card[index_num] != NULL)
+                            {
+                                if (if_choosecard(my_card[index_num], index_num, tou, (*chara)->yuansu, chara4->yuansu, chara5->yuansu, chara6->yuansu))
+                                {
+                                    my_card[index_num]->Action(*chara, chara4->yuansu, chara5->yuansu, chara6->yuansu, tou);
+                                    UseMyCard(index_num);
+                                }
+                            }
                             return 0;
                         }
                     }
@@ -986,7 +1001,7 @@ bool IfChangeCharacter(Character *charanow, Character *chara, int num, int tou[]
             return false;
         }
 
-        if (IfTouNotZero(tou))
+        if (IfTouNotZero(tou) || if_notusetou == true)
         {
             while (1)
             {
@@ -1008,23 +1023,30 @@ bool IfChangeCharacter(Character *charanow, Character *chara, int num, int tou[]
                 SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
                 SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
 
-                surface_message = TTF_RenderUTF8_Solid(font_message, "消耗一个元素骰子", color_message);
-                texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
-                rect_message.x = 510;
-                rect_message.y = 360;
-                SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
-                SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+                if (!if_notusetou)
+                {
+                    surface_message = TTF_RenderUTF8_Solid(font_message, "消耗一个元素骰子", color_message);
+                    texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+                    rect_message.x = 510;
+                    rect_message.y = 360;
+                    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+                    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+                }
 
                 SDL_Texture *texture_change = IMG_LoadTexture(renderer, "./res/image/change.png");
                 SDL_Rect rect_change = {.x = 1050, .y = 570};
                 SDL_QueryTexture(texture_change, NULL, NULL, &rect_change.w, &rect_change.h);
                 SDL_RenderCopy(renderer, texture_change, NULL, &rect_change);
 
-//                SDL_Surface *surface_yesno = TTF_RenderUTF8_Solid(font_message, "按space选中，按esc取消选择", color_message);
-//                SDL_Texture *texture_yesno = SDL_CreateTextureFromSurface(renderer, surface_yesno);
-//                SDL_Rect rect_yesno = {.x = 460, .y = 390};
-//                SDL_QueryTexture(texture_yesno, NULL, NULL, &rect_yesno.w, &rect_yesno.h);
-//                SDL_RenderCopy(renderer, texture_yesno, NULL, &rect_yesno);
+                if (if_kuaijie)
+                {
+                    surface_message = TTF_RenderUTF8_Solid(font_message, "本次为快速行动", color_message);
+                    texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+                    rect_message.x = 530;
+                    rect_message.y = 390;
+                    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+                    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+                }
 
                 SDL_RenderPresent(renderer);
 
@@ -1032,8 +1054,6 @@ bool IfChangeCharacter(Character *charanow, Character *chara, int num, int tou[]
                 SDL_FreeSurface(surface_message);
                 SDL_DestroyTexture(texture_message);
                 SDL_DestroyTexture(texture_change);
-//                SDL_FreeSurface(surface_yesno);
-//                SDL_DestroyTexture(texture_yesno);
 
 
                 SDL_Event event_choose;

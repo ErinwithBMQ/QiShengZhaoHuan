@@ -631,6 +631,8 @@ Card *card_all[9] = {&bestfriend, &fengbu, &hegui, &huanban, &jiaogei,
 Card *my_card[9];
 int my_card_num;
 
+int liaolijiashang[2];
+
 bool if_kuaijie;
 bool if_notusetou;
 bool if_qiehuanjuese;
@@ -668,6 +670,12 @@ int main(int argc, char *argv[])
         Mix_PlayMusic(music, 20);
 
         MainPage();
+
+        for (int i = 0; i < 9; ++i)
+        {
+            my_card[i] = NULL;
+        }
+        my_card_num = 0;
 
         //角色初始化
 
@@ -742,6 +750,8 @@ int main(int argc, char *argv[])
 
         int tou[6] = {0};
         int who_first = 1;  //默认一开始我方先行动
+
+        SuijiChouka(3);
 
         while (1)  //每一次循环是一个回合
         {

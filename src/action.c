@@ -1,19 +1,22 @@
 //
 // Created by Erin on 2024/1/14.
 //
-#include "action.h"
+#include <action.h>
+#include <battle.h>
+#include <summon.h>
+
 
 void CardImageLoad()
 {
-    bestfriend.image = IMG_LoadTexture(renderer, "./res/image/action_1");
-    fengbu.image = IMG_LoadTexture(renderer, "./res/image/action_2");
-    hegui.image = IMG_LoadTexture(renderer, "./res/image/action_3");
-    huanban.image = IMG_LoadTexture(renderer, "./res/image/action_4");
-    jiaogei.image = IMG_LoadTexture(renderer, "./res/image/action_5");
-    xingtian.image = IMG_LoadTexture(renderer, "./res/image/action_6");
-    yunchou.image = IMG_LoadTexture(renderer, "./res/image/action_7");
-    tiantian.image = IMG_LoadTexture(renderer, "./res/image/action_8");
-    jueyun.image = IMG_LoadTexture(renderer, "./res/image/action_9");
+    bestfriend.image = IMG_LoadTexture(renderer, "./res/image/action_1.png");
+    fengbu.image = IMG_LoadTexture(renderer, "./res/image/action_2.png");
+    hegui.image = IMG_LoadTexture(renderer, "./res/image/action_3.png");
+    huanban.image = IMG_LoadTexture(renderer, "./res/image/action_4.png");
+    jiaogei.image = IMG_LoadTexture(renderer, "./res/image/action_5.png");
+    xingtian.image = IMG_LoadTexture(renderer, "./res/image/action_6.png");
+    yunchou.image = IMG_LoadTexture(renderer, "./res/image/action_7.png");
+    tiantian.image = IMG_LoadTexture(renderer, "./res/image/action_8.png");
+    jueyun.image = IMG_LoadTexture(renderer, "./res/image/action_9.png");
 }
 
 void CardImageDestroy()
@@ -235,7 +238,33 @@ void Action_6(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[]
 
 void Action_7(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[])
 {
+    int num = 1;
+    for (int i = 0; i < 5; ++i)
+    {
+        if (i != yuansu1 && i != yuansu2 && i != yuansu3)
+        {
+            if (tou[i] > 0)
+            {
+                tou[i]--;
+                num--;
+                break;
+            }
+        }
+    }
 
+    if (num > 0)
+    {
+        for (int i = 0; i < 6; ++i)
+        {
+            if (tou[i] > 0)
+            {
+                tou[i]--;
+                num--;
+                break;
+            }
+        }
+    }
+    SuijiChouka(2);
 }
 
 void Action_8(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[])
@@ -244,14 +273,12 @@ void Action_8(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[]
     {
         chara->xue++;
     }
-
-    chara->if_bao = true;
 }
 
 void Action_9(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[])
 {
-    chara->shanghai_more[0]++;
-    chara->if_bao = true;
+    liaolijiashang[0] = 1;
+    liaolijiashang[1] = 1;
 }
 
 void ShowMyCard()
@@ -268,27 +295,42 @@ void ShowMyCard()
     }
 }
 
-void ShowCardFunction(Card card)
+void ShowCardFunction(Card *card)
 {
     SDL_Rect rect_message = {.x = 50, .y = 150};
 
     TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 25);
-    SDL_Color color_message = {0x00, 0x00, 0x00, 0x00};
-    SDL_Surface *surface_message = TTF_RenderText_Blended(font_message, card.name, color_message);
+    SDL_Color color_message = {0xff, 0xff, 0xff, 0xff};
+    SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, card->name, color_message);
     SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
 
     SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
     SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
 
     rect_message.y += 30;
-    surface_message = TTF_RenderText_Blended(font_message, card.type, color_message);
+    surface_message = TTF_RenderUTF8_Solid(font_message, card->type, color_message);
     texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
 
     SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
     SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
 
     rect_message.y += 30;
-    surface_message = TTF_RenderText_Blended(font_message, card.message, color_message);
+    surface_message = TTF_RenderUTF8_Solid(font_message, "消耗  个元素骰", color_message);
+    texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    char num[2];
+    itoa(card->num, num, 10);
+    rect_message.x = 100;
+    surface_message = TTF_RenderUTF8_Solid(font_message, num, color_message);
+    texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    rect_message.y += 30;
+    rect_message.x = 50;
+    surface_message = TTF_RenderUTF8_Solid(font_message, card->message, color_message);
     texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
 
     SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
@@ -299,4 +341,127 @@ void ShowCardFunction(Card card)
     SDL_FreeSurface(surface_message);
     SDL_DestroyTexture(texture_message);
     TTF_CloseFont(font_message);
+}
+
+bool if_choosecard(Card *card, int index, int tou[],int yuansu, int yuansu1, int yuansu2, int yuansu3)
+{
+    SDL_Texture *texture_choose = IMG_LoadTexture(renderer, "./res/image/xuanzhong.png");
+    SDL_Rect rect_choose = {.x = 320 + index * 67, .y = 719};
+    SDL_QueryTexture(texture_choose, NULL, NULL, &rect_choose.w, &rect_choose.h);
+    SDL_RenderCopy(renderer, texture_choose, NULL, &rect_choose);
+
+    TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 25);
+    SDL_Color color_message = {0xff, 0xff, 0xff, 0xff};
+    SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "再次点击该牌即可使用", color_message);
+    SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    SDL_Rect rect_message = {.x = 520, .y = 330};
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    surface_message = TTF_RenderUTF8_Solid(font_message, "按space可转变元素骰", color_message);
+    texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    rect_message.y += 50;
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    ShowCardFunction(card);
+
+    SDL_DestroyTexture(texture_choose);
+
+    int total = 0;
+    for (int i = 0; i < 6; ++i)
+    {
+        total += tou[i];
+    }
+
+    SDL_Event event_card;
+    while (SDL_WaitEvent(&event_card))
+    {
+        switch (event_card.type)
+        {
+            case SDL_QUIT:
+                quit_delete();
+                exit(0);
+            case SDL_KEYDOWN:
+                if (event_card.key.keysym.sym == SDLK_ESCAPE)
+                {
+                    return false;
+                }
+                if (event_card.key.keysym.sym == SDLK_SPACE)
+                {
+                    for (int i = 0; i < 5; ++i)
+                    {
+                        if (i != yuansu1 && i != yuansu2 && i != yuansu3)
+                        {
+                            if (tou[i] > 0)
+                            {
+                                tou[i]--;
+                                tou[yuansu]++;
+                                UseMyCard(index);
+                                return false;
+                            }
+                        }
+                    }
+
+                    for (int i = 0; i < 5; ++i)
+                    {
+                        if (i != yuansu)
+                        {
+                            if (tou[i] > 0)
+                            {
+                                tou[i]--;
+                                tou[yuansu]++;
+                                UseMyCard(index);
+                                return false;
+                            }
+                        }
+                    }
+                    return false;
+                }
+                break;
+            case SDL_MOUSEBUTTONDOWN: //鼠标左键
+                if (event_card.button.button == SDL_BUTTON_LEFT)
+                {
+                    int x = event_card.button.x;
+                    int y = event_card.button.y;
+
+                    if (x >= 315 + 67 * index && x <= 380 + 67 * index && y >= 687 && y < 800)
+                    {
+                        if (total < card->num)
+                        {
+                            PrintTouNotEnough();
+                            return false;
+                        }
+                        else
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+        }
+    }
+}
+
+void UseMyCard(int index)
+{
+    for (int i = index; i < my_card_num - 1; ++i)
+    {
+        my_card[i] = my_card[i + 1];
+    }
+    my_card[my_card_num - 1] = NULL;
+    my_card_num--;
+}
+
+void ActionLiaoliJiaShang(Character *chara)
+{
+    if (liaolijiashang[1] != 0)
+    {
+        chara->shanghai_more[liaolijiashang[0] - 1] += liaolijiashang[1];
+        liaolijiashang[0] = 0;
+        liaolijiashang[1] = 0;
+    }
 }
