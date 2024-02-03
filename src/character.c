@@ -10,6 +10,7 @@
 #include <SDL2/SDL_mixer.h>
 #include "character.h"
 #include <summon.h>
+#include <action.h>
 
 void CharacterImageLoad()
 {
@@ -561,8 +562,6 @@ bool IfCharacterChoose(Character *chara)
 
             switch (event.type) {
                 case SDL_QUIT:
-                    CharacterImageDestroy();
-                    SummonImageDestroy();
                     quit_delete();
                     exit(0);
 
@@ -642,6 +641,10 @@ bool IfFirstChooseCharacter(Character *chara)
 
 void quit_delete()
 {
+    CharacterImageDestroy();
+    CardImageDestroy();
+    SummonImageDestroy();
+
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     Mix_CloseAudio();

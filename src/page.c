@@ -32,8 +32,6 @@ void MainPage()
 
             switch (event_main.type) {
                 case SDL_QUIT:
-                    CharacterImageDestroy();
-                    SummonImageDestroy();
                     quit_delete();
                     exit(0);
                 case SDL_KEYDOWN:
@@ -69,8 +67,6 @@ bool ChooseLevel(Character *chara1, Character *chara2, Character *chara3)
         {
             switch (event.type) {
                 case SDL_QUIT: //直接退出
-                    CharacterImageDestroy();
-                    SummonImageDestroy();
                     quit_delete();
                     exit(0);
                 case SDL_MOUSEBUTTONDOWN: //鼠标左键
@@ -166,8 +162,6 @@ void WinBattle()
         {
             switch (event_main.type) {
                 case SDL_QUIT:
-                    CharacterImageDestroy();
-                    SummonImageDestroy();
                     quit_delete();
                     exit(0);
                 case SDL_KEYDOWN:
@@ -225,8 +219,6 @@ void BeginBattle(Character *chara1, Character *chara2, Character *chara3,
             switch (event.type)
             {
                 case SDL_QUIT:
-                    CharacterImageDestroy();
-                    SummonImageDestroy();
                     quit_delete();
                     exit(0);
 
@@ -274,6 +266,8 @@ void BeginBattle(Character *chara1, Character *chara2, Character *chara3,
         SDL_Delay(5);
     }
 }
+
+
 
 int InBattle(int *count, int *who_first, int tou[],
              Character *chara1, Character *chara2, Character *chara3,
@@ -868,8 +862,6 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
             switch (event.type)
             {
                 case SDL_QUIT: //直接退出
-                    CharacterImageDestroy();
-                    SummonImageDestroy();
                     quit_delete();
                     exit(0);
                 case SDL_KEYDOWN:

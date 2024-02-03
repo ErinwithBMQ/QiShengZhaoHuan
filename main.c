@@ -510,6 +510,105 @@ Summon Fire = {
         .index_game = 0,
 };
 
+Card bestfriend = {
+        .index = 1,
+        .name = "最好的伙伴！",
+        .type = "事件牌",
+        .num = 2,
+        .message = "获得两个万能骰子",
+        .if_same = false,
+        .if_xuan = false,
+        .Action = Action_1,
+};
+
+Card fengbu = {
+        .index = 2,
+        .name = "快快缝补术",
+        .type = "事件牌",
+        .num = 1,
+        .message = "当前剩余次数最少的召唤物次数+1",
+        .if_same = false,
+        .if_xuan = false,
+        .Action = Action_2,
+};
+
+Card hegui = {
+        .index = 3,
+        .name = "鹤归之时",
+        .type = "事件牌",
+        .num = 1,
+        .message = "当前角色使用技能后，切换到下一个角色",
+        .if_same = false,
+        .if_xuan = false,
+        .Action = Action_3,
+};
+
+Card huanban = {
+        .index = 4,
+        .name = "换班时间",
+        .type = "事件牌",
+        .num = 0,
+        .message = "下次切换角色所需元素骰子-1",
+        .if_same = false,
+        .if_xuan = false,
+        .Action = Action_4,
+};
+
+Card jiaogei = {
+        .index = 5,
+        .name = "交给我吧！",
+        .type = "事件牌",
+        .num = 0,
+        .message = "下次切换角色为快速行动",
+        .if_same = false,
+        .if_xuan = false,
+        .Action = Action_5,
+};
+
+Card xingtian = {
+        .index = 6,
+        .name = "星天之兆",
+        .type = "事件牌",
+        .num = 2,
+        .message = "当前出战角色获得一点充能",
+        .if_same = false,
+        .if_xuan = false,
+        .Action = Action_6,
+};
+
+Card yunchou = {
+        .index = 7,
+        .name = "运筹帷幄",
+        .type = "事件牌",
+        .num = 1,
+        .message = "摸两张牌",
+        .if_same = false,
+        .if_xuan = false,
+        .Action = Action_7,
+};
+
+Card tiantian = {
+        .index = 8,
+        .name = "甜甜花酿鸡",
+        .type = "料理牌",
+        .num = 0,
+        .message = "当前角色恢复1点血量",
+        .if_same = false,
+        .if_xuan = false,
+        .Action = Action_8,
+};
+
+Card jueyun = {
+        .index = 9,
+        .name = "绝云锅巴",
+        .type = "料理牌",
+        .num = 0,
+        .message = "当前角色下次普通攻击伤害+1",
+        .if_same = false,
+        .if_xuan = false,
+        .Action = Action_9,
+};
+
 SDL_Window *window;
 SDL_Renderer *renderer;
 
@@ -527,6 +626,15 @@ bool if_showkillblood;
 
 int shanghaimore[7];
 
+Card *card_all[9] = {&bestfriend, &fengbu, &hegui, &huanban, &jiaogei,
+                     &xingtian, &yunchou, &tiantian, &jueyun};
+Card *my_card[9];
+int my_card_num;
+
+bool if_kuaijie;
+bool if_notusetou;
+bool if_qiehuanjuese;
+
 int main(int argc, char *argv[])
 {
     //初始化
@@ -536,6 +644,7 @@ int main(int argc, char *argv[])
 
     CharacterImageLoad();
     SummonImageLoad();
+    CardImageLoad();
 
     SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
@@ -548,6 +657,7 @@ int main(int argc, char *argv[])
     atexit(&quit_delete);
     atexit(&CharacterImageDestroy);
     atexit(&SummonImageDestroy);
+    atexit(&CardImageDestroy);
 
     Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048);
 

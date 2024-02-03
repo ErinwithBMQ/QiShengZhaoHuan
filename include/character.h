@@ -29,6 +29,7 @@ typedef struct chara {
     int special_state; //特殊状态剩余次数
     int huiorcount; // 回合减少还是次数减少，0为无特殊状态，1为回合减少，2为普攻次数减少，3为攻击次数减少
     bool if_pugongfumo; //普通攻击是否处于附魔状态
+    bool if_bao;     //是否饱腹
 
     SDL_Texture *image;          //角色正常图片
     SDL_Texture *image_dead;     //角色死亡图片

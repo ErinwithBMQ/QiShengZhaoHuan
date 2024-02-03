@@ -14,6 +14,7 @@
 #include <character.h>
 #include <summon.h>
 #include <ElementalReaction.h>
+#include <action.h>
 
 void ChangeCharacterShanghai(Character *chara, Character *enemy) //底层基础伤害的元素反应加成
 {
@@ -156,6 +157,25 @@ void ChangeCharacterShanghaiPu(Character *chara, Character *enemy)
             {
                 chara->shanghai_more[0] += 1;
             }
+        }
+    }
+}
+
+void SuijiChouka(int num)
+{
+    srand((unsigned int)time(NULL));
+    SDL_Rect rect_image = {.x = 497, .y = 347};
+    for (int i = 0; i < num; ++i)
+    {
+        if (my_card_num < 9)
+        {
+            int index = rand() % 9;
+            my_card[my_card_num] = card_all[index];
+            my_card_num++;
+
+            SDL_QueryTexture(card_all[index]->image, NULL, NULL, &rect_image.w, &rect_image.h);
+            SDL_RenderCopy(renderer, card_all[index]->image, NULL, &rect_image);
+            rect_image.x += 104;
         }
     }
 }
@@ -348,8 +368,6 @@ int ChooseWhichSkill(Character **chara, int tou[], Character *chara1, Character 
             switch (event.type)
             {
                 case SDL_QUIT: //直接退出
-                    CharacterImageDestroy();
-                    SummonImageDestroy();
                     quit_delete();
                     exit(0);
                 case SDL_KEYDOWN: //esc结束本局游戏
@@ -583,8 +601,6 @@ int IfChooseSkill(int n)
         switch (event_skill.type)
         {
             case SDL_QUIT:
-                CharacterImageDestroy();
-                SummonImageDestroy();
                 quit_delete();
                 exit(0);
             case SDL_KEYDOWN:
@@ -944,8 +960,6 @@ bool IfChangeCharacter(Character *charanow, Character *chara, int num, int tou[]
                 switch (event_choose.type)
                 {
                     case SDL_QUIT:
-                        CharacterImageDestroy();
-                        SummonImageDestroy();
                         quit_delete();
                         exit(0);
                     case SDL_KEYDOWN:
@@ -1028,8 +1042,6 @@ bool IfChangeCharacter(Character *charanow, Character *chara, int num, int tou[]
                     switch (event_choose.type)
                     {
                         case SDL_QUIT:
-                            CharacterImageDestroy();
-                            SummonImageDestroy();
                             quit_delete();
                             exit(0);
                         case SDL_KEYDOWN:
@@ -1325,8 +1337,6 @@ void ShowEnemyMessage(Character *enemy)
         switch (event_show.type)
         {
             case SDL_QUIT:
-                CharacterImageDestroy();
-                SummonImageDestroy();
                 quit_delete();
                 exit(0);
             case SDL_KEYDOWN:
@@ -1392,8 +1402,6 @@ bool ChangeCharacterWhenDead(Character **chara, Character *chara4, Character *ch
             switch (event.type)
             {
                 case SDL_QUIT:
-                    CharacterImageDestroy();
-                    SummonImageDestroy();
                     quit_delete();
 
                     exit(0);
@@ -1485,8 +1493,6 @@ bool IfChangeCharacterDead(Character *charanow, Character *chara, int num)
         while (SDL_WaitEvent(&event_choose)) {
             switch (event_choose.type) {
                 case SDL_QUIT:
-                    CharacterImageDestroy();
-                    SummonImageDestroy();
                     quit_delete();
                     exit(0);
                 case SDL_KEYDOWN:
