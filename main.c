@@ -137,7 +137,7 @@ Character Antant = {
         },
         .baofa_num = 3,
         .baofa_now = 0,
-        .shanghai = {2,3,3},
+        .shanghai = {2,2,3},
         .shanghai_more = {0, 0, 0},
         .yuansu = 4,
         .yuansu_fu = {0,0,0,0,0},
@@ -221,6 +221,29 @@ Character Ren = {
         .SpecialAddition = Ren_SpecialAddition,
         .special_state = 0,
         .huiorcount = 1,
+};
+
+Character Kafuka = {
+        .index = 10,
+        .xue = 10,
+        .hudun = 0,
+        .name = {
+                "卡芙卡",
+                "夜间喧嚣不止",
+                "月光摩挲连绵",
+                "悲剧尽头的颤音",
+        },
+        .baofa_num = 2,
+        .baofa_now = 0,
+        .shanghai = {2,2,3},
+        .shanghai_more = {0, 0, 0},
+        .yuansu = 1,
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+        .if_chu = false,
+        .yszj = Kafuka_yszj,
+        .ysbf = Kafuka_ysbf,
 };
 
 Character Qiuqiuren = {
@@ -483,8 +506,8 @@ Summon Qingjing = {
         .yuansu = 2,
         .shanghai = 2,
         .shanghai_more = 0,
-        .turn = 3,
-        .turn_now = 3,
+        .turn = 2,
+        .turn_now = 2,
         .index_game = 0,
 };
 
@@ -507,6 +530,17 @@ Summon Fire = {
         .shanghai_more = 0,
         .turn = 2,
         .turn_now = 1,
+        .index_game = 0,
+};
+
+Summon Zhuwang = {
+        .index = 5,
+        .name = "触电蛛网",
+        .yuansu = 1,
+        .shanghai = 2,
+        .shanghai_more = 0,
+        .turn = 2,
+        .turn_now = 2,
         .index_game = 0,
 };
 

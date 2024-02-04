@@ -56,6 +56,7 @@ extern Character Antant;
 extern Character CXK;
 extern Character Chen;
 extern Character Ren;
+extern Character Kafuka;
 
 extern Character Qiuqiuren;
 extern Character MudunQiuqiu;

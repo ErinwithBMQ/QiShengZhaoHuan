@@ -33,6 +33,7 @@ extern Summon Zhujiao;
 extern Summon Qingjing;
 extern Summon Lanqiu;
 extern Summon Fire;
+extern Summon Zhuwang;
 
 void SummonImageLoad();
 void SummonImageDestroy();

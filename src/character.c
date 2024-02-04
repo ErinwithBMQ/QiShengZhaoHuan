@@ -63,6 +63,12 @@ void CharacterImageLoad()
     Ren.image_message_big = IMG_LoadTexture(renderer, "./res/image/9_message_big.png");
     Ren.image_special = IMG_LoadTexture(renderer, "./res/image/9_special.png");
 
+    Kafuka.image = IMG_LoadTexture(renderer, "./res/image/10.png");
+    Kafuka.image_choose = IMG_LoadTexture(renderer, "./res/image/10_xuan.png");
+    Kafuka.image_dead = IMG_LoadTexture(renderer, "./res/image/10_dead.png");
+    Kafuka.image_message = IMG_LoadTexture(renderer, "./res/image/10_message.png");
+    Kafuka.image_message_big = IMG_LoadTexture(renderer, "./res/image/10_message_big.png");
+
     Qiuqiuren.image = IMG_LoadTexture(renderer, "./res/image/13.png");
     Qiuqiuren.image_dead = IMG_LoadTexture(renderer, "./res/image/13_dead.png");
     Qiuqiuren.image_message = IMG_LoadTexture(renderer, "./res/image/13_message.png");
@@ -168,6 +174,13 @@ void CharacterImageDestroy()
     SDL_DestroyTexture(Ren.image_message);
     SDL_DestroyTexture(Ren.image_message_big);
     SDL_DestroyTexture(Ren.image_special);
+
+    SDL_DestroyTexture(Kafuka.image);
+    SDL_DestroyTexture(Kafuka.image_choose);
+    SDL_DestroyTexture(Kafuka.image_dead);
+    SDL_DestroyTexture(Kafuka.image_message);
+    SDL_DestroyTexture(Kafuka.image_message_big);
+    SDL_DestroyTexture(Kafuka.image_special);
 
     SDL_DestroyTexture(Qiuqiuren.image);
     SDL_DestroyTexture(Qiuqiuren.image_dead);

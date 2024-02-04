@@ -13,6 +13,7 @@ void SummonImageLoad()
     Qingjing.image = IMG_LoadTexture(renderer, "./res/image/qingjing.png");
     Lanqiu.image = IMG_LoadTexture(renderer, "./res/image/lanqiu.png");
     Fire.image = IMG_LoadTexture(renderer, "./res/image/ranshao.png");
+    Zhuwang.image = IMG_LoadTexture(renderer, "./res/image/zhuwang.png");
 }
 
 void SummonImageDestroy()
@@ -21,6 +22,7 @@ void SummonImageDestroy()
     SDL_DestroyTexture(Qingjing.image);
     SDL_DestroyTexture(Lanqiu.image);
     SDL_DestroyTexture(Fire.image);
+    SDL_DestroyTexture(Zhuwang.image);
 }
 
 void PresentSummonGame(Summon *summon)

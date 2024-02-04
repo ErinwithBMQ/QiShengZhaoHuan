@@ -103,7 +103,7 @@ void Lingren_ysbf(Character *chara1, Character *chara2, Character *chara3, Chara
     {
         if (summon_all[i]->index == 2)
         {
-            summon_all[i]->turn_now = 3;
+            summon_all[i]->turn_now = 2;
             return;
         }
     }
@@ -477,6 +477,91 @@ void RenPuHuiXue(Character *chara)
             }
         }
     }
+}
+
+void Kafuka_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara)
+{
+    shanghai[1]++;
+    if (chara1->if_chu == 1)
+    {
+        if (chara2->hudun > 0)
+        {
+            chara2->hudun--;
+        }
+        else if (chara2->xue > 0)
+        {
+            chara2->xue--;
+        }
+
+        if (chara3->hudun > 0)
+        {
+            chara3->hudun--;
+        }
+        else if (chara3->xue > 0)
+        {
+            chara3->xue--;
+        }
+        return;
+    }
+
+    if (chara2->if_chu == 1)
+    {
+        if (chara1->hudun > 0)
+        {
+            chara1->hudun--;
+        }
+        else if (chara1->xue > 0)
+        {
+            chara1->xue--;
+        }
+
+        if (chara3->hudun > 0)
+        {
+            chara3->hudun--;
+        }
+        else if (chara3->xue > 0)
+        {
+            chara3->xue--;
+        }
+        return;
+    }
+
+    if (chara3->if_chu == 1)
+    {
+        if (chara2->hudun > 0)
+        {
+            chara2->hudun--;
+        }
+        else if (chara2->xue > 0)
+        {
+            chara2->xue--;
+        }
+
+        if (chara1->hudun > 0)
+        {
+            chara1->hudun--;
+        }
+        else if (chara1->xue > 0)
+        {
+            chara1->xue--;
+        }
+        return;
+    }
+}
+
+void Kafuka_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara)
+{
+    for (int i = 0; i < 4; ++i)
+    {
+        if (summon_all[i]->index == 5)
+        {
+            summon_all[i]->turn_now = 2;
+            return;
+        }
+    }
+    *(summon_all[summon_index_we]) = Zhuwang;
+    summon_all[summon_index_we]->index_game = summon_index_we;
+    summon_index_we++;
 }
 
 void Tewalin_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara)

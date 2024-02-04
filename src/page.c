@@ -2,7 +2,7 @@
 // Created by Erin on 2024/1/15.
 //
 
-// TODO：2.行动牌  3.战斗日志  4.战斗动画  5.难度选择以及对手逻辑  6.元素骰子重投
+// TODO：3.战斗日志  4.战斗动画  6.元素骰子重投
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
@@ -142,10 +142,6 @@ bool ChooseLevel(Character *chara1, Character *chara2, Character *chara3)
             }
         }
     }
-
-
-
-
 }
 
 void WinBattle()
@@ -1071,6 +1067,21 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
                             if (IfFirstChooseCharacter(&Chen) && count < 3)
                             {
                                 *(chara[count]) = Chen;
+                                chara[count]->index_game = count + 4;
+                                count++;
+                                break;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        if (x >= 967 && x <= 1240 && y>= 446 && y <= 518)
+                        {
+                            if (IfFirstChooseCharacter(&Kafuka) && count < 3)
+                            {
+                                *(chara[count]) = Kafuka;
                                 chara[count]->index_game = count + 4;
                                 count++;
                                 break;

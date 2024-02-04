@@ -49,6 +49,9 @@ void Ren_ysbf(Character *chara1, Character *chara2, Character *chara3, Character
 void Ren_SpecialAddition(Character *chara);
 void RenPuHuiXue(Character *chara);
 
+void Kafuka_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void Kafuka_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+
 void Tewalin_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void Tewalin_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 
