@@ -1304,7 +1304,7 @@ void ShowIfEndTurn(bool if_final_a, bool if_final_b)
 {
     if (if_final_a)
     {
-        SDL_Texture *texture_trun = IMG_LoadTexture(renderer, "./res/image/endturn_a.png");
+        SDL_Texture *texture_trun = IMG_LoadTexture(renderer, "./res/image/endturn.png");
         SDL_Rect rect_turn = {.x = 10, .y = 530};
         SDL_QueryTexture(texture_trun, NULL, NULL, &rect_turn.w, &rect_turn.h);
         SDL_RenderCopy(renderer, texture_trun, NULL, &rect_turn);
@@ -1314,7 +1314,7 @@ void ShowIfEndTurn(bool if_final_a, bool if_final_b)
 
     if (if_final_b)
     {
-        SDL_Texture *texture_turn = IMG_LoadTexture(renderer, "./res/image/endturn_b.png");
+        SDL_Texture *texture_turn = IMG_LoadTexture(renderer, "./res/image/endturn.png");
         SDL_Rect rect_turn = {.x = 10, .y = 10};
         SDL_QueryTexture(texture_turn, NULL, NULL, &rect_turn.w, &rect_turn.h);
         SDL_RenderCopy(renderer, texture_turn, NULL, &rect_turn);
