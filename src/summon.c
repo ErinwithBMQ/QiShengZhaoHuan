@@ -14,6 +14,7 @@ void SummonImageLoad()
     Lanqiu.image = IMG_LoadTexture(renderer, "./res/image/lanqiu.png");
     Fire.image = IMG_LoadTexture(renderer, "./res/image/ranshao.png");
     Zhuwang.image = IMG_LoadTexture(renderer, "./res/image/zhuwang.png");
+    Kelianba.image = IMG_LoadTexture(renderer, "./res/image/kelianba.png");
 }
 
 void SummonImageDestroy()
@@ -23,14 +24,40 @@ void SummonImageDestroy()
     SDL_DestroyTexture(Lanqiu.image);
     SDL_DestroyTexture(Fire.image);
     SDL_DestroyTexture(Zhuwang.image);
+    SDL_DestroyTexture(Kelianba.image);
 }
 
 void PresentSummonGame(Summon *summon)
 {
     int index = summon->index_game;
-    if (index < 3)
+    if (index < 2)
     {
         SDL_Rect rect_summon = {.x = 965 + index * 115, .y = 475};
+        SDL_QueryTexture(summon->image, NULL, NULL, &rect_summon.w, &rect_summon.h);
+        SDL_RenderCopy(renderer, summon->image, NULL, &rect_summon);
+
+        char num[2];
+        itoa(summon->turn_now, num, 10);
+        rect_summon.x += 85;
+        rect_summon.y += 5;
+        TTF_Font *font_summon = TTF_OpenFont("./res/HYWH85W.ttf", 20);
+        SDL_Color color_summon = {0x00, 0x00, 0x00, 0x00};
+        SDL_Surface *surface_turn = TTF_RenderText_Blended(font_summon, num, color_summon);
+        SDL_Texture *texture_turn = SDL_CreateTextureFromSurface(renderer, surface_turn);
+
+        SDL_QueryTexture(texture_turn, NULL, NULL, &rect_summon.w, &rect_summon.h);
+        SDL_RenderCopy(renderer, texture_turn, NULL, &rect_summon);
+
+        SDL_RenderPresent(renderer);
+
+        TTF_CloseFont(font_summon);
+        SDL_FreeSurface(surface_turn);
+        SDL_DestroyTexture(texture_turn);
+    }
+    else
+    {
+        index -= 2;
+        SDL_Rect rect_summon = {.x = 965 + index * 115, .y = 600};
         SDL_QueryTexture(summon->image, NULL, NULL, &rect_summon.w, &rect_summon.h);
         SDL_RenderCopy(renderer, summon->image, NULL, &rect_summon);
 

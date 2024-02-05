@@ -22,7 +22,7 @@ void Antant_ysbf(Character *chara1, Character *chara2, Character *chara3, Charac
 
 void Lingren_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void Lingren_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
-void Lingren_SpecialAdditon(Character *chara);
+void Lingren_SpecialAddition(Character *chara);
 void QingliuSkill(Character *chara4, Character *chara5, Character *chara6);
 
 void CXK_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
@@ -34,15 +34,19 @@ void Chen_ysbf(Character *chara1, Character *chara2, Character *chara3, Characte
 
 void Alhaitham_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void Alhaitham_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
-void Alhaitham_SpecialAdditon(Character *chara);
+void Alhaitham_SpecialAddition(Character *chara);
 
 void Huoxing_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void Huoxing_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
-void Huoxing_SpecialAdditon(Character *chara);
+void Huoxing_SpecialAddition(Character *chara);
 
 void Zihuang_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void Zihuang_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
-void Zihuang_SpecialAdditon(Character *chara);
+void Zihuang_SpecialAddition(Character *chara);
+
+void Shierteer_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+void Shierteer_SpecialAddition(Character *chara);
+void ShierteerKouXue(Character *chara4, Character *chara5, Character *chara6);
 
 void Ren_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void Ren_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
@@ -51,6 +55,8 @@ void RenPuHuiXue(Character *chara);
 
 void Kafuka_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void Kafuka_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
+
+void Kelai_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 
 void Tewalin_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void Tewalin_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);

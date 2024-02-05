@@ -17,6 +17,9 @@ void CardImageLoad()
     yunchou.image = IMG_LoadTexture(renderer, "./res/image/action_7.png");
     tiantian.image = IMG_LoadTexture(renderer, "./res/image/action_8.png");
     jueyun.image = IMG_LoadTexture(renderer, "./res/image/action_9.png");
+    lianhua.image = IMG_LoadTexture(renderer, "./res/image/action_10.png");
+    fotiao.image = IMG_LoadTexture(renderer, "./res/image/action_11.png");
+    tudou.image = IMG_LoadTexture(renderer, "./res/image/action_12.png");
 }
 
 void CardImageDestroy()
@@ -30,6 +33,9 @@ void CardImageDestroy()
     SDL_DestroyTexture(yunchou.image);
     SDL_DestroyTexture(tiantian.image);
     SDL_DestroyTexture(jueyun.image);
+    SDL_DestroyTexture(lianhua.image);
+    SDL_DestroyTexture(fotiao.image);
+    SDL_DestroyTexture(tudou.image);
 }
 
 void Action_1(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[])
@@ -264,6 +270,7 @@ void Action_7(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[]
             }
         }
     }
+
     SuijiChouka(2);
 }
 
@@ -279,6 +286,130 @@ void Action_9(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[]
 {
     liaolijiashang[0] = 1;
     liaolijiashang[1] = 1;
+}
+
+void Action_10(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[])
+{
+    int num = 1;
+    for (int i = 0; i < 5; ++i)
+    {
+        if (i != yuansu1 && i != yuansu2 && i != yuansu3)
+        {
+            if (tou[i] > 0)
+            {
+                tou[i]--;
+                num--;
+                break;
+            }
+        }
+    }
+
+    if (num > 0)
+    {
+        for (int i = 0; i < 6; ++i)
+        {
+            if (tou[i] > 0)
+            {
+                tou[i]--;
+                num--;
+                break;
+            }
+        }
+    }
+
+    chara->hudun += 3;
+}
+
+void Action_11(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[])
+{
+    int num = 2;
+    for (int i = 0; i < 5; ++i)
+    {
+        if (i != yuansu1 && i != yuansu2 && i != yuansu3)
+        {
+            if (tou[i] > 0)
+            {
+                tou[i]--;
+                num--;
+                if (tou[i] > 0 && num > 0)
+                {
+                    tou[i]--;
+                    num--;
+                }
+                if (num == 0)
+                {
+                    break;
+                }
+            }
+        }
+    }
+
+    if (num > 0)
+    {
+        for (int i = 0; i < 5; ++i)
+        {
+            if (i == yuansu1 || i == yuansu2 || i == yuansu3)
+            {
+                if (tou[i] > 0)
+                {
+                    tou[i]--;
+                    num--;
+                    if (tou[i] > 0 && num > 0)
+                    {
+                        tou[i]--;
+                        num--;
+                    }
+                    if (num == 0)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    if (num > 0)
+    {
+        tou[5] -= num;
+    }
+
+    liaolijiashang[0] = 3;
+    liaolijiashang[1] = 3;
+}
+
+void Action_12(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[])
+{
+    int num = 1;
+    for (int i = 0; i < 5; ++i)
+    {
+        if (i != yuansu1 && i != yuansu2 && i != yuansu3)
+        {
+            if (tou[i] > 0)
+            {
+                tou[i]--;
+                num--;
+                break;
+            }
+        }
+    }
+
+    if (num > 0)
+    {
+        for (int i = 0; i < 6; ++i)
+        {
+            if (tou[i] > 0)
+            {
+                tou[i]--;
+                num--;
+                break;
+            }
+        }
+    }
+    chara->xue += 2;
+    if (chara->xue > 10)
+    {
+        chara->xue = 10;
+    }
 }
 
 void ShowMyCard()
@@ -461,7 +592,5 @@ void ActionLiaoliJiaShang(Character *chara)
     if (liaolijiashang[1] != 0)
     {
         chara->shanghai_more[liaolijiashang[0] - 1] += liaolijiashang[1];
-        liaolijiashang[0] = 0;
-        liaolijiashang[1] = 0;
     }
 }

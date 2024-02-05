@@ -169,7 +169,7 @@ void SuijiChouka(int num)
     {
         if (my_card_num < 9)
         {
-            int index = rand() % 9;
+            int index = rand() % 12;
             my_card[my_card_num] = card_all[index];
             my_card_num++;
 
@@ -447,6 +447,13 @@ int ChooseWhichSkill(Character **chara, int tou[], Character *chara1, Character 
                                 return 0;
                             }
 
+                            if ((*chara)->index == 8 && (*chara)->zhuang[1] == true)
+                            {
+                                PrintCanNotUseTwice();
+
+                                return 0;
+                            }
+
                             ShowCharacterMessage(*chara);
                             ShowShanghai(*chara, 3);
                             SDL_RenderPresent(renderer);
@@ -587,6 +594,11 @@ void ShowTheWhole(Character *chara1, Character *chara2, Character *chara3,
 
 void kill_blood(Character *chara, Character *enemy, int n)
 {
+    if (chara->shanghai[n - 1] == 0)
+    {
+        return;
+    }
+
     int shanghaiblood = 0;
     shanghaiblood = chara->shanghai[n - 1] + chara->shanghai_more[n - 1];
     if (enemy->hudun >= shanghaiblood)
@@ -864,6 +876,25 @@ void PrintChongnengNotEnough()
     TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 32);
     SDL_Color color_message = {0xff, 0xff, 0xff, 0xff};
     SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "角色充能不足", color_message);
+    SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    SDL_Rect rect_message = {.x = 540, .y = 350};
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    SDL_RenderPresent(renderer);
+
+    SDL_Delay(1000);
+
+    TTF_CloseFont(font_message);
+    SDL_FreeSurface(surface_message);
+    SDL_DestroyTexture(texture_message);
+}
+
+void PrintCanNotUseTwice()
+{
+    TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 32);
+    SDL_Color color_message = {0xff, 0xff, 0xff, 0xff};
+    SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "该技能一局仅能使用一次", color_message);
     SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
     SDL_Rect rect_message = {.x = 540, .y = 350};
     SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
@@ -1617,7 +1648,7 @@ void ShowTou(int tou[])
 }
 
 void ShowKillBlood(Character *chara1, Character *chara2, Character *chara3,
-                   Character *chara4, Character *chara5, Character *chara6)
+                   Character *chara4, Character *chara5, Character *chara6, Character *chara_show, int jineng)
 {
     if (shanghai[4] == 1)
     {
@@ -1656,8 +1687,78 @@ void ShowKillBlood(Character *chara1, Character *chara2, Character *chara3,
         ShowKillBloodOwn(chara6, shanghai[0], shanghai[2], 1);
     }
 
-    SDL_RenderPresent(renderer);
-    SDL_Delay(800);
+    if (chara_show != NULL)
+    {
+        int index = chara_show->index_game;
+        SDL_Texture *texture_image;
+        SDL_Rect rect_image = {.y = 142};
+        if (index < 4)
+        {
+            texture_image = IMG_LoadTexture(renderer, "./res/image/showenemy_killblood.png");
+            rect_image.x = 817;
+        }
+        else
+        {
+            texture_image = IMG_LoadTexture(renderer, "./res/image/showus_killblood.png");
+            rect_image.x = 50;
+        }
+
+        SDL_QueryTexture(texture_image, NULL, NULL, &rect_image.w, &rect_image.h);
+        SDL_RenderCopy(renderer, texture_image, NULL, &rect_image);
+
+        SDL_Rect rect_message = {.x = rect_image.x + 30, .y = rect_image.y += 20};
+        TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 24);
+        SDL_Color color_message = {0xff, 0xff, 0xff};
+        SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, chara_show->name[0], color_message);
+        SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+        SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+        rect_message.y += 30;
+        if (jineng == 1)
+        {
+            surface_message = TTF_RenderUTF8_Solid(font_message, "普通攻击：", color_message);
+        }
+        else if (jineng == 2)
+        {
+            surface_message = TTF_RenderUTF8_Solid(font_message, "元素战技：", color_message);
+        }
+        else if (jineng == 3)
+        {
+            surface_message = TTF_RenderUTF8_Solid(font_message, "元素爆发：", color_message);
+        }
+        texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+        SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+        rect_message.x += 120;
+        surface_message = TTF_RenderUTF8_Solid(font_message, chara_show->name[jineng], color_message);
+        texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+        SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+        SDL_RenderPresent(renderer);
+
+        if (index < 4)
+        {
+            SDL_Delay(1200);
+        }
+        else
+        {
+            SDL_Delay(800);
+        }
+
+        SDL_DestroyTexture(texture_message);
+        SDL_DestroyTexture(texture_image);
+        SDL_FreeSurface(surface_message);
+        TTF_CloseFont(font_message);
+    }
+    else
+    {
+        SDL_RenderPresent(renderer);
+        SDL_Delay(1000);
+    }
+
 
     if_showkillblood = false;
     for (int i = 0; i < 5; ++i)
@@ -1765,6 +1866,50 @@ void ShowKillBloodOwn(Character *chara, int bloodkill, int yuansu, bool if_main)
 
     SDL_DestroyTexture(texture_message);
     SDL_DestroyTexture(texture_kill);
+    SDL_FreeSurface(surface_message);
+    TTF_CloseFont(font_message);
+}
+
+void ShowQieHuanChara(Character *chara_now)
+{
+    int index = chara_now->index_game;
+    SDL_Texture *texture_image;
+    SDL_Rect rect_image = {.y = 142};
+    if (index < 4)
+    {
+        texture_image = IMG_LoadTexture(renderer, "./res/image/qiehuan_enemy.png");
+        rect_image.x = 817;
+    }
+    else
+    {
+        texture_image = IMG_LoadTexture(renderer, "./res/image/qiehuan_we.png");
+        rect_image.x = 50;
+    }
+    SDL_QueryTexture(texture_image, NULL, NULL, &rect_image.w, &rect_image.h);
+    SDL_RenderCopy(renderer, texture_image, NULL, &rect_image);
+
+    SDL_Rect rect_message = {.x = rect_image.x += 180, rect_image.y += 28};
+
+    TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 24);
+    SDL_Color color_message = {0xff, 0xff, 0xff};
+    SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, chara_now->name[0], color_message);
+    SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    SDL_RenderPresent(renderer);
+
+    if (chara_now->index_game < 4)
+    {
+        SDL_Delay(1200);
+    }
+    else
+    {
+        SDL_Delay(800);
+    }
+
+    SDL_DestroyTexture(texture_image);
+    SDL_DestroyTexture(texture_message);
     SDL_FreeSurface(surface_message);
     TTF_CloseFont(font_message);
 }

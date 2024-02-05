@@ -55,8 +55,10 @@ extern Character Zihuang;
 extern Character Antant;
 extern Character CXK;
 extern Character Chen;
+extern Character Shierteer;
 extern Character Ren;
 extern Character Kafuka;
+extern Character Kelai;
 
 extern Character Qiuqiuren;
 extern Character MudunQiuqiu;

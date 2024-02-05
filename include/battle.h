@@ -56,6 +56,7 @@ void YuanSuFuZhuo(Character *chara, Character *enemy); //对敌人造成元素�
 
 void PrintTouNotEnough();  //提示骰子不够
 void PrintChongnengNotEnough();  //提示充能不够
+void PrintCanNotUseTwice();  //提示仅能使用一次
 
 void ChangeCharacterEnemy(Character **chara_enemy_now, Character *chara1, Character *chara2, Character *chara3);
 bool ChangeEnemyAuto(Character **chara_enemy_now, Character *chara1, Character *chara2, Character *chara3);
@@ -67,8 +68,10 @@ bool ChangeCharacterWhenDead(Character **chara, Character *chara4, Character *ch
 //我方角色死亡时强制切换角色
 
 void ShowKillBlood(Character *chara1, Character *chara2, Character *chara3,
-                   Character *chara4, Character *chara5, Character *chara6);
+                   Character *chara4, Character *chara5, Character *chara6, Character *chara_show, int jineng);
 void ShowKillBloodOwn(Character *chara, int bloodkill, int yuansu, bool if_main);
+
+void ShowQieHuanChara(Character *chara_now);
 
 
 #endif //QSZH_BATTLE_H

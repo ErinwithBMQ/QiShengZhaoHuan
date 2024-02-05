@@ -41,7 +41,7 @@ Character Alhaitham = {
         .if_chu = false,
         .yszj = Alhaitham_yszj,
         .ysbf = Alhaitham_ysbf,
-        .SpecialAddition = Alhaitham_SpecialAdditon,
+        .SpecialAddition = Alhaitham_SpecialAddition,
         .special_state = 0,
         .huiorcount = 1,
         .if_pugongfumo = false,
@@ -68,7 +68,7 @@ Character Lingren = {
         .if_chu = false,
         .yszj = Lingren_yszj,
         .ysbf = Lingren_ysbf,
-        .SpecialAddition = Lingren_SpecialAdditon,
+        .SpecialAddition = Lingren_SpecialAddition,
         .special_state = 0,
         .huiorcount = 2,
 };
@@ -94,7 +94,7 @@ Character Huoxing = {
         .if_chu = false,
         .yszj = Huoxing_yszj,
         .ysbf = Huoxing_ysbf,
-        .SpecialAddition = Huoxing_SpecialAdditon,
+        .SpecialAddition = Huoxing_SpecialAddition,
         .special_state = 0,
         .huiorcount = 1,
 };
@@ -120,7 +120,7 @@ Character Zihuang = {
         .if_chu = false,
         .yszj = Zihuang_yszj,
         .ysbf = Zihuang_ysbf,
-        .SpecialAddition = Zihuang_SpecialAdditon,
+        .SpecialAddition = Zihuang_SpecialAddition,
         .special_state = 0,
         .huiorcount = 3,
 };
@@ -197,6 +197,31 @@ Character Chen = {
         .ysbf = Chen_ysbf,
 };
 
+Character Shierteer = {
+        .index = 8,
+        .xue = 10,
+        .hudun = 0,
+        .name = {
+                "史尔特尔",
+                "烈焰魔剑",
+                "熔核巨影",
+                "黄昏",
+        },
+        .baofa_num = 2,
+        .baofa_now = 0,
+        .shanghai = {2,3,2},
+        .shanghai_more = {0, 0, 0},
+        .yuansu = 0,
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+        .if_chu = false,
+        .ysbf = Shierteer_ysbf,
+        .SpecialAddition = Shierteer_SpecialAddition,
+        .special_state = 0,
+        .huiorcount = 1,
+};
+
 Character Ren = {
         .index = 9,
         .xue = 10,
@@ -244,6 +269,28 @@ Character Kafuka = {
         .if_chu = false,
         .yszj = Kafuka_yszj,
         .ysbf = Kafuka_ysbf,
+};
+
+Character Kelai = {
+        .index = 11,
+        .xue = 10,
+        .hudun = 0,
+        .name = {
+                "柯莱",
+                "祈颂射艺",
+                "拂花偈叶",
+                "猫猫秘宝",
+        },
+        .baofa_num = 2,
+        .baofa_now = 0,
+        .shanghai = {2,3,2},
+        .shanghai_more = {0, 0, 0},
+        .yuansu = 4,
+        .yuansu_fu = {0,0,0,0,0},
+        .zhuang = {0,0},
+        .if_xuan = false,
+        .if_chu = false,
+        .ysbf = Kelai_ysbf,
 };
 
 Character Qiuqiuren = {
@@ -544,6 +591,17 @@ Summon Zhuwang = {
         .index_game = 0,
 };
 
+Summon Kelianba = {
+        .index = 6,
+        .name = "柯里安巴",
+        .yuansu = 4,
+        .shanghai = 2,
+        .shanghai_more = 0,
+        .turn = 2,
+        .turn_now = 2,
+        .index_game = 0,
+};
+
 Card bestfriend = {
         .index = 1,
         .name = "最好的伙伴！",
@@ -643,6 +701,39 @@ Card jueyun = {
         .Action = Action_9,
 };
 
+Card lianhua = {
+        .index = 10,
+        .name = "莲花酥",
+        .type = "料理牌",
+        .num = 1,
+        .message = "当前角色获得3点护盾",
+        .if_same = false,
+        .if_xuan = false,
+        .Action = Action_10,
+};
+
+Card fotiao = {
+        .index = 11,
+        .name = "佛跳墙",
+        .type = "料理牌",
+        .num = 2,
+        .message = "当前角色下次元素爆发伤害+3",
+        .if_same = false,
+        .if_xuan = false,
+        .Action = Action_11,
+};
+
+Card tudou = {
+        .index = 12,
+        .name = "蒙德土豆饼",
+        .type = "料理牌",
+        .num = 1,
+        .message = "当前角色恢复2点血量",
+        .if_same = false,
+        .if_xuan = false,
+        .Action = Action_12,
+};
+
 SDL_Window *window;
 SDL_Renderer *renderer;
 
@@ -660,8 +751,8 @@ bool if_showkillblood;
 
 int shanghaimore[7];
 
-Card *card_all[9] = {&bestfriend, &fengbu, &hegui, &huanban, &jiaogei,
-                     &xingtian, &yunchou, &tiantian, &jueyun};
+Card *card_all[12] = {&bestfriend, &fengbu, &hegui, &huanban, &jiaogei,
+                     &xingtian, &yunchou, &tiantian, &jueyun, &lianhua, &fotiao, &tudou};
 Card *my_card[9];
 int my_card_num;
 

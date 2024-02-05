@@ -56,6 +56,13 @@ void CharacterImageLoad()
     Chen.image_message = IMG_LoadTexture(renderer, "./res/image/7_message.png");
     Chen.image_message_big = IMG_LoadTexture(renderer, "./res/image/7_message_big.png");
 
+    Shierteer.image = IMG_LoadTexture(renderer, "./res/image/8.png");
+    Shierteer.image_choose = IMG_LoadTexture(renderer, "./res/image/8_xuan.png");
+    Shierteer.image_dead = IMG_LoadTexture(renderer, "./res/image/8_dead.png");
+    Shierteer.image_message = IMG_LoadTexture(renderer, "./res/image/8_message.png");
+    Shierteer.image_message_big = IMG_LoadTexture(renderer, "./res/image/8_message_big.png");
+    Shierteer.image_special = IMG_LoadTexture(renderer, "./res/image/8_special.png");
+
     Ren.image = IMG_LoadTexture(renderer, "./res/image/9.png");
     Ren.image_choose = IMG_LoadTexture(renderer, "./res/image/9_xuan.png");
     Ren.image_dead = IMG_LoadTexture(renderer, "./res/image/9_dead.png");
@@ -68,6 +75,12 @@ void CharacterImageLoad()
     Kafuka.image_dead = IMG_LoadTexture(renderer, "./res/image/10_dead.png");
     Kafuka.image_message = IMG_LoadTexture(renderer, "./res/image/10_message.png");
     Kafuka.image_message_big = IMG_LoadTexture(renderer, "./res/image/10_message_big.png");
+
+    Kelai.image = IMG_LoadTexture(renderer, "./res/image/11.png");
+    Kelai.image_choose = IMG_LoadTexture(renderer, "./res/image/11_xuan.png");
+    Kelai.image_dead = IMG_LoadTexture(renderer, "./res/image/11_dead.png");
+    Kelai.image_message = IMG_LoadTexture(renderer, "./res/image/11_message.png");
+    Kelai.image_message_big = IMG_LoadTexture(renderer, "./res/image/11_message_big.png");
 
     Qiuqiuren.image = IMG_LoadTexture(renderer, "./res/image/13.png");
     Qiuqiuren.image_dead = IMG_LoadTexture(renderer, "./res/image/13_dead.png");
@@ -168,6 +181,13 @@ void CharacterImageDestroy()
     SDL_DestroyTexture(Chen.image_message_big);
     SDL_DestroyTexture(Chen.image_special);
 
+    SDL_DestroyTexture(Shierteer.image);
+    SDL_DestroyTexture(Shierteer.image_dead);
+    SDL_DestroyTexture(Shierteer.image_choose);
+    SDL_DestroyTexture(Shierteer.image_message);
+    SDL_DestroyTexture(Shierteer.image_message_big);
+    SDL_DestroyTexture(Shierteer.image_special);
+
     SDL_DestroyTexture(Ren.image);
     SDL_DestroyTexture(Ren.image_choose);
     SDL_DestroyTexture(Ren.image_dead);
@@ -181,6 +201,13 @@ void CharacterImageDestroy()
     SDL_DestroyTexture(Kafuka.image_message);
     SDL_DestroyTexture(Kafuka.image_message_big);
     SDL_DestroyTexture(Kafuka.image_special);
+
+    SDL_DestroyTexture(Kelai.image);
+    SDL_DestroyTexture(Kelai.image_choose);
+    SDL_DestroyTexture(Kelai.image_dead);
+    SDL_DestroyTexture(Kelai.image_message);
+    SDL_DestroyTexture(Kelai.image_message_big);
+    SDL_DestroyTexture(Kelai.image_special);
 
     SDL_DestroyTexture(Qiuqiuren.image);
     SDL_DestroyTexture(Qiuqiuren.image_dead);

@@ -280,11 +280,17 @@ int InBattle(int *count, int *who_first, int tou[],
 
     int enemy_count = 0;  //对方行动步骤
 
+    ShierteerKouXue(chara4, chara5, chara6);
+
+    Character *chara_show = chara1;
+    int jineng_index = 0;
+    int if_qiehuan = 0;
+
     while (1)
     {
         if (if_showkillblood)
         {
-            ShowKillBlood(chara1, chara2, chara3, chara4, chara5, chara6);
+            ShowKillBlood(chara1, chara2, chara3, chara4, chara5, chara6, chara_show, jineng_index);
             continue;
         }
 
@@ -293,6 +299,7 @@ int InBattle(int *count, int *who_first, int tou[],
             if ((*charanow)->xue == 0)
             {
                 ChangeCharacterWhenDead(charanow, chara4, chara5, chara6);
+                if_qiehuan = 1;
                 continue;
             }
             else
@@ -344,11 +351,24 @@ int InBattle(int *count, int *who_first, int tou[],
 
         SDL_RenderPresent(renderer);
 
+        if (if_qiehuan == 1)
+        {
+            ShowQieHuanChara(*charanow);
+            if_qiehuan = 0;
+            continue;
+        }
+        else if (if_qiehuan == 2)
+        {
+            ShowQieHuanChara(*chara_enemy_now);
+            if_qiehuan = 0;
+            continue;
+        }
 
         //我方角色死亡强制切换角色
         if ((*charanow)->xue == 0)
         {
             ChangeCharacterWhenDead(charanow, chara4, chara5, chara6);
+            if_qiehuan = 1;
 
             continue;
         }
@@ -415,7 +435,8 @@ int InBattle(int *count, int *who_first, int tou[],
                 shanghai[2] = 5;
                 shanghai[3] = 5;
                 shanghai[4] = (*chara_enemy_now)->index_game;
-
+                chara_show = *charanow;
+                jineng_index = 1;
 
                 //如果有附魔那就造成元素附着
                 if ((*charanow)->if_pugongfumo)
@@ -472,6 +493,8 @@ int InBattle(int *count, int *who_first, int tou[],
                 shanghai[2] = (*charanow)->yuansu;
                 shanghai[3] = 5;
                 shanghai[4] = (*chara_enemy_now)->index_game;
+                chara_show = *charanow;
+                jineng_index = 2;
 
                 JihuaReduce(*charanow);
                 CaoyuanheReduce(*charanow);
@@ -532,6 +555,9 @@ int InBattle(int *count, int *who_first, int tou[],
                 shanghai[2] = (*charanow)->yuansu;
                 shanghai[3] = 5;
                 shanghai[4] = (*chara_enemy_now)->index_game;
+                chara_show = *charanow;
+                jineng_index = 3;
+
 
                 ChooseWhichReaction((*charanow)->yuansu, chara_enemy_now, chara1, chara2, chara3);
 
@@ -573,6 +599,8 @@ int InBattle(int *count, int *who_first, int tou[],
                 if_kuaijie = false;
                 if_notusetou = false;
 
+                if_qiehuan = 1;
+
                 continue;
             }
         }
@@ -613,6 +641,8 @@ int InBattle(int *count, int *who_first, int tou[],
                 shanghai[2] = (*chara_enemy_now)->yuansu;
                 shanghai[3] = 5;
                 shanghai[4] = (*charanow)->index_game;
+                chara_show = *chara_enemy_now;
+                jineng_index = 2;
 
                 if ((*chara_enemy_now)->yszj != NULL)
                 {
@@ -639,6 +669,8 @@ int InBattle(int *count, int *who_first, int tou[],
                 shanghai[2] = (*chara_enemy_now)->yuansu;
                 shanghai[3] = 5;
                 shanghai[4] = (*charanow)->index_game;
+                chara_show = *chara_enemy_now;
+                jineng_index = 3;
 
                 (*chara_enemy_now)->baofa_now = 0;
 
@@ -661,6 +693,8 @@ int InBattle(int *count, int *who_first, int tou[],
                 shanghai[2] = 5;
                 shanghai[3] = 5;
                 shanghai[4] = (*charanow)->index_game;
+                chara_show = *chara_enemy_now;
+                jineng_index = 1;
 
                 if ((*chara_enemy_now)->if_pugongfumo)
                 {
@@ -683,6 +717,7 @@ int InBattle(int *count, int *who_first, int tou[],
                 {
                     if (ChangeEnemyAuto(chara_enemy_now, chara1, chara2, chara3))
                     {
+                        if_qiehuan = 2;
                         enemy_count++;
                     }
                     else
@@ -765,7 +800,7 @@ int AfterBattle(int *count, Character **chara_now, Character **chara_enemy_now,
             shanghai[3] = 5;
             shanghai[4] = (*chara_enemy_now)->index_game;
 
-            ShowKillBlood(chara1, chara2, chara3, chara4, chara5, chara6);
+            ShowKillBlood(chara1, chara2, chara3, chara4, chara5, chara6, NULL, 0);
 
             if (summon_all[i]->index == 1)
             {
@@ -835,6 +870,9 @@ int AfterBattle(int *count, Character **chara_now, Character **chara_enemy_now,
     (*count)++;
 
     SpecialAdditionReduceTurn(chara4, chara5, chara6);
+
+    liaolijiashang[0] = 0;
+    liaolijiashang[1] = 0;
 
     return -1;
 }
@@ -1082,6 +1120,36 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
                             if (IfFirstChooseCharacter(&Kafuka) && count < 3)
                             {
                                 *(chara[count]) = Kafuka;
+                                chara[count]->index_game = count + 4;
+                                count++;
+                                break;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        if (x >= 967 && x <= 1240 && y>= 518 && y <= 591)
+                        {
+                            if (IfFirstChooseCharacter(&Shierteer) && count < 3)
+                            {
+                                *(chara[count]) = Shierteer;
+                                chara[count]->index_game = count + 4;
+                                count++;
+                                break;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        if (x >= 967 && x <= 1240 && y>= 591 && y <= 671)
+                        {
+                            if (IfFirstChooseCharacter(&Kelai) && count < 3)
+                            {
+                                *(chara[count]) = Kelai;
                                 chara[count]->index_game = count + 4;
                                 count++;
                                 break;

@@ -112,7 +112,7 @@ void Lingren_ysbf(Character *chara1, Character *chara2, Character *chara3, Chara
     summon_index_we++;
 }
 
-void Lingren_SpecialAdditon(Character *chara)
+void Lingren_SpecialAddition(Character *chara)
 {
     chara->if_pugongfumo = true;
     chara->shanghai_more[0] += 1;
@@ -322,7 +322,7 @@ void Alhaitham_ysbf(Character *chara1, Character *chara2, Character *chara3, Cha
     }
 }
 
-void Alhaitham_SpecialAdditon(Character *chara)
+void Alhaitham_SpecialAddition(Character *chara)
 {
     chara->if_pugongfumo = true;
     chara->shanghai_more[0] += 1;
@@ -353,7 +353,7 @@ void Huoxing_ysbf(Character *chara1, Character *chara2, Character *chara3, Chara
     }
 }
 
-void Huoxing_SpecialAdditon(Character *chara)
+void Huoxing_SpecialAddition(Character *chara)
 {
     chara->if_pugongfumo = true;
     chara->shanghai_more[0] += 1;
@@ -373,13 +373,60 @@ void Zihuang_ysbf(Character *chara1, Character *chara2, Character *chara3, Chara
     }
 }
 
-void Zihuang_SpecialAdditon(Character *chara)
+void Zihuang_SpecialAddition(Character *chara)
 {
     if (chara->xue == 9 || chara->xue == 6)
     {
         chara->shanghai_more[0] += 3;
         chara->shanghai_more[1] += 3;
         chara->shanghai_more[2] += 3;
+    }
+}
+
+void Shierteer_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara)
+{
+    chara->xue -= 2;
+    if (chara->xue <= 0)
+    {
+        chara->xue = 1;
+    }
+    chara->special_state = 3;
+    chara->zhuang[1] = 1;
+}
+
+void Shierteer_SpecialAddition(Character *chara)
+{
+    chara->if_pugongfumo = true;
+    chara->shanghai_more[0] += 2;
+}
+
+void ShierteerKouXue(Character *chara4, Character *chara5, Character *chara6)
+{
+    if (chara4->index == 8 && chara4->special_state > 0)
+    {
+        chara4->xue -= 2;
+        if (chara4->xue <= 0)
+        {
+            chara4->xue = 1;
+        }
+    }
+
+    if (chara5->index == 8 && chara5->special_state > 0)
+    {
+        chara5->xue -= 2;
+        if (chara5->xue <= 0)
+        {
+            chara5->xue = 1;
+        }
+    }
+
+    if (chara6->index == 8 && chara6->special_state > 0)
+    {
+        chara6->xue -= 2;
+        if (chara6->xue <= 0)
+        {
+            chara6->xue = 1;
+        }
     }
 }
 
@@ -560,6 +607,21 @@ void Kafuka_ysbf(Character *chara1, Character *chara2, Character *chara3, Charac
         }
     }
     *(summon_all[summon_index_we]) = Zhuwang;
+    summon_all[summon_index_we]->index_game = summon_index_we;
+    summon_index_we++;
+}
+
+void Kelai_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara)
+{
+    for (int i = 0; i < 4; ++i)
+    {
+        if (summon_all[i]->index == 6)
+        {
+            summon_all[i]->turn_now = 2;
+            return;
+        }
+    }
+    *(summon_all[summon_index_we]) = Kelianba;
     summon_all[summon_index_we]->index_game = summon_index_we;
     summon_index_we++;
 }

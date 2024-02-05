@@ -34,6 +34,7 @@ extern Summon Qingjing;
 extern Summon Lanqiu;
 extern Summon Fire;
 extern Summon Zhuwang;
+extern Summon Kelianba;
 
 void SummonImageLoad();
 void SummonImageDestroy();

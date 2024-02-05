@@ -35,8 +35,11 @@ extern Card xingtian;
 extern Card yunchou;
 extern Card tiantian;
 extern Card jueyun;
+extern Card lianhua;
+extern Card fotiao;
+extern Card tudou;
 
-extern Card *card_all[9];
+extern Card *card_all[12];
 extern Card *my_card[9];
 extern int my_card_num;
 
@@ -63,6 +66,9 @@ void Action_6(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[]
 void Action_7(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[]);
 void Action_8(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[]);
 void Action_9(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[]);
+void Action_10(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[]);
+void Action_11(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[]);
+void Action_12(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[]);
 
 void ActionLiaoliJiaShang(Character *chara);
 
