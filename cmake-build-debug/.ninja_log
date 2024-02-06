@@ -1,7 +1,7 @@
 # ninja log v5
-1	192	7289238187236312	CMakeFiles/main.dir/main.c.obj	7974be8acefc9afd
+1	186	7289254352266778	CMakeFiles/main.dir/main.c.obj	7974be8acefc9afd
 7	212	7289221003109696	CMakeFiles/main.dir/src/ElementalReaction.c.obj	e0707aaf3f8aa74a
-241	337	7289236584020812	main.exe	4b29812ed6d4d026
+186	274	7289254353074769	main.exe	bb8cf8e8567920eb
 5	122	7269055977420702	CMakeFiles/main.dir/action/action.c.obj	118502f6088248d2
 2	192	7270221811971563	src/CMakeFiles/main.dir/page.c.obj	6048f062fc85e144
 1	232	7270200505891324	CMakeFiles/main.dir/character/character.c.obj	22a9105a184b98ce
@@ -9,7 +9,7 @@
 4	189	7270221811971563	src/CMakeFiles/main.dir/character.c.obj	bb41c0a4b61c6f11
 2	177	7270204478563076	CMakeFiles/main.dir/character/page.c.obj	fe94ff654bdb72f6
 3	41	7270221810497889	src/CMakeFiles/main.dir/action.c.obj	67bfb7cdf517993c
-0	78	7289238322994373	build.ninja	52f5a25e67ab196f
+0	78	7289288594820767	build.ninja	52f5a25e67ab196f
 0	192	7270221811971563	src/CMakeFiles/main.dir/main.c.obj	9bf97a74642f8709
 25	258	7270226698467356	CMakeFiles/main.dir/include/page.c.obj	a7ad057eb5296317
 1	70	7270222301759758	src/main.exe	8b014e51e79ebf15
@@ -21,6 +21,3 @@
 8	396	7289201653446914	CMakeFiles/main.dir/src/record.c.obj	bb0f3cb88ae7cb7f
 4	181	7289223835624445	CMakeFiles/main.dir/src/summon.c.obj	94facebf4ceb01b0
 5	197	7289230905056077	CMakeFiles/main.dir/src/character_skill.c.obj	c81edefa32dcbbc0
-2	75	7289238328924296	main.exe	bb8cf8e8567920eb
-1	186	7289254352266778	CMakeFiles/main.dir/main.c.obj	7974be8acefc9afd
-186	274	7289254353074769	main.exe	bb8cf8e8567920eb

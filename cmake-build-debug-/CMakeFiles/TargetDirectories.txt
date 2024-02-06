@@ -1,3 +1,0 @@
-D:/QiShengZhaoHuan/cmake-build-debug-/CMakeFiles/main.dir
-D:/QiShengZhaoHuan/cmake-build-debug-/CMakeFiles/edit_cache.dir
-D:/QiShengZhaoHuan/cmake-build-debug-/CMakeFiles/rebuild_cache.dir
