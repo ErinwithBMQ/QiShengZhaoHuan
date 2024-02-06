@@ -149,9 +149,13 @@ void CXK_yszj(Character *chara1, Character *chara2, Character *chara3, Character
 
 void CXK_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara)
 {
-    Mix_HaltMusic();
+    int fadeOutTime = 800;
+    int fadeInTime = 800;
+    Mix_FadeOutMusic(fadeOutTime);
+
     music = Mix_LoadMUS("./res/music/Chicken.mp3");
-    Mix_PlayMusic(music, 20);
+
+    Mix_FadeInMusic(music, -1, fadeInTime);
 }
 
 void CXK_SpecialAddition(Character *chara)

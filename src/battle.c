@@ -1336,7 +1336,7 @@ void ShowIfEndTurn(bool if_final_a, bool if_final_b)
     if (if_final_a)
     {
         SDL_Texture *texture_trun = IMG_LoadTexture(renderer, "./res/image/endturn.png");
-        SDL_Rect rect_turn = {.x = 10, .y = 530};
+        SDL_Rect rect_turn = {.x = 10, .y = 650};
         SDL_QueryTexture(texture_trun, NULL, NULL, &rect_turn.w, &rect_turn.h);
         SDL_RenderCopy(renderer, texture_trun, NULL, &rect_turn);
 
@@ -1346,7 +1346,7 @@ void ShowIfEndTurn(bool if_final_a, bool if_final_b)
     if (if_final_b)
     {
         SDL_Texture *texture_turn = IMG_LoadTexture(renderer, "./res/image/endturn.png");
-        SDL_Rect rect_turn = {.x = 10, .y = 10};
+        SDL_Rect rect_turn = {.x = 10, .y = 30};
         SDL_QueryTexture(texture_turn, NULL, NULL, &rect_turn.w, &rect_turn.h);
         SDL_RenderCopy(renderer, texture_turn, NULL, &rect_turn);
 
@@ -1525,19 +1525,23 @@ bool IfChangeCharacterDead(Character *charanow, Character *chara, int num)
         SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
         SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
 
-        SDL_Surface *surface_yesno = TTF_RenderUTF8_Solid(font_message, "按space选中，按esc取消选择", color_message);
-        SDL_Texture *texture_yesno = SDL_CreateTextureFromSurface(renderer, surface_yesno);
-        SDL_Rect rect_yesno = {.x = 460, .y = 390};
-        SDL_QueryTexture(texture_yesno, NULL, NULL, &rect_yesno.w, &rect_yesno.h);
-        SDL_RenderCopy(renderer, texture_yesno, NULL, &rect_yesno);
+        SDL_Texture *texture_change = IMG_LoadTexture(renderer, "./res/image/change.png");
+        SDL_Rect rect_change = {.x = 1050, .y = 570};
+        SDL_QueryTexture(texture_change, NULL, NULL, &rect_change.w, &rect_change.h);
+        SDL_RenderCopy(renderer, texture_change, NULL, &rect_change);
+
+//        SDL_Surface *surface_yesno = TTF_RenderUTF8_Solid(font_message, "按space选中，按esc取消选择", color_message);
+//        SDL_Texture *texture_yesno = SDL_CreateTextureFromSurface(renderer, surface_yesno);
+//        SDL_Rect rect_yesno = {.x = 460, .y = 390};
+//        SDL_QueryTexture(texture_yesno, NULL, NULL, &rect_yesno.w, &rect_yesno.h);
+//        SDL_RenderCopy(renderer, texture_yesno, NULL, &rect_yesno);
 
         SDL_RenderPresent(renderer);
 
         TTF_CloseFont(font_message);
         SDL_FreeSurface(surface_message);
         SDL_DestroyTexture(texture_message);
-        SDL_FreeSurface(surface_yesno);
-        SDL_DestroyTexture(texture_yesno);
+        SDL_DestroyTexture(texture_change);
 
 
         SDL_Event event_choose;
@@ -1558,6 +1562,25 @@ bool IfChangeCharacterDead(Character *charanow, Character *chara, int num)
                         chara->if_chu = true;
                         charanow->if_chu = false;
                         return true;
+                    }
+                case SDL_MOUSEBUTTONDOWN: //鼠标左键
+                    if (event_choose.button.button == SDL_BUTTON_LEFT)
+                    {
+                        int x = event_choose.button.x;
+                        int y = event_choose.button.y;
+
+                        if (x >= 1060 && x <= 1140 && y >= 580 && y <= 660)
+                        {
+                            chara->if_xuan = false;
+                            chara->if_chu = true;
+                            charanow->if_chu = false;
+                            return true;
+                        }
+                        else
+                        {
+                            chara->if_xuan = false;
+                            return false;
+                        }
                     }
                 default:
                     break;

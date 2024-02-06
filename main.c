@@ -10,10 +10,10 @@
 #include <action.h>
 #include <page.h>
 #include <battle.h>
-#include <record.h>
 #include <summon.h>
 #include <character_skill.h>
 #include <ElementalReaction.h>
+#include <time.h>
 
 #undef main
 
@@ -29,6 +29,7 @@ Character Alhaitham = {
                 "溯因反绎法",
                 "共相·理式摹写",
                 "殊镜·显像缚结",
+                "琢光镜",
         },
         .baofa_num = 2,
         .baofa_now = 0,
@@ -56,6 +57,7 @@ Character Lingren = {
                 "神里流·转",
                 "神里流·镜花",
                 "神里流·水囿",
+                "泷云涧花"
         },
         .baofa_num = 2,
         .baofa_now = 0,
@@ -82,6 +84,7 @@ Character Huoxing = {
                 "破防",
                 "我是主播",
                 "火星人来也",
+                "主播",
         },
         .baofa_num = 2,
         .baofa_now = 0,
@@ -108,6 +111,7 @@ Character Zihuang = {
                 "抽象",
                 "96皇之力",
                 "唯我至尊",
+                "96皇",
         },
         .baofa_num = 2,
         .baofa_now = 0,
@@ -158,7 +162,7 @@ Character CXK = {
                 "唱跳Rap篮球",
                 "鸡你太美",
         },
-        .baofa_num = 3,
+        .baofa_num = 2,
         .baofa_now = 0,
         .shanghai = {2,2,5},
         .shanghai_more = {0, 0, 0},
@@ -206,6 +210,7 @@ Character Shierteer = {
                 "烈焰魔剑",
                 "熔核巨影",
                 "黄昏",
+                "黄昏",
         },
         .baofa_num = 2,
         .baofa_now = 0,
@@ -231,6 +236,7 @@ Character Ren = {
                 "支离剑",
                 "地狱变",
                 "大辟万死",
+                "无间剑树",
         },
         .baofa_num = 3,
         .baofa_now = 0,
@@ -408,6 +414,7 @@ Character HailuanguiHuo = {
                 "普通的攻击",
                 "元素攻击",
                 "仅此一刀！",
+                "斩灭",
         },
         .baofa_num = 2,
         .baofa_now = 0,
@@ -431,6 +438,7 @@ Character HailuanguiLei = {
                 "普通的攻击",
                 "元素攻击",
                 "仅此一刀！",
+                "斩灭",
         },
         .baofa_num = 2,
         .baofa_now = 0,
@@ -521,6 +529,7 @@ Character Leichui = {
                 "巨锤击打",
                 "雷电之锤",
                 "巨雷之声",
+                "雷锤",
         },
         .baofa_num = 2,
         .baofa_now = 0,
@@ -762,6 +771,8 @@ bool if_kuaijie;
 bool if_notusetou;
 bool if_qiehuanjuese;
 
+bool if_changemusic;
+
 int main(int argc, char *argv[])
 {
     //初始化
@@ -788,13 +799,39 @@ int main(int argc, char *argv[])
 
     Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048);
 
+    music = Mix_LoadMUS("./res/music/BGM1.mp3");
+
+    int fadeInTime = 2000;
+    Mix_FadeInMusic(music, -1, fadeInTime);
+
+    MainPage();
+
     while (1)
     {
-        music = Mix_LoadMUS("./res/music/BGM1.mp3");
+        if (if_changemusic)
+        {
+            int fadeOutTime = 800;
+            Mix_FadeOutMusic(fadeOutTime);
 
-        Mix_PlayMusic(music, 20);
+            music = Mix_LoadMUS("./res/music/BGM1.mp3");
 
-        MainPage();
+            Mix_FadeInMusic(music, -1, fadeInTime);
+
+            if_changemusic = false;
+        }
+
+        int chooseone = MainchoosePage();
+
+        if (chooseone == 2)
+        {
+            Tujian();
+            continue;
+        }
+        else if (chooseone == 3)
+        {
+            Wanfa();
+            continue;
+        }
 
         for (int i = 0; i < 9; ++i)
         {
@@ -863,8 +900,21 @@ int main(int argc, char *argv[])
         caoyuanhe = 0;
         summon_index_we = 0;
 
+        int fadeOutTime = 800;
+        Mix_FadeOutMusic(fadeOutTime);
 
-        music = Mix_LoadMUS("./res/music/BGM2.mp3");
+        srand((unsigned int)time(NULL));
+        int suiji = rand() % 2;
+        if (suiji == 0)
+        {
+            music = Mix_LoadMUS("./res/music/BGM2.mp3");
+        }
+        else
+        {
+            music = Mix_LoadMUS("./res/music/BGM3.mp3");
+        }
+
+        Mix_FadeInMusic(music, -1, fadeInTime);
 
         Mix_PlayMusic(music, 20);
 

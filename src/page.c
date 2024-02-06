@@ -2,7 +2,7 @@
 // Created by Erin on 2024/1/15.
 //
 
-// TODO：3.战斗日志  4.战斗动画  6.元素骰子重投
+// TODO：3.战斗日志  4.战斗动画  7.角色信息的详细显示  8.主页选项
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
@@ -16,13 +16,14 @@
 #include <character_skill.h>
 #include <ElementalReaction.h>
 #include <action.h>
+#include <time.h>
 
 void MainPage()
 {
     SDL_Event event_main;
     while (1)
     {
-        SDL_Texture *texture_main = IMG_LoadTexture(renderer, "./res/image/qszh.jpg");
+        SDL_Texture *texture_main = IMG_LoadTexture(renderer, "./res/image/mainpage.jpg");
         SDL_RenderCopy(renderer, texture_main, NULL, NULL);
         SDL_RenderPresent(renderer);
 
@@ -30,13 +31,12 @@ void MainPage()
 
         while (SDL_PollEvent(&event_main))
         {
-
             switch (event_main.type) {
                 case SDL_QUIT:
                     quit_delete();
                     exit(0);
-                case SDL_KEYDOWN:
-                    if (event_main.key.keysym.sym == SDLK_SPACE)
+                case SDL_MOUSEBUTTONDOWN:
+                    if (event_main.button.button == SDL_BUTTON_LEFT)
                     {
                         SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
                         SDL_RenderClear(renderer); // 清除渲染器内容
@@ -48,6 +48,55 @@ void MainPage()
             }
         }
         SDL_Delay(5);
+    }
+}
+
+int MainchoosePage()
+{
+    SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
+    SDL_RenderClear(renderer);
+
+    SDL_Texture *texture_mainchoose = IMG_LoadTexture(renderer, "./res/image/main_choose.jpg");
+    SDL_RenderCopy(renderer, texture_mainchoose, NULL, NULL);
+    SDL_RenderPresent(renderer);
+
+    SDL_DestroyTexture(texture_mainchoose);
+
+    SDL_Event event_choose;
+    while (1)
+    {
+        while (SDL_PollEvent(&event_choose))
+        {
+            switch (event_choose.type) {
+                case SDL_QUIT:
+                    quit_delete();
+                    exit(0);
+                case SDL_MOUSEBUTTONDOWN:
+                    if (event_choose.button.button == SDL_BUTTON_LEFT)
+                    {
+                        int x = event_choose.button.x;
+                        int y = event_choose.button.y;
+
+                        if (x >= 474 && x <= 820 && y >= 251 && y <= 322)
+                        {
+                            return 1;
+                        }
+                        else if (x >= 474 && x <= 820 && y >= 381 && y <= 477)
+                        {
+                            return 2;
+                        }
+                        else if (x >= 474 && x <= 820 && y >= 510 && y <= 574)
+                        {
+                            return 3;
+                        }
+                        else if (x >= 474 && x <= 820 && y >= 646 && y <= 718)
+                        {
+                            quit_delete();
+                            exit(0);
+                        }
+                    }
+            }
+        }
     }
 }
 
@@ -127,9 +176,57 @@ bool ChooseLevel(Character *chara1, Character *chara2, Character *chara3)
                         }
                         else if (x >= 700 && x <= 1251 && y >= 592 && y <= 670)
                         {
-                            *chara1 = LeiQiuqiuShe;
-                            *chara2 = HailuanguiLei;
-                            *chara3 = HuofuQiuqiu;
+                            Character *chara_enemy[3] = {chara1, chara2, chara3};
+                            srand((unsigned int)time(NULL));
+
+                            for (int i = 0; i < 3; ++i)
+                            {
+                                int suiji = rand() % 11;
+                                if (suiji == 0)
+                                {
+                                    *chara_enemy[i] = Qiuqiuren;
+                                }
+                                else if (suiji == 1)
+                                {
+                                    *chara_enemy[i] = LeiQiuqiuShe;
+                                }
+                                else if (suiji == 2)
+                                {
+                                    *chara_enemy[i] = HuofuQiuqiu;
+                                }
+                                else if (suiji == 3)
+                                {
+                                    *chara_enemy[i] = LeifuQiuqiu;
+                                }
+                                else if (suiji == 4)
+                                {
+                                    *chara_enemy[i] = MudunQiuqiu;
+                                }
+                                else if (suiji == 5)
+                                {
+                                    *chara_enemy[i] = HailuanguiHuo;
+                                }
+                                else if (suiji == 6)
+                                {
+                                    *chara_enemy[i] = HailuanguiLei;
+                                }
+                                else if (suiji == 7)
+                                {
+                                    *chara_enemy[i] = Huochong;
+                                }
+                                else if (suiji == 8)
+                                {
+                                    *chara_enemy[i] = Leichui;
+                                }
+                                else if (suiji == 9)
+                                {
+                                    *chara_enemy[i] = Shuichong;
+                                }
+                                else if (suiji == 10)
+                                {
+                                    *chara_enemy[i] = Tewalin;
+                                }
+                            }
                             return 1;
                         }
                         else if (x >= 1180 && x <= 1265 && y >= 20 && y <= 113)
@@ -146,6 +243,7 @@ bool ChooseLevel(Character *chara1, Character *chara2, Character *chara3)
 
 void WinBattle()
 {
+    if_changemusic = true;
     SDL_Event event_main;
     while (1)
     {
@@ -368,8 +466,10 @@ int InBattle(int *count, int *who_first, int tou[],
         if ((*charanow)->xue == 0)
         {
             ChangeCharacterWhenDead(charanow, chara4, chara5, chara6);
-            if_qiehuan = 1;
-
+            if ((*charanow)->xue > 0)
+            {
+                if_qiehuan = 1;
+            }
             continue;
         }
 
@@ -501,12 +601,12 @@ int InBattle(int *count, int *who_first, int tou[],
 
                 ChooseWhichReaction((*charanow)->yuansu, chara_enemy_now, chara1, chara2, chara3);
 
+                SpecialAdditionReduceCountAll(*charanow);
+
                 if ((*charanow)->yszj != NULL)
                 {
                     (*charanow)->yszj(chara1, chara2, chara3, *charanow);
                 }
-
-                SpecialAdditionReduceCountAll(*charanow);
 
                 YuanSuFuZhuo(*charanow, *chara_enemy_now);
 
@@ -789,6 +889,9 @@ int AfterBattle(int *count, Character **chara_now, Character **chara_enemy_now,
             SDL_DestroyTexture(texture_turn);
             SDL_DestroyTexture(texture_back);
 
+            JihuaAddtionSummon(summon_all[i]);
+            CaoyuanheAddtionSummon(summon_all[i]);
+
             ChooseWhichReaction(summon_all[i]->yuansu, chara_enemy_now, chara1, chara2, chara3);
 
             ChangeSummonShanghai(summon_all[i], *chara_enemy_now);
@@ -801,6 +904,8 @@ int AfterBattle(int *count, Character **chara_now, Character **chara_enemy_now,
             shanghai[4] = (*chara_enemy_now)->index_game;
 
             ShowKillBlood(chara1, chara2, chara3, chara4, chara5, chara6, NULL, 0);
+
+            summon_all[i]->shanghai_more = 0;
 
             if (summon_all[i]->index == 1)
             {
@@ -879,6 +984,7 @@ int AfterBattle(int *count, Character **chara_now, Character **chara_enemy_now,
 
 void LoseBattle()
 {
+    if_changemusic = true;
     SDL_Event event_main;
     while (1)
     {
@@ -1167,4 +1273,586 @@ bool ChooseCharacter(Character *chara4, Character *chara5, Character *chara6)
         }
         SDL_Delay(5);
     }
+}
+
+void Tujian()
+{
+    SDL_Event event_main;
+    int show = 1;
+
+    SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
+
+    while (1)
+    {
+        if (show == 1)
+        {
+            int n = Tujian_1(&show);
+            if (n == 0)
+            {
+                return;
+            }
+        }
+        if (show == 2)
+        {
+            int n = Tujian_2(&show);
+            if (n == 0)
+            {
+                return;
+            }
+        }
+        if (show == 3)
+        {
+            int n = Tujian_3(&show);
+            if (n == 0)
+            {
+                return;
+            }
+        }
+
+//        while (SDL_PollEvent(&event_main))
+//        {
+//            switch (event_main.type) {
+//                case SDL_QUIT:
+//                    quit_delete();
+//                    exit(0);
+//                case SDL_MOUSEBUTTONDOWN:
+//                    if (event_main.button.button == SDL_BUTTON_LEFT)
+//                    {
+//                        int x = event_main.button.x;
+//                        int y = event_main.button.y;
+//
+//                        if (x >= 458 && y >= 52 && x <= 611 && y <= 106)
+//                        {
+//                            show = 1;
+//                        }
+//                        else if (x >= 646 && y >= 52 && x <= 792 && y <= 106)
+//                        {
+//                            show = 2;
+//                        }
+//                        else if (x >= 829 && y >= 52 && x <= 973 && y <= 106)
+//                        {
+//                            show = 3;
+//                        }
+//                        else if (x >= 1167 && y >= 28 && x <= 1258 && y <= 125)
+//                        {
+//                            return;
+//                        }
+//                    }
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
+//        SDL_Delay(5);
+    }
+}
+
+void Wanfa()
+{
+    SDL_Event event_main;
+    int show = 1;
+
+    SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
+
+    while (1)
+    {
+        if (show == 1)
+        {
+            SDL_RenderClear(renderer);
+            SDL_Texture *texture_image = IMG_LoadTexture(renderer, "./res/image/wanfa_1.png");
+            SDL_RenderCopy(renderer, texture_image, NULL, NULL);
+            SDL_RenderPresent(renderer);
+
+            SDL_DestroyTexture(texture_image);
+        }
+        else if (show == 2)
+        {
+            SDL_RenderClear(renderer);
+            SDL_Texture *texture_image = IMG_LoadTexture(renderer, "./res/image/wanfa_2.png");
+            SDL_RenderCopy(renderer, texture_image, NULL, NULL);
+            SDL_RenderPresent(renderer);
+
+            SDL_DestroyTexture(texture_image);
+        }
+        else if (show == 3)
+        {
+            SDL_RenderClear(renderer);
+            SDL_Texture *texture_image = IMG_LoadTexture(renderer, "./res/image/wanfa_3.png");
+            SDL_RenderCopy(renderer, texture_image, NULL, NULL);
+            SDL_RenderPresent(renderer);
+
+            SDL_DestroyTexture(texture_image);
+        }
+
+
+        while (SDL_PollEvent(&event_main))
+        {
+            switch (event_main.type) {
+                case SDL_QUIT:
+                    quit_delete();
+                    exit(0);
+                case SDL_MOUSEBUTTONDOWN:
+                    if (event_main.button.button == SDL_BUTTON_LEFT)
+                    {
+                        int x = event_main.button.x;
+                        int y = event_main.button.y;
+
+                        if (x >= 498 && y >= 60 && x <= 667 && y <= 117)
+                        {
+                            show = 1;
+                        }
+                        else if (x >= 709 && y >= 60 && x <= 860 && y <= 117)
+                        {
+                            show = 2;
+                        }
+                        else if (x >= 903 && y >= 60 && x <= 1069 && y <= 117)
+                        {
+                            show = 3;
+                        }
+                        else if (x >= 1167 && y >= 28 && x <= 1258 && y <= 133)
+                        {
+                            return;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        SDL_Delay(5);
+    }
+}
+
+int Tujian_1(int *show)
+{
+    Character *chara_show = &Alhaitham;
+    bool if_show = false;
+
+    SDL_Event event_choose;
+
+    while (1)
+    {
+        if(!if_show)
+        {
+            SDL_RenderClear(renderer);
+            SDL_Texture *texture_image = IMG_LoadTexture(renderer, "./res/image/tujian_chara.jpg");
+            SDL_RenderCopy(renderer, texture_image, NULL, NULL);
+            SDL_RenderPresent(renderer);
+
+            SDL_DestroyTexture(texture_image);
+        }
+        else
+        {
+            SDL_RenderClear(renderer);
+            SDL_Texture *texture_image = IMG_LoadTexture(renderer, "./res/image/tujian_message.jpg");
+            SDL_RenderCopy(renderer, texture_image, NULL, NULL);
+
+            SDL_Rect rect_message = {.x = 291, .y = 313};
+            SDL_QueryTexture(chara_show->image, NULL, NULL, &rect_message.w, &rect_message.h);
+            SDL_RenderCopy(renderer, chara_show->image, NULL, &rect_message);
+
+            rect_message.x = 560;
+            rect_message.y = 227;
+            SDL_QueryTexture(chara_show->image_message_big, NULL, NULL, &rect_message.w, &rect_message.h);
+            SDL_RenderCopy(renderer, chara_show->image_message_big, NULL, &rect_message);
+
+            SDL_RenderPresent(renderer);
+            SDL_DestroyTexture(texture_image);
+        }
+
+        while (SDL_PollEvent(&event_choose))
+        {
+            switch (event_choose.type) {
+                case SDL_QUIT:
+                    quit_delete();
+                    exit(0);
+                case SDL_MOUSEBUTTONDOWN:
+                    if (event_choose.button.button == SDL_BUTTON_LEFT)
+                    {
+                        int x = event_choose.button.x;
+                        int y = event_choose.button.y;
+
+                        if (!if_show)
+                        {
+                            if (x >= 24 && y >= 161 && x <= 184 && y <= 425)
+                            {
+                                chara_show = &Alhaitham;
+                                if_show = true;
+                            }
+                            else if (x >= 221 && y >= 161 && x <= 375 && y <= 425)
+                            {
+                                chara_show = &Antant;
+                                if_show = true;
+                            }
+                            else if (x >= 421 && y >= 161 && x <= 572 && y <= 425)
+                            {
+                                chara_show = &Zihuang;
+                                if_show = true;
+                            }
+                            else if (x >= 628 && y >= 161 && x <= 781 && y <= 425)
+                            {
+                                chara_show = &Lingren;
+                                if_show = true;
+                            }
+                            else if (x >= 836 && y >= 161 && x <= 994 && y <= 425)
+                            {
+                                chara_show = &Huoxing;
+                                if_show = true;
+                            }
+                            else if (x >= 1053 && y >= 161 && x <= 1207 && y <= 425)
+                            {
+                                chara_show = &Ren;
+                                if_show = true;
+                            }
+                            if (x >= 24 && y >= 473 && x <= 184 && y <= 748)
+                            {
+                                chara_show = &Kelai;
+                                if_show = true;
+                            }
+                            else if (x >= 221 && y >= 473 && x <= 375 && y <= 748)
+                            {
+                                chara_show = &CXK;
+                                if_show = true;
+                            }
+                            else if (x >= 421 && y >= 473 && x <= 572 && y <= 748)
+                            {
+                                chara_show = &Kafuka;
+                                if_show = true;
+                            }
+                            else if (x >= 628 && y >= 473 && x <= 781 && y <= 748)
+                            {
+                                chara_show = &Chen;
+                                if_show = true;
+                            }
+                            else if (x >= 836 && y >= 473 && x <= 994 && y <= 748)
+                            {
+                                chara_show = &Shierteer;
+                                if_show = true;
+                            }
+                            else if (x >= 646 && y >= 52 && x <= 792 && y <= 106)
+                            {
+                                *show = 2;
+                                return 1;
+                            }
+                            else if (x >= 829 && y >= 52 && x <= 973 && y <= 106)
+                            {
+                                *show = 3;
+                                return 1;
+                            }
+                            else if (x >= 1167 && y >= 28 && x <= 1258 && y <= 125)
+                            {
+                                return 0;
+                            }
+                        }
+                        else
+                        {
+                            if_show = false;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        SDL_Delay(5);
+    }
+}
+
+int Tujian_2(int *show)
+{
+    Character *chara_show = &Qiuqiuren;
+    bool if_show = false;
+
+    SDL_Event event_choose;
+
+    while (1)
+    {
+        if(!if_show)
+        {
+            SDL_RenderClear(renderer);
+            SDL_Texture *texture_image = IMG_LoadTexture(renderer, "./res/image/tujian_enemy.jpg");
+            SDL_RenderCopy(renderer, texture_image, NULL, NULL);
+            SDL_RenderPresent(renderer);
+
+            SDL_DestroyTexture(texture_image);
+        }
+        else
+        {
+            SDL_Rect rect_message = {.x = 890, .y = 500};
+            SDL_QueryTexture(chara_show->image_message, NULL, NULL, &rect_message.w, &rect_message.h);
+            SDL_RenderCopy(renderer, chara_show->image_message, NULL, &rect_message);
+
+            SDL_RenderPresent(renderer);
+        }
+
+        while (SDL_PollEvent(&event_choose))
+        {
+            switch (event_choose.type) {
+                case SDL_QUIT:
+                    quit_delete();
+                    exit(0);
+                case SDL_MOUSEBUTTONDOWN:
+                    if (event_choose.button.button == SDL_BUTTON_LEFT)
+                    {
+                        int x = event_choose.button.x;
+                        int y = event_choose.button.y;
+
+                        if (!if_show)
+                        {
+                            if (x >= 20 && y >= 184 && x <= 184 && y <= 441)
+                            {
+                                chara_show = &Qiuqiuren;
+                                if_show = true;
+                            }
+                            else if (x >= 208 && y >= 184 && x <= 368 && y <= 441)
+                            {
+                                chara_show = &HuofuQiuqiu;
+                                if_show = true;
+                            }
+                            else if (x >= 405 && y >= 184 && x <= 563 && y <= 441)
+                            {
+                                chara_show = &MudunQiuqiu;
+                                if_show = true;
+                            }
+                            else if (x >= 593 && y >= 184 && x <= 758 && y <= 441)
+                            {
+                                chara_show = &Leichui;
+                                if_show = true;
+                            }
+                            else if (x >= 796 && y >= 184 && x <= 952 && y <= 441)
+                            {
+                                chara_show = &HailuanguiHuo;
+                                if_show = true;
+                            }
+                            else if (x >= 999 && y >= 184 && x <= 1148 && y <= 441)
+                            {
+                                chara_show = &Tewalin;
+                                if_show = true;
+                            }
+                            if (x >= 20 && y >= 493 && x <= 184 && y <= 772)
+                            {
+                                chara_show = &LeiQiuqiuShe;
+                                if_show = true;
+                            }
+                            else if (x >= 208 && y >= 493 && x <= 368 && y <= 772)
+                            {
+                                chara_show = &LeifuQiuqiu;
+                                if_show = true;
+                            }
+                            else if (x >= 405 && y >= 493 && x <= 563 && y <= 772)
+                            {
+                                chara_show = &Shuichong;
+                                if_show = true;
+                            }
+                            else if (x >= 593 && y >= 493 && x <= 758 && y <= 772)
+                            {
+                                chara_show = &Huochong;
+                                if_show = true;
+                            }
+                            else if (x >= 796 && y >= 493 && x <= 952 && y <= 772)
+                            {
+                                chara_show = &HailuanguiLei;
+                                if_show = true;
+                            }
+                            else if (x >= 458 && y >= 52 && x <= 611 && y <= 106)
+                            {
+                                *show = 1;
+                                return 1;
+                            }
+                            else if (x >= 829 && y >= 52 && x <= 973 && y <= 106)
+                            {
+                                *show = 3;
+                                return 1;
+                            }
+                            else if (x >= 1167 && y >= 28 && x <= 1258 && y <= 125)
+                            {
+                                return 0;
+                            }
+                        }
+                        else
+                        {
+                            if_show = false;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        SDL_Delay(5);
+    }
+}
+
+int Tujian_3(int *show)
+{
+    Card *card_show = &lianhua;
+    bool if_show = false;
+
+    SDL_Event event_choose;
+
+    while (1)
+    {
+        if(!if_show)
+        {
+            SDL_RenderClear(renderer);
+            SDL_Texture *texture_image = IMG_LoadTexture(renderer, "./res/image/tujian_shijian.jpg");
+            SDL_RenderCopy(renderer, texture_image, NULL, NULL);
+            SDL_RenderPresent(renderer);
+
+            SDL_DestroyTexture(texture_image);
+        }
+        else
+        {
+            Showmessage(card_show);
+        }
+
+        while (SDL_PollEvent(&event_choose))
+        {
+            switch (event_choose.type) {
+                case SDL_QUIT:
+                    quit_delete();
+                    exit(0);
+                case SDL_MOUSEBUTTONDOWN:
+                    if (event_choose.button.button == SDL_BUTTON_LEFT)
+                    {
+                        int x = event_choose.button.x;
+                        int y = event_choose.button.y;
+
+                        if (!if_show)
+                        {
+                            if (x >= 53 && y >= 197 && x <= 137 && y <= 339)
+                            {
+                                card_show = &huanban;
+                                if_show = true;
+                            }
+                            else if (x >= 164 && y >= 197 && x <= 249 && y <= 339)
+                            {
+                                card_show = &jiaogei;
+                                if_show = true;
+                            }
+                            else if (x >= 284 && y >= 197 && x <= 363 && y <= 339)
+                            {
+                                card_show = &hegui;
+                                if_show = true;
+                            }
+                            else if (x >= 398 && y >= 197 && x <= 477 && y <= 339)
+                            {
+                                card_show = &fengbu;
+                                if_show = true;
+                            }
+                            else if (x >= 53 && y >= 383 && x <= 137 && y <= 527)
+                            {
+                                card_show = &yunchou;
+                                if_show = true;
+                            }
+                            else if (x >= 164 && y >= 383 && x <= 249 && y <= 527)
+                            {
+                                card_show = &xingtian;
+                                if_show = true;
+                            }
+                            else if (x >= 284 && y >= 383 && x <= 363 && y <= 527)
+                            {
+                                card_show = &bestfriend;
+                                if_show = true;
+                            }
+                            else if (x >= 398 && y >= 383 && x <= 477 && y <= 527)
+                            {
+                                card_show = &tiantian;
+                                if_show = true;
+                            }
+                            else if (x >= 53 && y >= 579 && x <= 137 && y <= 715)
+                            {
+                                card_show = &tudou;
+                                if_show = true;
+                            }
+                            else if (x >= 164 && y >= 579 && x <= 249 && y <= 715)
+                            {
+                                card_show = &lianhua;
+                                if_show = true;
+                            }
+                            else if (x >= 284 && y >= 579 && x <= 363 && y <= 715)
+                            {
+                                card_show = &jueyun;
+                                if_show = true;
+                            }
+                            else if (x >= 398 && y >= 579 && x <= 477 && y <= 715)
+                            {
+                                card_show = &fotiao;
+                                if_show = true;
+                            }
+                            else if (x >= 458 && y >= 52 && x <= 611 && y <= 106)
+                            {
+                                *show = 1;
+                                return 1;
+                            }
+                            else if (x >= 646 && y >= 52 && x <= 792 && y <= 106)
+                            {
+                                *show = 2;
+                                return 1;
+                            }
+                            else if (x >= 1167 && y >= 28 && x <= 1258 && y <= 125)
+                            {
+                                return 0;
+                            }
+                        }
+                        else
+                        {
+                            if_show = false;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        SDL_Delay(5);
+    }
+}
+
+void Showmessage(Card *card)
+{
+    SDL_Rect rect_message = {.x = 720, .y = 200};
+
+    TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 25);
+    SDL_Color color_message = {0xff, 0xff, 0xff, 0xff};
+    SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, card->name, color_message);
+    SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    rect_message.y += 30;
+    surface_message = TTF_RenderUTF8_Solid(font_message, card->type, color_message);
+    texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    rect_message.y += 30;
+    surface_message = TTF_RenderUTF8_Solid(font_message, "消耗  个元素骰", color_message);
+    texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    char num[2];
+    itoa(card->num, num, 10);
+    rect_message.x = 770;
+    surface_message = TTF_RenderUTF8_Solid(font_message, num, color_message);
+    texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    rect_message.y += 30;
+    rect_message.x = 720;
+    surface_message = TTF_RenderUTF8_Solid(font_message, card->message, color_message);
+    texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    SDL_RenderPresent(renderer);
+
+    SDL_FreeSurface(surface_message);
+    SDL_DestroyTexture(texture_message);
+    TTF_CloseFont(font_message);
 }

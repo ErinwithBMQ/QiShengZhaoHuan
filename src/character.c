@@ -647,6 +647,99 @@ void ShowCharacterMessage(Character *chara)
     SDL_Rect rect_message = {.x = 0, .y = 230};
     SDL_QueryTexture(chara->image_message, NULL, NULL, &rect_message.w, &rect_message.h);
     SDL_RenderCopy(renderer, chara->image_message, NULL, &rect_message);
+
+    rect_message.x = 10;
+    rect_message.y = 470;
+
+    TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 24);
+    SDL_Color color_message = {0xff, 0xff, 0xff, 0xff};
+
+    if (chara->special_state > 0 && chara->special_state != 10)
+    {
+        rect_message.y += 30;
+
+        SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, chara->name[4], color_message);
+        SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+        SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+        rect_message.x += 90;
+        surface_message = TTF_RenderUTF8_Solid(font_message, "：剩余", color_message);
+        texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+        SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+        rect_message.x += 75;
+        char num[2];
+        itoa(chara->special_state, num, 10);
+        surface_message = TTF_RenderUTF8_Solid(font_message, num, color_message);
+        texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+        SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+        rect_message.x += 30;
+        if (chara->huiorcount == 1)
+        {
+            surface_message = TTF_RenderUTF8_Solid(font_message, "回合", color_message);
+        }
+        else
+        {
+            surface_message = TTF_RenderUTF8_Solid(font_message, "次", color_message);
+        }
+        texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+        SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+        SDL_DestroyTexture(texture_message);
+        SDL_FreeSurface(surface_message);
+    }
+
+    if (jihua > 0 && chara->index_game > 3)
+    {
+        rect_message.y += 30;
+        rect_message.x = 10;
+        SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "激化领域：剩余   次", color_message);
+        SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+        SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+        rect_message.x += 170;
+        char num[2];
+        itoa(jihua, num, 10);
+        surface_message = TTF_RenderUTF8_Solid(font_message, num, color_message);
+        texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+        SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+        SDL_DestroyTexture(texture_message);
+        SDL_FreeSurface(surface_message);
+    }
+
+    if (caoyuanhe > 0 && chara->index_game > 3)
+    {
+        rect_message.y += 30;
+        rect_message.x = 10;
+        SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "草原核：剩余   个", color_message);
+        SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+        SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+        rect_message.x += 150;
+        char num[2];
+        itoa(caoyuanhe, num, 10);
+        surface_message = TTF_RenderUTF8_Solid(font_message, num, color_message);
+        texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+        SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+        SDL_DestroyTexture(texture_message);
+        SDL_FreeSurface(surface_message);
+    }
+
+    TTF_CloseFont(font_message);
 }
 
 bool IfFirstChooseCharacter(Character *chara)

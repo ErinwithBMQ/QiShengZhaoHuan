@@ -12,7 +12,6 @@ add_executable(main main.c
         src/character.c
         src/page.c
         src/battle.c
-        src/record.c
         src/summon.c
         src/character_skill.c
         src/ElementalReaction.c)

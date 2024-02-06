@@ -97,8 +97,6 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
         summon->yuansu = yuansu;
     }
 
-    summon->shanghai_more = 0;
-
     if (yuansu == -1)
     {
         return;
@@ -189,6 +187,7 @@ void SummonKillBlood(Summon *summon, Character *enemy)
     summon->turn_now--;
     int shanghai;
     shanghai = summon->shanghai + summon->shanghai_more;
+
     if (enemy->hudun >= shanghai)
     {
         enemy->hudun -= shanghai;

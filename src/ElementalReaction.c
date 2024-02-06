@@ -440,3 +440,27 @@ void KuosanJiashang(int yuansu, Character *enemy)
         enemy->yuansu_fu[yuansu] = true;
     }
 }
+
+void JihuaAddtionSummon(Summon *summon)
+{
+    if (summon -> yuansu == 1 || summon->yuansu == 4)
+    {
+        if (jihua > 0)
+        {
+            summon->shanghai_more += 1;
+            jihua--;
+        }
+    }
+}
+
+void CaoyuanheAddtionSummon(Summon *summon)
+{
+    if (summon -> yuansu == 0 || summon->yuansu == 1)
+    {
+        if (caoyuanhe > 0)
+        {
+            summon->shanghai_more += 2;
+            caoyuanhe--;
+        }
+    }
+}

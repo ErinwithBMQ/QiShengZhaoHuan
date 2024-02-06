@@ -20,7 +20,7 @@ typedef struct chara {
     int index_game;    //游戏内编号。1~3为敌方角色， 4~6为我方角色
     int xue;           //角色血量
     int hudun;         //角色目前护盾数
-    char *name[4];     //依次存放名字，普通攻击，元素战技，元素爆发的名字
+    char *name[5];     //依次存放名字，普通攻击，元素战技，元素爆发的名字
     int baofa_num;     //元素爆发所需要的充能
     int baofa_now;     //当前充能
     int shanghai[3];   //依次存放普通攻击，元素战技，元素爆发的基本伤害
@@ -33,7 +33,7 @@ typedef struct chara {
     int special_state; //特殊状态剩余次数
     int huiorcount; // 回合减少还是次数减少，0为无特殊状态，1为回合减少，2为普攻次数减少，3为攻击次数减少
     bool if_pugongfumo; //普通攻击是否处于附魔状态
-    bool if_bao;     //是否饱腹
+    bool if_bao;     //是否饱腹（没用到)
 
     SDL_Texture *image;          //角色正常图片
     SDL_Texture *image_dead;     //角色死亡图片

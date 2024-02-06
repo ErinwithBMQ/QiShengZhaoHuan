@@ -35,4 +35,7 @@ void CaoyuanheAddition(Character *chara);
 void JihuaReduce(Character *chara);
 void CaoyuanheReduce(Character *chara);
 
+void JihuaAddtionSummon(Summon *summon);
+void CaoyuanheAddtionSummon(Summon *summon);
+
 #endif //QSZH_ELEMENTALREACTION_H
