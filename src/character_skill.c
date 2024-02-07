@@ -429,7 +429,7 @@ void Shierteer_SpecialAddition(Character *chara)
 
 void ShierteerKouXue(Character *chara4, Character *chara5, Character *chara6)
 {
-    if (chara4->index == 8 && chara4->special_state > 0)
+    if (chara4->index == 8 && chara4->special_state > 0 && chara4->xue > 0)
     {
         chara4->xue -= 2;
         if (chara4->xue <= 0)
@@ -442,7 +442,7 @@ void ShierteerKouXue(Character *chara4, Character *chara5, Character *chara6)
         chara_toshow = chara4;
     }
 
-    if (chara5->index == 8 && chara5->special_state > 0)
+    if (chara5->index == 8 && chara5->special_state > 0 && chara5->xue > 0)
     {
         chara5->xue -= 2;
         if (chara5->xue <= 0)
@@ -455,7 +455,7 @@ void ShierteerKouXue(Character *chara4, Character *chara5, Character *chara6)
         chara_toshow = chara5;
     }
 
-    if (chara6->index == 8 && chara6->special_state > 0)
+    if (chara6->index == 8 && chara6->special_state > 0 && chara6->xue > 0)
     {
         chara6->xue -= 2;
         if (chara6->xue <= 0)
@@ -467,7 +467,6 @@ void ShierteerKouXue(Character *chara4, Character *chara5, Character *chara6)
         if_showjiaxue[2] = 2;
         chara_toshow = chara6;
     }
-
 }
 
 void Ren_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara)
