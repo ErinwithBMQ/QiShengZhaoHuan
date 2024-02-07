@@ -909,23 +909,6 @@ void PrintCanNotUseTwice()
     SDL_DestroyTexture(texture_message);
 }
 
-void YuanSuFuZhuo(Character *chara, Character *enemy)
-{
-    int yuansu = chara->yuansu;
-    if (yuansu == -1)
-    {
-        return;
-    }
-    for (int i = 0; i < 5; ++i)
-    {
-        if (enemy->yuansu_fu[i] == true && i != yuansu)
-        {
-            enemy->yuansu_fu[i] = false;
-            return;
-        }
-    }
-    enemy->yuansu_fu[yuansu] = true;
-}
 
 void ShowShanghai(Character *chara, int n)
 {
@@ -1935,4 +1918,137 @@ void ShowQieHuanChara(Character *chara_now)
     SDL_DestroyTexture(texture_message);
     SDL_FreeSurface(surface_message);
     TTF_CloseFont(font_message);
+}
+
+void ShowHudun(Character *chara)
+{
+    int index = chara->index_game;
+    SDL_Texture *texture_image;
+    SDL_Rect rect_image = {.y = 142};
+    if (index < 4)
+    {
+        texture_image = IMG_LoadTexture(renderer, "./res/image/showenemy_hudun.png");
+        rect_image.x = 817;
+    }
+    else
+    {
+        texture_image = IMG_LoadTexture(renderer, "./res/image/showus_hudun.png");
+        rect_image.x = 50;
+    }
+    SDL_QueryTexture(texture_image, NULL, NULL, &rect_image.w, &rect_image.h);
+    SDL_RenderCopy(renderer, texture_image, NULL, &rect_image);
+
+    SDL_Rect rect_message = {.x = rect_image.x += 30, rect_image.y += 20};
+
+    TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 24);
+    SDL_Color color_message = {0xff, 0xff, 0xff};
+    SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, chara->name[0], color_message);
+    SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    int hudun_num = 3;
+    if (chara->index == 14)
+    {
+        hudun_num = 2;
+    }
+
+    rect_message.y += 33;
+    rect_message.x += 50;
+    char num[2];
+    itoa(hudun_num, num, 10);
+    surface_message = TTF_RenderUTF8_Solid(font_message, num, color_message);
+    texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+
+    SDL_RenderPresent(renderer);
+    SDL_Delay(1200);
+
+
+    SDL_DestroyTexture(texture_image);
+    SDL_DestroyTexture(texture_message);
+    SDL_FreeSurface(surface_message);
+    TTF_CloseFont(font_message);
+
+    if_showhudun = 0;
+}
+
+void Showjiaorkouxue()
+{
+    bool jiaorjian = if_showjiaxue[0];  //0加1减
+    int xueliang = if_showjiaxue[1];
+    int n = chara_toshow->index_game;
+
+    char num[3];
+    if (jiaorjian)
+    {
+        num[0] = '-';
+    }
+    else
+    {
+        num[0] = '+';
+    }
+    num[1] = xueliang + '0';
+    num[2] = '\0';
+
+    SDL_Texture *texture_kill = IMG_LoadTexture(renderer, "./res/image/killblood.png");
+    SDL_Rect rect_kill = {.x = 395 + 170 * (n - 4), .y = 480};
+
+    if (chara_toshow->if_chu)
+    {
+        rect_kill.y -= 30;
+    }
+
+    SDL_QueryTexture(texture_kill, NULL, NULL, &rect_kill.w, &rect_kill.h);
+    SDL_RenderCopy(renderer, texture_kill, NULL, &rect_kill);
+
+    TTF_Font *font_message = TTF_OpenFont("./res/HYWH85W.ttf", 50);
+    SDL_Color color_message = {0x00, 0x00, 0x00};
+
+    if (jiaorjian)
+    {
+        color_message.r = 71;
+        color_message.g = 36;
+        color_message.b = 3;
+    }
+    else
+    {
+        color_message.r = 167;
+        color_message.g = 214;
+        color_message.b = 21;
+    }
+
+    SDL_Rect rect_message = {.x = rect_kill.x + 40, .y = rect_kill.y + 28};
+    if (!jiaorjian)
+    {
+        rect_message.x -= 5;
+    }
+    SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, num, color_message);
+    SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+    SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+    SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+    SDL_DestroyTexture(texture_message);
+    SDL_DestroyTexture(texture_kill);
+    SDL_FreeSurface(surface_message);
+    TTF_CloseFont(font_message);
+
+    if (if_showjiaxue[2] == 1) //料理回血
+    {
+        SDL_RenderPresent(renderer);
+        SDL_Delay(1000);
+        if_showjiaxue[2] = 0;
+    }
+    else if (if_showjiaxue[2] == 2) //史尔特尔黄昏被动扣血
+    {
+        SDL_RenderPresent(renderer);
+        SDL_Delay(1000);
+        if_showjiaxue[2] = 0;
+    }
+    else if (if_showjiaxue[2] == 3) //技能使用时扣血/回血
+    {
+        if_showjiaxue[2] = 0;
+    }
 }

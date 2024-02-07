@@ -12,26 +12,31 @@
 extern int shanghai[5];
 extern bool if_showkillblood;
 
-void ChangeCharacterShanghai(Character *chara, Character *enemy); //计算角色伤害并更新
-void ChangeCharacterShanghaiPu(Character *chara, Character *enemy);
+extern int if_showhudun;
+
+extern int if_showjiaxue[3];
+extern Character *chara_toshow;
+
+void ChangeCharacterShanghai(Character *chara, Character *enemy); //计算角色基础元素反应增伤并更新
+void ChangeCharacterShanghaiPu(Character *chara, Character *enemy); //普攻附魔后计算基础增伤
 void CleanShanghai(Character *chara);  //清除加成伤害
 
-void SuijiChouka(int num);
+void SuijiChouka(int num);  //随机抽取行动牌
 
 void Touzi(int tou[], int count, Character *chara, int who_first);  //每回合开始显示第几回合，模拟掷骰子
 
-void ShowTou(int tou[]);
+void ShowTou(int tou[]); //展示骰子数目（图像）
+void ShowTouzi(int tou[]);  //展示骰子数目（文字）
 
-void ShowTouzi(int tou[]);  //展示骰子数目
 void ShowButtom();          //展示选择技能按钮
 void ShowShanghai(Character *chara, int n);  //展示角色本次能造成多少伤害
 void ShowTheWhole(Character *chara1, Character *chara2, Character *chara3,
                   Character *chara4, Character *chara5, Character *chara6);  //展示台面、六个角色信息
 void ShowEndHH(int who_fight);  //展示结束回合按钮
 void ShowIfEndTurn(bool if_final_a, bool if_final_b); //展示是否结束回合
-void ShowTurn(int count);
+void ShowTurn(int count); //展示第几回合
 
-void ShowEnemyMessage(Character *enemy);
+void ShowEnemyMessage(Character *enemy);  //展示敌人具体信息
 
 int ChooseWhichSkill(Character **chara, int tou[], Character *chara1, Character *chara2, Character *chara3,
                      Character *chara4, Character *chara5, Character *chara6, bool if_finnal_a);  //观测鼠标，选择哪一个按钮
@@ -49,15 +54,14 @@ bool IfChangeCharacterDead(Character *charanow, Character *chara, int num);
 bool IfTouEnough(Character *chara, int tou[], int n);  //判断骰子数是否足够
 bool IfTouNotZero(int tou[]); //判断骰子数是否为0
 
-void ReduceTou(Character *chara, int tou[], int n);    //减少骰子数量
-void ReduceTouChange(Character *chara4, Character *chara5, Character *chara6, int tou[]);
-
-void YuanSuFuZhuo(Character *chara, Character *enemy); //对敌人造成元素附着
+void ReduceTou(Character *chara, int tou[], int n);    //使用技能时减少骰子数量
+void ReduceTouChange(Character *chara4, Character *chara5, Character *chara6, int tou[]);  //换角色时减骰子数
 
 void PrintTouNotEnough();  //提示骰子不够
 void PrintChongnengNotEnough();  //提示充能不够
 void PrintCanNotUseTwice();  //提示仅能使用一次
 
+//敌人更换出站角色
 void ChangeCharacterEnemy(Character **chara_enemy_now, Character *chara1, Character *chara2, Character *chara3);
 bool ChangeEnemyAuto(Character **chara_enemy_now, Character *chara1, Character *chara2, Character *chara3);
 
@@ -67,11 +71,15 @@ void ShowWeAction();     //展示我方正在行动
 bool ChangeCharacterWhenDead(Character **chara, Character *chara4, Character *chara5, Character *chara6);
 //我方角色死亡时强制切换角色
 
+//展示扣除血量
 void ShowKillBlood(Character *chara1, Character *chara2, Character *chara3,
                    Character *chara4, Character *chara5, Character *chara6, Character *chara_show, int jineng);
 void ShowKillBloodOwn(Character *chara, int bloodkill, int yuansu, bool if_main);
 
-void ShowQieHuanChara(Character *chara_now);
+void ShowQieHuanChara(Character *chara_now);  //展示切换角色
 
+void ShowHudun(Character *chara);  //展示增加护盾
+
+void Showjiaorkouxue();
 
 #endif //QSZH_BATTLE_H

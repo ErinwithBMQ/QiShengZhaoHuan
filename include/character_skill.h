@@ -14,8 +14,7 @@
 
 #include <character.h>
 #include <summon.h>
-
-extern bool if_all_attack;
+#include <battle.h>
 
 void Antant_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara);
 void Antant_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara);

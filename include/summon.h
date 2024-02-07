@@ -19,7 +19,7 @@ typedef struct summon {
     char *name;    //召唤物的名字
     int yuansu;    //召唤物的元素
     int shanghai;  //召唤物的伤害
-    int shanghai_more;
+    int shanghai_more; //召唤物额外增加伤害
     int turn;      //召唤物的总持续回合
     int turn_now;  //召唤物目前的持续回合
     SDL_Texture *image; //召唤物图像
@@ -36,8 +36,8 @@ extern Summon Fire;
 extern Summon Zhuwang;
 extern Summon Kelianba;
 
-void SummonImageLoad();
-void SummonImageDestroy();
+void SummonImageLoad();     //初始化加载召唤物图像函数
+void SummonImageDestroy();  //销毁召唤物图像函数
 
 void PresentSummonGame(Summon *summon);   //展示召唤物
 

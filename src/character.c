@@ -165,21 +165,21 @@ void CharacterImageDestroy()
     SDL_DestroyTexture(Antant.image_choose);
     SDL_DestroyTexture(Antant.image_message);
     SDL_DestroyTexture(Antant.image_message_big);
-    SDL_DestroyTexture(Antant.image_special);
+    //SDL_DestroyTexture(Antant.image_special);
 
     SDL_DestroyTexture(CXK.image);
     SDL_DestroyTexture(CXK.image_dead);
     SDL_DestroyTexture(CXK.image_choose);
     SDL_DestroyTexture(CXK.image_message);
     SDL_DestroyTexture(CXK.image_message_big);
-    SDL_DestroyTexture(CXK.image_special);
+    //SDL_DestroyTexture(CXK.image_special);
 
     SDL_DestroyTexture(Chen.image);
     SDL_DestroyTexture(Chen.image_dead);
     SDL_DestroyTexture(Chen.image_choose);
     SDL_DestroyTexture(Chen.image_message);
     SDL_DestroyTexture(Chen.image_message_big);
-    SDL_DestroyTexture(Chen.image_special);
+    //SDL_DestroyTexture(Chen.image_special);
 
     SDL_DestroyTexture(Shierteer.image);
     SDL_DestroyTexture(Shierteer.image_dead);
@@ -200,90 +200,90 @@ void CharacterImageDestroy()
     SDL_DestroyTexture(Kafuka.image_dead);
     SDL_DestroyTexture(Kafuka.image_message);
     SDL_DestroyTexture(Kafuka.image_message_big);
-    SDL_DestroyTexture(Kafuka.image_special);
+    //SDL_DestroyTexture(Kafuka.image_special);
 
     SDL_DestroyTexture(Kelai.image);
     SDL_DestroyTexture(Kelai.image_choose);
     SDL_DestroyTexture(Kelai.image_dead);
     SDL_DestroyTexture(Kelai.image_message);
     SDL_DestroyTexture(Kelai.image_message_big);
-    SDL_DestroyTexture(Kelai.image_special);
+    //SDL_DestroyTexture(Kelai.image_special);
 
     SDL_DestroyTexture(Qiuqiuren.image);
     SDL_DestroyTexture(Qiuqiuren.image_dead);
     SDL_DestroyTexture(Qiuqiuren.image_message);
-    SDL_DestroyTexture(Qiuqiuren.image_message_big);
-    SDL_DestroyTexture(Qiuqiuren.image_choose);
-    SDL_DestroyTexture(Qiuqiuren.image_special);
+    //SDL_DestroyTexture(Qiuqiuren.image_message_big);
+    //SDL_DestroyTexture(Qiuqiuren.image_choose);
+    //SDL_DestroyTexture(Qiuqiuren.image_special);
 
     SDL_DestroyTexture(MudunQiuqiu.image);
     SDL_DestroyTexture(MudunQiuqiu.image_dead);
     SDL_DestroyTexture(MudunQiuqiu.image_message);
-    SDL_DestroyTexture(MudunQiuqiu.image_message_big);
-    SDL_DestroyTexture(MudunQiuqiu.image_choose);
-    SDL_DestroyTexture(MudunQiuqiu.image_special);
+    //SDL_DestroyTexture(MudunQiuqiu.image_message_big);
+    //SDL_DestroyTexture(MudunQiuqiu.image_choose);
+    //SDL_DestroyTexture(MudunQiuqiu.image_special);
 
     SDL_DestroyTexture(HuofuQiuqiu.image);
     SDL_DestroyTexture(HuofuQiuqiu.image_dead);
     SDL_DestroyTexture(HuofuQiuqiu.image_message);
-    SDL_DestroyTexture(HuofuQiuqiu.image_message_big);
-    SDL_DestroyTexture(HuofuQiuqiu.image_choose);
-    SDL_DestroyTexture(HuofuQiuqiu.image_special);
+    //SDL_DestroyTexture(HuofuQiuqiu.image_message_big);
+    //SDL_DestroyTexture(HuofuQiuqiu.image_choose);
+    //SDL_DestroyTexture(HuofuQiuqiu.image_special);
 
     SDL_DestroyTexture(LeifuQiuqiu.image);
     SDL_DestroyTexture(LeifuQiuqiu.image_dead);
     SDL_DestroyTexture(LeifuQiuqiu.image_message);
-    SDL_DestroyTexture(LeifuQiuqiu.image_message_big);
-    SDL_DestroyTexture(LeifuQiuqiu.image_choose);
-    SDL_DestroyTexture(LeifuQiuqiu.image_special);
+    //SDL_DestroyTexture(LeifuQiuqiu.image_message_big);
+    //SDL_DestroyTexture(LeifuQiuqiu.image_choose);
+    //SDL_DestroyTexture(LeifuQiuqiu.image_special);
 
     SDL_DestroyTexture(LeiQiuqiuShe.image);
     SDL_DestroyTexture(LeiQiuqiuShe.image_dead);
     SDL_DestroyTexture(LeiQiuqiuShe.image_message);
-    SDL_DestroyTexture(LeiQiuqiuShe.image_message_big);
-    SDL_DestroyTexture(LeiQiuqiuShe.image_choose);
-    SDL_DestroyTexture(LeiQiuqiuShe.image_special);
+    //SDL_DestroyTexture(LeiQiuqiuShe.image_message_big);
+    //SDL_DestroyTexture(LeiQiuqiuShe.image_choose);
+    //SDL_DestroyTexture(LeiQiuqiuShe.image_special);
 
     SDL_DestroyTexture(HailuanguiHuo.image);
     SDL_DestroyTexture(HailuanguiHuo.image_dead);
     SDL_DestroyTexture(HailuanguiHuo.image_message);
-    SDL_DestroyTexture(HailuanguiHuo.image_message_big);
-    SDL_DestroyTexture(HailuanguiHuo.image_choose);
+    //SDL_DestroyTexture(HailuanguiHuo.image_message_big);
+    //SDL_DestroyTexture(HailuanguiHuo.image_choose);
     SDL_DestroyTexture(HailuanguiHuo.image_special);
 
     SDL_DestroyTexture(HailuanguiLei.image);
     SDL_DestroyTexture(HailuanguiLei.image_dead);
     SDL_DestroyTexture(HailuanguiLei.image_message);
-    SDL_DestroyTexture(HailuanguiLei.image_message_big);
-    SDL_DestroyTexture(HailuanguiLei.image_choose);
+    //SDL_DestroyTexture(HailuanguiLei.image_message_big);
+    //SDL_DestroyTexture(HailuanguiLei.image_choose);
     SDL_DestroyTexture(HailuanguiLei.image_special);
 
     SDL_DestroyTexture(Tewalin.image);
     SDL_DestroyTexture(Tewalin.image_dead);
     SDL_DestroyTexture(Tewalin.image_message);
-    SDL_DestroyTexture(Tewalin.image_message_big);
-    SDL_DestroyTexture(Tewalin.image_choose);
-    SDL_DestroyTexture(Tewalin.image_special);
+    //SDL_DestroyTexture(Tewalin.image_message_big);
+    //SDL_DestroyTexture(Tewalin.image_choose);
+    //SDL_DestroyTexture(Tewalin.image_special);
 
     SDL_DestroyTexture(Huochong.image);
     SDL_DestroyTexture(Huochong.image_dead);
     SDL_DestroyTexture(Huochong.image_message);
-    SDL_DestroyTexture(Huochong.image_message_big);
-    SDL_DestroyTexture(Huochong.image_choose);
-    SDL_DestroyTexture(Huochong.image_special);
+    //SDL_DestroyTexture(Huochong.image_message_big);
+    //SDL_DestroyTexture(Huochong.image_choose);
+    //SDL_DestroyTexture(Huochong.image_special);
 
     SDL_DestroyTexture(Shuichong.image);
     SDL_DestroyTexture(Shuichong.image_dead);
     SDL_DestroyTexture(Shuichong.image_message);
-    SDL_DestroyTexture(Shuichong.image_message_big);
-    SDL_DestroyTexture(Shuichong.image_choose);
-    SDL_DestroyTexture(Shuichong.image_special);
+    //SDL_DestroyTexture(Shuichong.image_message_big);
+    //SDL_DestroyTexture(Shuichong.image_choose);
+    //SDL_DestroyTexture(Shuichong.image_special);
 
     SDL_DestroyTexture(Leichui.image);
     SDL_DestroyTexture(Leichui.image_dead);
     SDL_DestroyTexture(Leichui.image_message);
-    SDL_DestroyTexture(Leichui.image_message_big);
-    SDL_DestroyTexture(Leichui.image_choose);
+    //SDL_DestroyTexture(Leichui.image_message_big);
+    //SDL_DestroyTexture(Leichui.image_choose);
     SDL_DestroyTexture(Leichui.image_special);
 }
 
@@ -732,6 +732,76 @@ void ShowCharacterMessage(Character *chara)
         itoa(caoyuanhe, num, 10);
         surface_message = TTF_RenderUTF8_Solid(font_message, num, color_message);
         texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+        SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+        SDL_DestroyTexture(texture_message);
+        SDL_FreeSurface(surface_message);
+    }
+
+    if (if_qiehuanjuese && chara->index_game > 3)
+    {
+        rect_message.y += 30;
+        rect_message.x = 10;
+        SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "鹤归之时 生效中", color_message);
+        SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+        SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+        SDL_DestroyTexture(texture_message);
+        SDL_FreeSurface(surface_message);
+    }
+
+    if (if_notusetou && chara->index_game > 3)
+    {
+        rect_message.y += 30;
+        rect_message.x = 10;
+        SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "换班时间 生效中", color_message);
+        SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+        SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+        SDL_DestroyTexture(texture_message);
+        SDL_FreeSurface(surface_message);
+    }
+
+    if (if_kuaijie && chara->index_game > 3)
+    {
+        rect_message.y += 30;
+        rect_message.x = 10;
+        SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "交给我吧！ 生效中", color_message);
+        SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+        SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+        SDL_DestroyTexture(texture_message);
+        SDL_FreeSurface(surface_message);
+    }
+
+    if (liaolijiashang[0] == 1 && chara->index_game > 3)
+    {
+        rect_message.y += 30;
+        rect_message.x = 10;
+        SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "绝云锅巴 生效中", color_message);
+        SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+
+        SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
+        SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
+
+        SDL_DestroyTexture(texture_message);
+        SDL_FreeSurface(surface_message);
+    }
+
+    if (liaolijiashang[0] == 3 && chara->index_game > 3)
+    {
+        rect_message.y += 30;
+        rect_message.x = 10;
+        SDL_Surface *surface_message = TTF_RenderUTF8_Solid(font_message, "佛跳墙 生效中", color_message);
+        SDL_Texture *texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+
         SDL_QueryTexture(texture_message, NULL, NULL, &rect_message.w, &rect_message.h);
         SDL_RenderCopy(renderer, texture_message, NULL, &rect_message);
 

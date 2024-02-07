@@ -85,18 +85,6 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
 {
     int yuansu = summon->yuansu;
 
-    if (yuansu == 5)
-    {
-        srand((unsigned int)time(NULL));
-        yuansu = rand() % 5;
-
-        if (yuansu == 3)
-        {
-            return;
-        }
-        summon->yuansu = yuansu;
-    }
-
     if (yuansu == -1)
     {
         return;
@@ -107,17 +95,14 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
         if (yuansu == 2) //水系角色
         {
             summon->shanghai_more += 2;
-            enemy->yuansu_fu[0] = false;
         }
         else if (yuansu == 1)  //雷系角色
         {
             summon->shanghai_more += 2;
-            enemy->yuansu_fu[0] = false;
         }
         else if (yuansu == 4) //草系角色
         {
             summon->shanghai_more += 1;
-            enemy->yuansu_fu[0] = false;
         }
         return;
     }
@@ -126,17 +111,14 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
         if (yuansu == 2) //水系角色
         {
             summon->shanghai_more += 1;
-            enemy->yuansu_fu[1] = false;
         }
         else if (yuansu == 0)  //火系角色
         {
             summon->shanghai_more += 2;
-            enemy->yuansu_fu[1] = false;
         }
         else if (yuansu == 4) //草系角色
         {
             summon->shanghai_more += 1;
-            enemy->yuansu_fu[1] = false;
         }
         return;
     }
@@ -145,17 +127,14 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
         if (yuansu == 1) //雷系角色
         {
             summon->shanghai_more += 1;
-            enemy->yuansu_fu[2] = false;
         }
         else if (yuansu == 0)  //火系角色
         {
             summon->shanghai_more += 2;
-            enemy->yuansu_fu[2] = false;
         }
         else if (yuansu == 4) //草系角色
         {
             summon->shanghai_more += 1;
-            enemy->yuansu_fu[2] = false;
         }
         return;
     }
@@ -164,22 +143,17 @@ void ChangeSummonShanghai(Summon *summon, Character *enemy)
         if (yuansu == 2) //水系角色
         {
             summon->shanghai_more += 1;
-            enemy->yuansu_fu[4] = false;
         }
         else if (yuansu == 0)  //火系角色
         {
             summon->shanghai_more += 1;
-            enemy->yuansu_fu[4] = false;
         }
         else if (yuansu == 1) //雷系角色
         {
             summon->shanghai_more += 1;
-            enemy->yuansu_fu[4] = false;
         }
         return;
     }
-
-    enemy->yuansu_fu[yuansu] = true;
 }
 
 void SummonKillBlood(Summon *summon, Character *enemy)

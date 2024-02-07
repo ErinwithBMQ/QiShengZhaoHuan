@@ -279,6 +279,10 @@ void Action_8(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[]
     if (chara->xue < 10)
     {
         chara->xue++;
+        chara_toshow = chara;
+        if_showjiaxue[0] = 0;
+        if_showjiaxue[1] = 1;
+        if_showjiaxue[2] = 1;
     }
 }
 
@@ -318,6 +322,7 @@ void Action_10(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[
     }
 
     chara->hudun += 3;
+    if_showhudun = 1;
 }
 
 void Action_11(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[])
@@ -410,6 +415,10 @@ void Action_12(Character *chara, int yuansu1, int yuansu2, int yuansu3, int tou[
     {
         chara->xue = 10;
     }
+    if_showjiaxue[0] = 0;
+    if_showjiaxue[1] = 2;
+    if_showjiaxue[2] = 1;
+    chara_toshow = chara;
 }
 
 void ShowMyCard()

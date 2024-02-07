@@ -79,17 +79,17 @@ extern Mix_Music *music;
 extern int jihua;
 extern int caoyuanhe;
 
-void quit_delete();
+void quit_delete(); //退出时销毁图片和其他数据
 
 void CharacterImageLoad();  //初始化加载角色图片
 
-void CharacterImageDestroy();  //销毁图片
+void CharacterImageDestroy();  //销毁角色图片
 
 void PresentCharacterGame(Character *chara, int num);  //在游戏中展示角色信息
 
 bool IfCharacterAlive(Character *chara); //判断角色是否死亡
 
-void CharacterDeadOrAlive(Character *chara1, Character *chara2, Character *chara3,
+void CharacterDeadOrAlive(Character *chara1, Character *chara2, Character *chara3,   //判断角色是否死亡，加上状态
                           Character *chara4, Character *chara5, Character *chara6);
 
 bool IfChongMan(Character *chara);  //判断角色充能是否充满

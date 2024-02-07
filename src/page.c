@@ -2,8 +2,6 @@
 // Created by Erin on 2024/1/15.
 //
 
-// TODO：3.战斗日志  4.战斗动画  7.角色信息的详细显示  8.主页选项
-
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -388,6 +386,10 @@ int InBattle(int *count, int *who_first, int tou[],
     {
         if (if_showkillblood)
         {
+            if (if_showjiaxue[2] == 3)
+            {
+                Showjiaorkouxue();
+            }
             ShowKillBlood(chara1, chara2, chara3, chara4, chara5, chara6, chara_show, jineng_index);
             continue;
         }
@@ -449,6 +451,17 @@ int InBattle(int *count, int *who_first, int tou[],
 
         SDL_RenderPresent(renderer);
 
+        if (if_showhudun == 1)
+        {
+            ShowHudun(*charanow);
+            continue;
+        }
+        else if (if_showhudun == 2)
+        {
+            ShowHudun(*chara_enemy_now);
+            continue;
+        }
+
         if (if_qiehuan == 1)
         {
             ShowQieHuanChara(*charanow);
@@ -459,6 +472,12 @@ int InBattle(int *count, int *who_first, int tou[],
         {
             ShowQieHuanChara(*chara_enemy_now);
             if_qiehuan = 0;
+            continue;
+        }
+
+        if (if_showjiaxue[2] == 1 || if_showjiaxue[2] == 2)
+        {
+            Showjiaorkouxue();
             continue;
         }
 
@@ -526,7 +545,6 @@ int InBattle(int *count, int *who_first, int tou[],
             }
             else if (whichone == 1) //使用普通攻击
             {
-                //TODO: 造成伤害动画
                 ReduceTou(*charanow, tou, 1);  //减少骰子
                 kill_blood(*charanow, *chara_enemy_now, 1);  //扣血
 
@@ -542,7 +560,6 @@ int InBattle(int *count, int *who_first, int tou[],
                 if ((*charanow)->if_pugongfumo)
                 {
                     ChooseWhichReaction((*charanow)->yuansu, chara_enemy_now, chara1, chara2, chara3);
-                    YuanSuFuZhuo(*charanow, *chara_enemy_now);
                     JihuaReduce(*charanow);
                     CaoyuanheReduce(*charanow);
                     shanghai[2] = (*charanow)->yuansu;
@@ -560,6 +577,12 @@ int InBattle(int *count, int *who_first, int tou[],
                 //是否减少特殊状态数目
                 SpecialAdditionReduceCountPu(*charanow);
                 SpecialAdditionReduceCountAll(*charanow);
+
+                if (liaolijiashang[0] == 1)
+                {
+                    liaolijiashang[0] = 0;
+                    liaolijiashang[1] = 0;
+                }
 
                 //敌方是否要强制切换角色
                 ChangeCharacterEnemy(chara_enemy_now, chara1, chara2, chara3);
@@ -584,7 +607,6 @@ int InBattle(int *count, int *who_first, int tou[],
             }
             else if (whichone == 2) //使用元素战技
             {
-                //TODO: 造成伤害动画
                 ReduceTou(*charanow, tou, 2);
                 kill_blood(*charanow, *chara_enemy_now, 2);
 
@@ -608,7 +630,6 @@ int InBattle(int *count, int *who_first, int tou[],
                     (*charanow)->yszj(chara1, chara2, chara3, *charanow);
                 }
 
-                YuanSuFuZhuo(*charanow, *chara_enemy_now);
 
                 if ((*charanow)->baofa_now < (*charanow)->baofa_num)
                 {
@@ -637,7 +658,6 @@ int InBattle(int *count, int *who_first, int tou[],
             }
             else if (whichone == 3) //使用元素爆发
             {
-                //TODO: 造成伤害动画
                 ReduceTou(*charanow, tou, 3);
                 SpecialAdditionReduceCountAll(*charanow);
 
@@ -661,8 +681,6 @@ int InBattle(int *count, int *who_first, int tou[],
 
                 ChooseWhichReaction((*charanow)->yuansu, chara_enemy_now, chara1, chara2, chara3);
 
-                YuanSuFuZhuo(*charanow, *chara_enemy_now);
-
 
                 (*charanow)->baofa_now = 0;
                 ChangeCharacterEnemy(chara_enemy_now, chara1, chara2, chara3);
@@ -672,6 +690,12 @@ int InBattle(int *count, int *who_first, int tou[],
                 {
                     ChaoZai(charanow, chara4, chara5, chara6);
                     if_qiehuanjuese = false;
+                }
+
+                if (liaolijiashang[0] == 3)
+                {
+                    liaolijiashang[0] = 0;
+                    liaolijiashang[1] = 0;
                 }
 
                 if (n1 == 0)
@@ -707,8 +731,6 @@ int InBattle(int *count, int *who_first, int tou[],
 
         if (who_fight == 0 && if_final_b == false)  //对方行动
         {
-            //TODO:对手逻辑的编写
-
             SDL_Delay(1200);
 
             ChangeCharacterShanghai(*chara_enemy_now, *charanow);  //提前计算基础元素反应伤害
@@ -754,9 +776,10 @@ int InBattle(int *count, int *who_first, int tou[],
                     (*chara_enemy_now)->baofa_now++;
                 }
 
-                ChooseWhichReaction((*chara_enemy_now)->yuansu, charanow, chara4, chara5, chara6);
-
-                YuanSuFuZhuo(*chara_enemy_now, *charanow);
+                if ((*chara_enemy_now)->yuansu != -1)
+                {
+                    ChooseWhichReaction((*chara_enemy_now)->yuansu, charanow, chara4, chara5, chara6);
+                }
 
                 enemy_count++;
             }
@@ -779,9 +802,10 @@ int InBattle(int *count, int *who_first, int tou[],
                     (*chara_enemy_now)->ysbf(chara4, chara5, chara6, *chara_enemy_now);
                 }
 
-                ChooseWhichReaction((*chara_enemy_now)->yuansu, charanow, chara4, chara5, chara6);
-
-                YuanSuFuZhuo(*chara_enemy_now, *charanow);
+                if ((*chara_enemy_now)->yuansu != -1)
+                {
+                    ChooseWhichReaction((*chara_enemy_now)->yuansu, charanow, chara4, chara5, chara6);
+                }
 
                 enemy_count++;
             }
@@ -799,7 +823,6 @@ int InBattle(int *count, int *who_first, int tou[],
                 if ((*chara_enemy_now)->if_pugongfumo)
                 {
                     ChooseWhichReaction((*chara_enemy_now)->yuansu, charanow, chara4, chara5, chara6);
-                    YuanSuFuZhuo(*chara_enemy_now, *charanow);
                     shanghai[2] = (*chara_enemy_now)->yuansu;
                     (*chara_enemy_now)->special_state--;
                 }
@@ -888,6 +911,12 @@ int AfterBattle(int *count, Character **chara_now, Character **chara_enemy_now,
             SDL_FreeSurface(surface_turn);
             SDL_DestroyTexture(texture_turn);
             SDL_DestroyTexture(texture_back);
+
+            if (summon_all[i]->yuansu == 5)
+            {
+                srand((unsigned int)time(NULL));
+                summon_all[i]->yuansu = rand() % 5;
+            }
 
             JihuaAddtionSummon(summon_all[i]);
             CaoyuanheAddtionSummon(summon_all[i]);

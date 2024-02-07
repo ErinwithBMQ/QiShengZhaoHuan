@@ -350,6 +350,10 @@ void Huoxing_ysbf(Character *chara1, Character *chara2, Character *chara3, Chara
     if (chara->special_state > 0)
     {
         chara->xue += 2;
+        if_showjiaxue[0] = 0;
+        if_showjiaxue[1] = 2;
+        if_showjiaxue[2] = 3;
+        chara_toshow = chara;
         if (chara->xue > 10)
         {
             chara->xue = 10;
@@ -373,6 +377,21 @@ void Zihuang_ysbf(Character *chara1, Character *chara2, Character *chara3, Chara
 {
     if (chara->special_state > 0)
     {
+        int left = chara->xue - 6;
+        if (left > 0)
+        {
+            if_showjiaxue[0] = 1;
+            if_showjiaxue[1] = left;
+            if_showjiaxue[2] = 3;
+            chara_toshow = chara;
+        }
+        else if (left < 0)
+        {
+            if_showjiaxue[0] = 0;
+            if_showjiaxue[1] = -left;
+            if_showjiaxue[2] = 3;
+            chara_toshow = chara;
+        }
         chara->xue = 6;
     }
 }
@@ -396,6 +415,10 @@ void Shierteer_ysbf(Character *chara1, Character *chara2, Character *chara3, Cha
     }
     chara->special_state = 3;
     chara->zhuang[1] = 1;
+    if_showjiaxue[0] = 1;
+    if_showjiaxue[1] = 2;
+    if_showjiaxue[2] = 3;
+    chara_toshow = chara;
 }
 
 void Shierteer_SpecialAddition(Character *chara)
@@ -413,6 +436,10 @@ void ShierteerKouXue(Character *chara4, Character *chara5, Character *chara6)
         {
             chara4->xue = 1;
         }
+        if_showjiaxue[0] = 1;
+        if_showjiaxue[1] = 2;
+        if_showjiaxue[2] = 2;
+        chara_toshow = chara4;
     }
 
     if (chara5->index == 8 && chara5->special_state > 0)
@@ -422,6 +449,10 @@ void ShierteerKouXue(Character *chara4, Character *chara5, Character *chara6)
         {
             chara5->xue = 1;
         }
+        if_showjiaxue[0] = 1;
+        if_showjiaxue[1] = 2;
+        if_showjiaxue[2] = 2;
+        chara_toshow = chara5;
     }
 
     if (chara6->index == 8 && chara6->special_state > 0)
@@ -431,7 +462,12 @@ void ShierteerKouXue(Character *chara4, Character *chara5, Character *chara6)
         {
             chara6->xue = 1;
         }
+        if_showjiaxue[0] = 1;
+        if_showjiaxue[1] = 2;
+        if_showjiaxue[2] = 2;
+        chara_toshow = chara6;
     }
+
 }
 
 void Ren_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara)
@@ -441,6 +477,22 @@ void Ren_yszj(Character *chara1, Character *chara2, Character *chara3, Character
 
 void Ren_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara)
 {
+    int left = chara->xue - 5;
+    if (left > 0)
+    {
+        if_showjiaxue[0] = 1;
+        if_showjiaxue[1] = left;
+        if_showjiaxue[2] = 3;
+        chara_toshow = chara;
+    }
+    else if (left < 0)
+    {
+        if_showjiaxue[0] = 0;
+        if_showjiaxue[1] = -left;
+        if_showjiaxue[2] = 3;
+        chara_toshow = chara;
+    }
+
     chara->xue = 5;
     shanghai[1]++;
     if (chara1->if_chu == 1)
@@ -525,6 +577,10 @@ void RenPuHuiXue(Character *chara)
             if (chara->xue < 10)
             {
                 chara->xue++;
+                if_showjiaxue[0] = 0;
+                if_showjiaxue[1] = 1;
+                if_showjiaxue[2] = 3;
+                chara_toshow = chara;
             }
         }
     }
@@ -789,6 +845,7 @@ void Leichui_yszj(Character *chara1, Character *chara2, Character *chara3, Chara
 void Leichui_ysbf(Character *chara1, Character *chara2, Character *chara3, Character *chara)
 {
     chara->hudun += 3;
+    if_showhudun = 2;
 }
 
 void Leichui_SpecialAddition(Character *chara)
@@ -800,6 +857,7 @@ void Leichui_SpecialAddition(Character *chara)
 void Mudun_yszj(Character *chara1, Character *chara2, Character *chara3, Character *chara)
 {
     chara->hudun += 2;
+    if_showhudun = 2;
 }
 
 void SpecialAdditionReduceTurn(Character *chara4, Character *chara5, Character *chara6)

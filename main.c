@@ -757,6 +757,7 @@ int caoyuanhe;
 
 int shanghai[5];  //0：对主对象造成的伤害；1：对后台造成的伤害；2：对主对象造成伤害的元素类型；3：对后台造成伤害的元素类型; 4: 主攻击对象
 bool if_showkillblood;
+int if_showhudun;
 
 int shanghaimore[7];
 
@@ -772,6 +773,9 @@ bool if_notusetou;
 bool if_qiehuanjuese;
 
 bool if_changemusic;
+
+int if_showjiaxue[3];
+Character *chara_toshow = &Alhaitham;
 
 int main(int argc, char *argv[])
 {
@@ -791,11 +795,6 @@ int main(int argc, char *argv[])
 
     SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
     SDL_RenderClear(renderer);
-
-    atexit(&quit_delete);
-    atexit(&CharacterImageDestroy);
-    atexit(&SummonImageDestroy);
-    atexit(&CardImageDestroy);
 
     Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048);
 

@@ -16,9 +16,27 @@ void ChooseWhichReaction(int yuansu_we, Character **enemy, Character *chara1, Ch
         }
     }
 
+    if (yuansu_enemy == -1)
+    {
+        if (yuansu_we >= 0 && yuansu_we <= 4)
+        {
+            (*enemy)->yuansu_fu[yuansu_we] = true;
+        }
+        return;
+    }
+
     if ((yuansu_we == 0 && yuansu_enemy == 1) || (yuansu_we == 1 && yuansu_enemy == 0)) // 超载
     {
+        for (int i = 0; i < 5; ++i)
+        {
+            if ((*enemy)->yuansu_fu[i] == true)
+            {
+                (*enemy)->yuansu_fu[i] = false;
+                break;
+            }
+        }
         ChaoZai(enemy, chara1, chara2, chara3);
+        return;
     }
     else if ((yuansu_we == 0 && yuansu_enemy == 4) || (yuansu_we == 4 && yuansu_enemy == 0)) //燃烧
     {
@@ -43,6 +61,15 @@ void ChooseWhichReaction(int yuansu_we, Character **enemy, Character *chara1, Ch
     else if (yuansu_enemy == 3 && yuansu_we != 3)  //扩散
     {
         KuoSan(chara1, chara2, chara3, yuansu_we);
+    }
+
+    for (int i = 0; i < 5; ++i)
+    {
+        if ((*enemy)->yuansu_fu[i] == true && i != yuansu_we)
+        {
+            (*enemy)->yuansu_fu[i] = false;
+            return;
+        }
     }
 }
 

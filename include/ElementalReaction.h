@@ -19,6 +19,7 @@
 
 extern int shanghaimore[7];
 
+//选择发生哪个反应
 void ChooseWhichReaction(int yuansu_we, Character **enemy, Character *chara1, Character *chara2, Character *chara3);
 
 void KuoSan(Character *chara1, Character *chara2, Character *chara3, int yuansu);
@@ -30,6 +31,7 @@ void RanShao();
 
 void KuosanJiashang(int yuansu, Character *enemy);
 
+//激化领域和草原核增伤与处理函数
 void JihuaAddition(Character *chara);
 void CaoyuanheAddition(Character *chara);
 void JihuaReduce(Character *chara);
