@@ -23,6 +23,11 @@ void ChooseWhichReaction(int yuansu_we, Character **enemy, Character *chara1, Ch
 
     if (yuansu_enemy == -1)
     {
+        if (yuansu_we == 3)
+        {
+            return;
+        }
+
         if (yuansu_we >= 0 && yuansu_we <= 4)
         {
             (*enemy)->yuansu_fu[yuansu_we] = true;
@@ -63,10 +68,10 @@ void ChooseWhichReaction(int yuansu_we, Character **enemy, Character *chara1, Ch
     {
         KuoSan(chara1, chara2, chara3, yuansu_enemy);
     }
-    else if (yuansu_enemy == 3 && yuansu_we != 3)  //扩散
-    {
-        KuoSan(chara1, chara2, chara3, yuansu_we);
-    }
+//    else if (yuansu_enemy == 3 && yuansu_we != 3)  //扩散
+//    {
+//        KuoSan(chara1, chara2, chara3, yuansu_we);
+//    }
 
     for (int i = 0; i < 5; ++i)
     {
