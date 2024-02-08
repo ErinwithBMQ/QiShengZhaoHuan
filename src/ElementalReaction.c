@@ -6,6 +6,11 @@
 
 void ChooseWhichReaction(int yuansu_we, Character **enemy, Character *chara1, Character *chara2, Character *chara3)
 {
+    if (yuansu_we == -1)
+    {
+        return;
+    }
+
     int yuansu_enemy = -1;
     for (int i = 0; i < 5; ++i)
     {
